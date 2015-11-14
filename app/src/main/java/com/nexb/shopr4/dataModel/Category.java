@@ -10,8 +10,7 @@ public class Category {
     private ArrayList<ListItem> items = new ArrayList<>();
 
     public Category() {
-        items.add(new ListItem());
-    }
+            }
 
     public Category(String name) {
         this.name=name;

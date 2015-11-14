@@ -25,6 +25,7 @@ import com.nexb.shopr4.dataModel.ListItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EditListFragment.OnFragmentInteractionListener{
+    public static final boolean DEBUG = true;
 
     private Toolbar toolbar;
     private EditListFragment editListFragment;
@@ -85,8 +86,11 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                System.out.println(fireBaseController.getUser().getOwnLists());
+                fireBaseController.createNewShopList();
+                Snackbar.make(view, "Created new shoplist with id: " + fireBaseController.getUser().getOwnLists().get(fireBaseController.getUser().getOwnLists().size()-1), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                System.out.println(fireBaseController.getUser().getOwnLists());
             }
         });
         //Setup Navigation Drawer

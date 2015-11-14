@@ -11,12 +11,12 @@ public class User {
 
     private ArrayList<String> ownLists = new ArrayList<>();
     private ArrayList<ForeignUserlist> foreignLists = new ArrayList<>();
-    private String activeList = "Shoplist4";
+    private String activeList;
 
     public User(){
         //For Testing puposes
-        ownLists.add("Shoplist3");
-        ownLists.add("Shoplist4");
+//        ownLists.add("Shoplist3");
+//        ownLists.add("Shoplist4");
     }
 
 

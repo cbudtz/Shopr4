@@ -48,6 +48,8 @@ public class FireBaseController {
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
     //ArrayList
     private ArrayList<ShopListViewContent> shoplistViewContents;
+    private ValueEventListener activeListListener;
+
     //Initialization Methods ---------------------
     public static void setContext(AppCompatActivity Mainactivity, String Firebaseurl){
         activity = Mainactivity;
@@ -71,6 +73,7 @@ public class FireBaseController {
         this.activity = mainActivity;
         this.url = url;
         Firebase.setAndroidContext(activity);
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
     }
 
     public void init() {
@@ -81,7 +84,6 @@ public class FireBaseController {
 
 
     }
-
 
     private void resolveUser() {
         //Find user in android accounts
@@ -114,6 +116,8 @@ public class FireBaseController {
                 } else {
                     user = userFromFirebase;
                     System.out.println("User already Exists");
+                    System.out.println(user.getActiveList());
+                    setActiveList(user.getActiveList());
 
                 }
             }
@@ -123,20 +127,27 @@ public class FireBaseController {
 
             }
         });
-        setActiveList(user.getActiveList());
+
+      //Should happen on callback! --  setActiveList(user.getActiveList());
     }
     //End of initialization ----------------------
 
     public void setActiveList(String listID){
+        //Make certain that user has at least one shopping list...
+        if (listID == null) {
+            listID = createNewShopList();
+        };
+        if (activeListRef!=null) activeListRef.removeEventListener(activeListListener);
         //Change location for active list storage
         activeListRef = firebaseShopListDir.child(listID);
+        if (MainActivity.DEBUG) System.out.println(activeListRef);
         //Listen to new location
-        activeListRef.addValueEventListener(new ValueEventListener() {
+        activeListListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ShopList newShopList = dataSnapshot.getValue(ShopList.class);
                 activeShopList = newShopList;
-                System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName(): "null"));
+                System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName() : "null"));
                 //Parse for arrayadaptor.
                 parseShopList();
                 if (shoplistAdaptor != null) shoplistAdaptor.notifyDataSetChanged();
@@ -146,13 +157,15 @@ public class FireBaseController {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        };
+        activeListRef.addValueEventListener(activeListListener);
 
 
     }
 
     private void parseShopList() {
         ArrayList<ShopListViewContent> newShopListViewContents = new ArrayList<ShopListViewContent>();
+        if (activeShopList==null) return;
         for (Category c: activeShopList.getCategories() ) {
             //add category element
             newShopListViewContents.add(new ShopListViewCategory(c.getName()));
@@ -160,9 +173,15 @@ public class FireBaseController {
                 newShopListViewContents.add(new ShopListViewItem(l.getAmount(),l.getUnit(),l.getName()));
             }
         }
+        if (MainActivity.DEBUG){
+            for (ShopListViewContent s: newShopListViewContents ) {
+                System.out.println("ShoplistViewItem: " + s);
+
+            }
+        }
     }
 
-    public void createNewShopList(){
+    public String createNewShopList(){
         //Get ref from Firebase
         Firebase newListRef = firebaseShopListDir.push();
         //Create Default list Template
@@ -173,7 +192,9 @@ public class FireBaseController {
         newShopList.addCategory(new Category("No Category"));
         newListRef.setValue(newShopList);
         user.addOwnList(newShopList.getId());
+        if (user.getActiveList()==null) user.setActiveList(newShopList.getId());
         firebaseUserRef.setValue(user);
+        return newListRef.getKey();
     }
 
 
@@ -192,5 +213,13 @@ public class FireBaseController {
 
     public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) {
         this.shoplistAdaptor = shoplistAdaptor;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
