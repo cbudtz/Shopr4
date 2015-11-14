@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity
         f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
 
         //Setup Firebase
-        fireBaseController = new FireBaseController(this,getString(R.string.fireBaseUrl));
-        fireBaseController.init();
+        FireBaseController.setContext(this, getString(R.string.fireBaseUrl));
+        fireBaseController= FireBaseController.getI();
     }
 
     @Override

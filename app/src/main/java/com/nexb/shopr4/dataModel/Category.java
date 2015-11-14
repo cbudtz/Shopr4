@@ -13,6 +13,10 @@ public class Category {
         items.add(new ListItem());
     }
 
+    public Category(String name) {
+        this.name=name;
+    }
+
     public String getName() {
         return name;
     }

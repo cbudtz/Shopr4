@@ -17,6 +17,7 @@ public class ListItem {
         this.amount = amount;
         this.unit = unit;
         this.name = name;
+        this.category = category;
     }
 
     public String getItemID() {

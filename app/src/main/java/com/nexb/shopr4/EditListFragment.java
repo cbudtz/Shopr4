@@ -67,7 +67,7 @@ public class EditListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_edit_list, container, false);
         ListView listView = (ListView) getActivity().findViewById(R.id.editfragmentlistview);
-        listView.setAdapter(new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,((MainActivity)getActivity()).getFireBaseController().getActiveShopList().getItems()));
+        //listView.setAdapter(new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,((MainActivity)getActivity()).getFireBaseController().getActiveShopList().getItems()));
         // Inflate the layout for this fragment
         return v;
     }

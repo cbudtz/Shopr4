@@ -5,24 +5,31 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.nexb.shopr4.dataModel.Category;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
+import com.nexb.shopr4.dataModel.ShopListViewContent;
 import com.nexb.shopr4.dataModel.User;
+import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
+import com.nexb.shopr4.dataModel.View.ShopListViewItem;
+
+import java.util.ArrayList;
 
 /**
  * Created by Christian on 12-11-2015.
  */
 public class FireBaseController {
-    private final AppCompatActivity activity;
-    private final String url;
+    public static FireBaseController instance;
+
+    private static AppCompatActivity activity;
+    private static String url;
     //Folders
     private Firebase firebaseRoot;
     private Firebase firebaseUserDir;
@@ -37,7 +44,30 @@ public class FireBaseController {
     private Firebase activeListRef;
     private ShopList activeShopList = new ShopList();
 
-    public FireBaseController(AppCompatActivity mainActivity, String url) {
+    //ArrayAdaptor to be notified on dataChange
+    private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
+    //ArrayList
+    private ArrayList<ShopListViewContent> shoplistViewContents;
+    //Initialization Methods ---------------------
+    public static void setContext(AppCompatActivity Mainactivity, String Firebaseurl){
+        activity = Mainactivity;
+        url = Firebaseurl;
+    }
+
+    public static synchronized FireBaseController getI() {
+        if (activity == null || url == null) {
+            System.out.println("Must provide url and activity first!!");
+            return null;
+        }
+        if (instance == null) {
+            instance = new FireBaseController(activity, url);
+            instance.init();
+        }
+        return instance;
+
+    }
+
+    private FireBaseController(AppCompatActivity mainActivity, String url) {
         this.activity = mainActivity;
         this.url = url;
         Firebase.setAndroidContext(activity);
@@ -94,18 +124,22 @@ public class FireBaseController {
             }
         });
         setActiveList(user.getActiveList());
-        activeListRef.setValue(new ShopList());
-
     }
+    //End of initialization ----------------------
 
-    private void setActiveList(String listID){
+    public void setActiveList(String listID){
+        //Change location for active list storage
         activeListRef = firebaseShopListDir.child(listID);
+        //Listen to new location
         activeListRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ShopList newShopList = dataSnapshot.getValue(ShopList.class);
-                activeShopList=newShopList;
-                System.out.println("ShopList Changed:" + ((activeShopList!=null) ? newShopList:"null"));
+                activeShopList = newShopList;
+                System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName(): "null"));
+                //Parse for arrayadaptor.
+                parseShopList();
+                if (shoplistAdaptor != null) shoplistAdaptor.notifyDataSetChanged();
             }
 
             @Override
@@ -117,12 +151,46 @@ public class FireBaseController {
 
     }
 
+    private void parseShopList() {
+        ArrayList<ShopListViewContent> newShopListViewContents = new ArrayList<ShopListViewContent>();
+        for (Category c: activeShopList.getCategories() ) {
+            //add category element
+            newShopListViewContents.add(new ShopListViewCategory(c.getName()));
+            for (ListItem l:c.getItems()) {
+                newShopListViewContents.add(new ShopListViewItem(l.getAmount(),l.getUnit(),l.getName()));
+            }
+        }
+    }
 
+    public void createNewShopList(){
+        //Get ref from Firebase
+        Firebase newListRef = firebaseShopListDir.push();
+        //Create Default list Template
+        ShopList newShopList = new ShopList();
+        newShopList.setId(newListRef.getKey());
+        newShopList.setName("New List");
+        newShopList.setCreatedByID(user.getUserID());
+        newShopList.addCategory(new Category("No Category"));
+        newListRef.setValue(newShopList);
+        user.addOwnList(newShopList.getId());
+        firebaseUserRef.setValue(user);
+    }
+
+
+//TODO: probably unnecessary
     public ShopList getActiveShopList() {
         return activeShopList;
     }
 
     public void setActiveShopList(ShopList activeShopList) {
         this.activeShopList = activeShopList;
+    }
+
+    public ListAdapter getShoplistAdaptor() {
+        return shoplistAdaptor;
+    }
+
+    public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) {
+        this.shoplistAdaptor = shoplistAdaptor;
     }
 }

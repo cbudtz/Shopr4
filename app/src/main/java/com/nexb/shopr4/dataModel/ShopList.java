@@ -9,7 +9,7 @@ public class ShopList {
     private String name = "new shoplist";
     private String id = "";
     private String createdByID ="";
-    private ArrayList<ListItem> items = new ArrayList<>();
+    private ArrayList<Category> categories = new ArrayList<>();
 
     public ShopList(){
 
@@ -21,7 +21,6 @@ public class ShopList {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -29,23 +28,26 @@ public class ShopList {
     public String getCreatedByID() {
         return createdByID;
     }
-
     public void setCreatedByID(String createdByID) {
         this.createdByID = createdByID;
     }
 
-    public ArrayList<ListItem> getItems() {
-        return items;
+    public ArrayList<Category> getCategories() {
+        return categories;
     }
-
-    public void setItems(ArrayList<ListItem> items) {
-        this.items = items;
+    public void setCategories(ArrayList<Category> items) {
+        this.categories = items;
+    }
+    public void addCategory(Category c){
+        categories.add(c);
+    }
+    public void removeCategory(Category c){
+        categories.remove(c);
     }
 
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }

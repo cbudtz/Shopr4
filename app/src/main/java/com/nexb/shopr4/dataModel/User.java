@@ -48,4 +48,8 @@ public class User {
 
     public String getActiveList() {       return activeList;    }
     public void setActiveList(String activeList) {        this.activeList = activeList;    }
+
+    public void addOwnList(String id) {
+        ownLists.add(id);
+    }
 }
