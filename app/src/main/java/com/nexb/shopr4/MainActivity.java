@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Setup Firebase
+        FireBaseController.setContext(this, getString(R.string.fireBaseUrl));
+        fireBaseController= FireBaseController.getI();
+        //Setup UI
         setContentView(R.layout.activity_main);
         //setupToolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,8 +63,9 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Firebase newItem = fireBaseActiveList.push();
-//                newItem.setValue(new ListItem(newItem.getKey(), 1, " ", (parent.getItemAtPosition(position)).toString()));
+                ListItem newItem = new ListItem(1," ",parent.getItemAtPosition(position).toString()); //Item at position should return some values from the dictionary
+                //TODO: Find some way to keep track of autobox values!
+
                 autoBox.setText("");
                 autoBox.showDropDown();
             }
@@ -68,10 +73,9 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Firebase newItem;
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
-//                    newItem = fireBaseActiveList.push();
-//                    newItem.setValue(new ListItem(newItem.getKey(), 1, " ", v.getText().toString()));
+                    ListItem newItem = new ListItem(1," ", v.getText().toString());
+                    fireBaseController.addItemToActiveListNoCategory(newItem);
                 }
                 System.out.println(v.getText());
                 v.setText("");
@@ -110,9 +114,7 @@ public class MainActivity extends AppCompatActivity
 
         f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
 
-        //Setup Firebase
-        FireBaseController.setContext(this, getString(R.string.fireBaseUrl));
-        fireBaseController= FireBaseController.getI();
+
     }
 
     @Override

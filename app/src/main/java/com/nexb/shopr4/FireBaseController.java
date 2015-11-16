@@ -15,7 +15,7 @@ import com.firebase.client.ValueEventListener;
 import com.nexb.shopr4.dataModel.Category;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
-import com.nexb.shopr4.dataModel.ShopListViewContent;
+import com.nexb.shopr4.dataModel.View.ShopListViewContent;
 import com.nexb.shopr4.dataModel.User;
 import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
 import com.nexb.shopr4.dataModel.View.ShopListViewItem;
@@ -195,6 +195,26 @@ public class FireBaseController {
         if (user.getActiveList()==null) user.setActiveList(newShopList.getId());
         firebaseUserRef.setValue(user);
         return newListRef.getKey();
+    }
+
+    public void addItemToActiveListNoCategory(ListItem l){
+        activeShopList.getCategories().get(0).getItems().add(l);
+        activeListRef.setValue(activeShopList);
+    }
+
+    public void addItemToActiveList(String category, ListItem l){
+        for (Category c : activeShopList.getCategories()) {
+            if (c.getName().equalsIgnoreCase(category)){
+                //Found category in Shoplist
+                c.getItems().add(l);
+                return;
+            }
+        }
+        //Category not found - put in new category
+        Category newCat = new Category(category);
+        activeShopList.getCategories().add(newCat);
+        newCat.getItems().add(l);
+        activeListRef.setValue(activeShopList);
     }
 
 

@@ -1,6 +1,7 @@
 package com.nexb.shopr4.dataModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Christian
@@ -12,9 +13,10 @@ public class User {
     private ArrayList<String> ownLists = new ArrayList<>();
     private ArrayList<ForeignUserlist> foreignLists = new ArrayList<>();
     private String activeList;
+    private HashMap<String,DictionaryItem> userDictionary = new HashMap<>();
 
     public User(){
-        //For Testing puposes
+        //For Testing purposes
 //        ownLists.add("Shoplist3");
 //        ownLists.add("Shoplist4");
     }
@@ -51,5 +53,13 @@ public class User {
 
     public void addOwnList(String id) {
         ownLists.add(id);
+    }
+
+    public HashMap<String, DictionaryItem> getUserDictionary() {
+        return userDictionary;
+    }
+
+    public void setUserDictionary(HashMap<String, DictionaryItem> userDictionary) {
+        this.userDictionary = userDictionary;
     }
 }
