@@ -13,4 +13,9 @@ public class ShopListViewCategory extends ShopListViewContent {
     public String getName() {
         return name;
     }
+
+    @Override
+    public contentType getType() {
+        return contentType.CATEGORY;
+    }
 }

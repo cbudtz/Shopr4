@@ -10,6 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.nexb.shopr4.dataModel.View.ShopListViewAdapter;
+import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
+import com.nexb.shopr4.dataModel.View.ShopListViewContent;
+import com.nexb.shopr4.dataModel.View.ShopListViewItem;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,8 +73,18 @@ public class EditListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_edit_list, container, false);
-        ListView listView = (ListView) getActivity().findViewById(R.id.editfragmentlistview);
-        //listView.setAdapter(new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,((MainActivity)getActivity()).getFireBaseController().getActiveShopList().getItems()));
+        ListView listView = (ListView) v.findViewById(R.id.editfragmentlistview);
+        System.out.println("her er vores print: " + listView);
+
+//        ArrayList<ShopListViewContent> testList = new ArrayList<ShopListViewContent>();
+//        testList.add(new ShopListViewItem(1.0, "styk", "æble"));
+//        testList.add(new ShopListViewCategory("Frugt"));
+//
+//        ShopListViewAdapter newAdapter =new ShopListViewAdapter(getActivity(), android.R.layout.simple_list_item_1, testList) ;
+//
+//        listView.setAdapter(newAdapter);
+
+        listView.setAdapter(new ShopListViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents()));
         // Inflate the layout for this fragment
         return v;
     }

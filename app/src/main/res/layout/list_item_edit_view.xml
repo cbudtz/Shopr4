@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageButton
+        android:id="@+id/plusOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@android:drawable/ic_input_add"
+        android:padding="0dp" />
+
+    <EditText
+        android:id="@+id/itemAmount"
+        android:text="@string/itemAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/plusOne"/>
+
+    <ImageButton
+        android:id="@+id/minusOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/itemAmount"
+        android:src="@android:drawable/presence_busy"
+        android:padding="1dp"
+        />
+
+    <com.nexb.shopr4.dataModel.InstantAutoCompleteTextView
+        android:id="@+id/itemType"
+        android:text="@string/itemType"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/minusOne"/>
+
+
+    <TextView
+        android:id="@+id/itemName"
+        android:text="@string/itemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"
+        />
+
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@android:drawable/presence_busy"
+        android:padding="0dp"
+        />
+
+
+</RelativeLayout>

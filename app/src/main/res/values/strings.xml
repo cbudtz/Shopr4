@@ -12,4 +12,8 @@
     <string name="fireBaseUrl">https://shop-r.firebaseio.com/</string>
     <string name="userDir">Users</string>
     <string name="shopListDir">Shoplists</string>
+    <string name="buyfragment">lkj</string>
+    <string name="itemTitle">title</string>
+    <string name="itemAmount">amount</string>
+    <string name="itemType">lol</string>
 </resources>
