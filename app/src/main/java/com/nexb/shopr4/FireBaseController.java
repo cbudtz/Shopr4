@@ -132,7 +132,7 @@ public class FireBaseController {
                     activity.getNavigationView().getMenu().add(1, i, i, s);
                     i++;
                 }
-                if (dictionaryAdapter!=null) dictionaryAdapter.notifyDataSetChanged();
+                if (dictionaryAdapter != null) dictionaryAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -144,7 +144,7 @@ public class FireBaseController {
       //Should happen on callback! --  setActiveList(user.getActiveList());
     }
     //End of initialization ----------------------
-
+    //UI interface methods -----------------
     public void setActiveList(String listID){
         //Make certain that user has at least one shopping list...
         if (listID == null) {
@@ -178,16 +178,20 @@ public class FireBaseController {
 
 
     }
-
+//TODO clean ugly code!
     private void parseShopList() {
         ArrayList<ShopListViewContent> newShopListViewContents = new ArrayList<ShopListViewContent>();
         if (activeShopList==null) return;
+        int i = 0;
         for (Category c: activeShopList.getCategories() ) {
             //add category element
-            newShopListViewContents.add(new ShopListViewCategory(c.getName()));
+            newShopListViewContents.add(new ShopListViewCategory(c.getName(), i));
+            int j =0;
             for (ListItem l:c.getItems()) {
-                newShopListViewContents.add(new ShopListViewItem(l.getAmount(),l.getUnit(),l.getName()));
+                newShopListViewContents.add(new ShopListViewItem(l.getAmount(),l.getUnit(),l.getName(),i,j));
+                j++;
             }
+            i++;
         }
         if (MainActivity.DEBUG){
             for (ShopListViewContent s: newShopListViewContents ) {
@@ -199,7 +203,7 @@ public class FireBaseController {
         shoplistViewContents.addAll(newShopListViewContents);
 
     }
-
+// Manipulate Shoplist!! -----------------------
     public String createNewShopList(){
         //Get ref from Firebase
         Firebase newListRef = firebaseShopListDir.push();
@@ -216,9 +220,27 @@ public class FireBaseController {
         return newListRef.getKey();
     }
 
+    public void addCategory(String name){
+        activeShopList.getCategories().add(new Category(name));
+        updateActiveList();
+    }
+    public void updateCategory(int catId, Category category){
+        activeShopList.getCategories().set(catId, category);
+        updateActiveList();
+    }
+
+    public void deleteCategory(int catId){
+        activeShopList.getCategories().remove(catId);
+        updateActiveList();
+    }
+
+    public void insertCategory(int catId, Category cat){
+        activeShopList.getCategories().add(catId, cat);
+
+    }
     public void addItemToActiveListNoCategory(ListItem l){
         activeShopList.getCategories().get(0).getItems().add(l);
-        activeListRef.setValue(activeShopList);
+        updateActiveList();
     }
 
     public void addItemToActiveList(String category, ListItem l){
@@ -233,13 +255,32 @@ public class FireBaseController {
         Category newCat = new Category(category);
         activeShopList.getCategories().add(newCat);
         newCat.getItems().add(l);
+        updateActiveList();
+    }
+
+    public void deleteItem(int category, int itemID){
+        activeShopList.getCategories().get(category).getItems().remove(itemID);
+        updateActiveList();
+    }
+
+    public void updateItem(int category, int itemID, ListItem item){
+        activeShopList.getCategories().get(category).getItems().set(itemID,item);
+        updateActiveList();
+    }
+
+    public void insertItem(int category, int itemID, ListItem item){
+        activeShopList.getCategories().get(category).getItems().add(itemID, item);
+    }
+
+
+    public void updateActiveList(){
         activeListRef.setValue(activeShopList);
     }
 
 
 //TODO: probably unnecessary
   //  public ShopList getActiveShopList() {
-     //   return activeShopList;
+    //    return activeShopList;
    // }
 
     public void setActiveShopList(ShopList activeShopList) {
@@ -255,11 +296,11 @@ public class FireBaseController {
     public void setUser(User user) {
         this.user = user;
     }
-
+//Adaptor Calls
     public ArrayList<ShopListViewContent> getShoplistViewContents() {
         if (shoplistViewContents == null) {
             ArrayList<ShopListViewContent> dummyList = new ArrayList<ShopListViewContent>();
-            dummyList.add(new ShopListViewItem(2,"stk","TestBananer"));
+            dummyList.add(new ShopListViewItem(2,"stk","TestBananer",0,0));
             return dummyList;
         }
         return shoplistViewContents;
