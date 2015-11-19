@@ -13,7 +13,7 @@ public class User {
     private ArrayList<String> ownLists = new ArrayList<>();
     private ArrayList<ForeignUserlist> foreignLists = new ArrayList<>();
     private String activeList;
-    private HashMap<String,DictionaryItem> userDictionary = new HashMap<>();
+    private ArrayList<DictionaryItem> userDictionary = new ArrayList<>();
 
     public User(){
         //For Testing purposes
@@ -55,11 +55,11 @@ public class User {
         ownLists.add(id);
     }
 
-    public HashMap<String, DictionaryItem> getUserDictionary() {
+    public ArrayList<DictionaryItem> getUserDictionary() {
         return userDictionary;
     }
 
-    public void setUserDictionary(HashMap<String, DictionaryItem> userDictionary) {
+    public void setUserDictionary(ArrayList<DictionaryItem> userDictionary) {
         this.userDictionary = userDictionary;
     }
 }
