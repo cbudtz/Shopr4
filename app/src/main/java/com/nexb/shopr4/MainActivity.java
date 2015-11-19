@@ -16,9 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.firebase.client.Firebase;
 import com.nexb.shopr4.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr4.dataModel.ListItem;
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
-        autoBox.setAdapter(new DictionaryAdaptor<String>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionary));
+        autoBox.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings()));
 
 
         //Floating actionButton
