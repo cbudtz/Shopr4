@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class FireBaseController {
     public static FireBaseController instance;
 
-    private static AppCompatActivity activity;
+    private static MainActivity activity;
     private static String url;
     //Folders
     private Firebase firebaseRoot;
@@ -50,9 +50,10 @@ public class FireBaseController {
     private ArrayList<ShopListViewContent> shoplistViewContents;
     private ValueEventListener activeListListener;
 
+
     //Initialization Methods ---------------------
-    public static void setContext(AppCompatActivity Mainactivity, String Firebaseurl){
-        activity = Mainactivity;
+    public static void setContext(MainActivity mainActivity, String Firebaseurl){
+        activity = mainActivity;
         url = Firebaseurl;
     }
 
@@ -69,7 +70,7 @@ public class FireBaseController {
 
     }
 
-    private FireBaseController(AppCompatActivity mainActivity, String url) {
+    private FireBaseController(MainActivity mainActivity, String url) {
         this.activity = mainActivity;
         this.url = url;
         Firebase.setAndroidContext(activity);
@@ -81,8 +82,6 @@ public class FireBaseController {
         firebaseUserDir = firebaseRoot.child(activity.getString(R.string.userDir));
         firebaseShopListDir = firebaseRoot.child(activity.getString(R.string.shopListDir));
         resolveUser();
-
-
     }
 
     private void resolveUser() {
@@ -117,8 +116,16 @@ public class FireBaseController {
                     user = userFromFirebase;
                     System.out.println("User already Exists");
                     System.out.println(user.getActiveList());
-                    setActiveList(user.getActiveList());
 
+
+                }
+                setActiveList(user.getActiveList());
+                //Update NavigationDrawer
+                activity.getNavigationView().getMenu().removeGroup(1);
+                int i = 0;
+                for (String s : user.getOwnLists()) {
+                    activity.getNavigationView().getMenu().add(1, i, i, s);
+                    i++;
                 }
             }
 

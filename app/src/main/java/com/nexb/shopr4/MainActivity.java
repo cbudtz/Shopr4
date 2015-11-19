@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private EditListFragment editListFragment;
     private FloatingActionButton fab;
+
+
     private NavigationView navigationView;
 
     public FireBaseController getFireBaseController() {
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+            FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
         if (id == R.id.nav_camara) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -178,4 +180,10 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    //Getters and setters
+    public NavigationView getNavigationView() {
+        return navigationView;
+    }
+
 }
