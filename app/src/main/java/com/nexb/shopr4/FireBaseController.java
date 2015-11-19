@@ -13,6 +13,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.nexb.shopr4.dataModel.Category;
+import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
 import com.nexb.shopr4.dataModel.View.ShopListViewContent;
@@ -52,7 +53,6 @@ public class FireBaseController {
     //ArrayList
     private ArrayList<ShopListViewContent> shoplistViewContents;
     private ValueEventListener activeListListener;
-
 
     //Initialization Methods ---------------------
     public static void setContext(MainActivity mainActivity, String Firebaseurl){
@@ -255,5 +255,14 @@ public class FireBaseController {
 
     public ArrayList<ShopListViewContent> getShoplistViewContents() {
         return shoplistViewContents;
+    }
+
+    public ArrayList<String> getDictionaryStrings() {
+        ArrayList<String> dictionaryStrings = new ArrayList<>();
+        for (DictionaryItem d : user.getUserDictionary()) {
+            dictionaryStrings.add(d.getName() + " - " + d.getAmount() + " " + d.getUnit());
+
+        }
+        return dictionaryStrings;
     }
 }
