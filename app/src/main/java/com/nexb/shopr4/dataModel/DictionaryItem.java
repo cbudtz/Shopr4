@@ -8,11 +8,12 @@ import java.util.Date;
 public class DictionaryItem {
 
 
-    private String name ="Test";
+    private String name ="TestAnanas";
 
 
 
     private String unit = "stk";
+    private String category = "Frugt";
     private double amount = 1.0;
     private Date lastUsed = new Date();
     private double frequencyOfUse = 1;
@@ -67,4 +68,6 @@ public class DictionaryItem {
         this.name = name;
     }
 
+    public String getCategory() {        return category;    }
+    public void setCategory(String category) {        this.category = category;    }
 }
