@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListItem newItem = new ListItem(1," ",parent.getItemAtPosition(position).toString()); //Item at position should return some values from the dictionary
+                ListItem newItem = new ListItem(1, " ", parent.getItemAtPosition(position).toString()); //Item at position should return some values from the dictionary
                 //TODO: Find some way to keep track of autobox values!
 
                 autoBox.setText("");
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    ListItem newItem = new ListItem(1," ", v.getText().toString());
+                    ListItem newItem = new ListItem(1, " ", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
                 }
                 System.out.println(v.getText());
@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
-
+        autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
+        autoBox.setAdapter(new DictionaryAdaptor<String>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionary));
 
 
         //Floating actionButton

@@ -46,6 +46,9 @@ public class FireBaseController {
 
     //ArrayAdaptor to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
+
+
+
     //ArrayList
     private ArrayList<ShopListViewContent> shoplistViewContents;
     private ValueEventListener activeListListener;
@@ -248,5 +251,9 @@ public class FireBaseController {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public ArrayList<ShopListViewContent> getShoplistViewContents() {
+        return shoplistViewContents;
     }
 }
