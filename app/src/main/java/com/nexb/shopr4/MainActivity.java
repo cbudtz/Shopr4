@@ -59,33 +59,7 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         //setupAutoCompleteBox
-        autoBox = (InstantAutoCompleteTextView) findViewById(R.id.toolbarAutobox);
-        autoBox.setSingleLine(true);
-        autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
-        autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListItem newItem = new ListItem(1, " ", parent.getItemAtPosition(position).toString()); //Item at position should return some values from the dictionary
-                //TODO: Find some way to keep track of autobox values!
-
-                autoBox.setText("");
-                autoBox.showDropDown();
-            }
-        });
-        autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    ListItem newItem = new ListItem(1, " ", v.getText().toString());
-                    fireBaseController.addItemToActiveListNoCategory(newItem);
-                }
-                System.out.println(v.getText());
-                v.setText("");
-                return true;
-            }
-        });
-        autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
-        autoBox.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings()));
+        setUpActionBox();
 
 
         //Floating actionButton
@@ -116,8 +90,42 @@ public class MainActivity extends AppCompatActivity
 
 
         f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
+        //autoBox.showDropDown();
 
+    }
 
+    private void setUpActionBox() {
+        autoBox = (InstantAutoCompleteTextView) findViewById(R.id.toolbarAutobox);
+        autoBox.setThreshold(0);
+        autoBox.setSingleLine(true);
+        autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
+        autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListItem newItem = new ListItem(1, " ", parent.getItemAtPosition(position).toString()); //Item at position should return some values from the dictionary
+                //TODO: Find some way to keep track of autobox values!
+                System.out.println("view Clicked:" + view);
+                System.out.println("parent.getItemAtPosition " + parent.getItemAtPosition(position));
+                autoBox.setText("");
+                autoBox.showDropDown();
+            }
+        });
+        autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    ListItem newItem = new ListItem(1, " ", v.getText().toString());
+                    fireBaseController.addItemToActiveListNoCategory(newItem);
+                }
+                System.out.println(v.getText());
+                v.setText("");
+                return true;
+            }
+        });
+        autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
+        ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
+        autoBox.setAdapter(autoAdaptor);
+        FireBaseController.getI().setDictionaryAdapter(autoAdaptor);
     }
 
     @Override
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-            FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
+
         if (id == R.id.nav_camara) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -170,6 +178,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else {
+            FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

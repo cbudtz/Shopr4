@@ -47,6 +47,7 @@ public class FireBaseController {
 
     //ArrayAdaptor to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
+    private ArrayAdapter<String> dictionaryAdapter;
 
 
 
@@ -105,7 +106,7 @@ public class FireBaseController {
 
         }
         System.out.println("UserID: " + user.getUserID());
-        // Listen to database!
+        // Listen to database for changes in User!
         firebaseUserRef = firebaseUserDir.child(user.getUserID());
         firebaseUserRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,6 +131,7 @@ public class FireBaseController {
                     activity.getNavigationView().getMenu().add(1, i, i, s);
                     i++;
                 }
+                if (dictionaryAdapter!=null) dictionaryAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -229,40 +231,44 @@ public class FireBaseController {
 
 
 //TODO: probably unnecessary
-    public ShopList getActiveShopList() {
-        return activeShopList;
-    }
+  //  public ShopList getActiveShopList() {
+     //   return activeShopList;
+   // }
 
     public void setActiveShopList(ShopList activeShopList) {
         this.activeShopList = activeShopList;
-    }
-
-    public ListAdapter getShoplistAdaptor() {
-        return shoplistAdaptor;
     }
 
     public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) {
         this.shoplistAdaptor = shoplistAdaptor;
     }
 
-    public User getUser() {
-        return user;
-    }
-
+    public User getUser() {        return user;    }
     public void setUser(User user) {
         this.user = user;
     }
 
     public ArrayList<ShopListViewContent> getShoplistViewContents() {
+        if (shoplistViewContents == null) return new ArrayList<ShopListViewContent>();
         return shoplistViewContents;
     }
 
     public ArrayList<String> getDictionaryStrings() {
+        if (MainActivity.DEBUG){
+            user.getUserDictionary().add(new DictionaryItem("Bananer", "stk" , 10));
+            user.getUserDictionary().add(new DictionaryItem("Ananas", "stk" , 1));
+            System.out.println("Adding some items to Dictionary");
+        }
         ArrayList<String> dictionaryStrings = new ArrayList<>();
         for (DictionaryItem d : user.getUserDictionary()) {
             dictionaryStrings.add(d.getName() + " - " + d.getAmount() + " " + d.getUnit());
 
         }
+        if (dictionaryAdapter!=null) dictionaryAdapter.notifyDataSetChanged();
         return dictionaryStrings;
+    }
+
+    public void setDictionaryAdapter(ArrayAdapter<String> dictionaryAdapter) {
+        this.dictionaryAdapter = dictionaryAdapter;
     }
 }

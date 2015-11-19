@@ -19,6 +19,7 @@ public class User {
         //For Testing purposes
 //        ownLists.add("Shoplist3");
 //        ownLists.add("Shoplist4");
+        userDictionary.add(new DictionaryItem());
     }
 
 
