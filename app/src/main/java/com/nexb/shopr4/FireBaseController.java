@@ -47,6 +47,7 @@ public class FireBaseController {
 
     //ArrayAdaptor to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
+    private ArrayAdapter<String> dictionaryAdapter;
 
 
 
@@ -229,9 +230,9 @@ public class FireBaseController {
 
 
 //TODO: probably unnecessary
-    public ShopList getActiveShopList() {
-        return activeShopList;
-    }
+  //  public ShopList getActiveShopList() {
+     //   return activeShopList;
+   // }
 
     public void setActiveShopList(ShopList activeShopList) {
         this.activeShopList = activeShopList;
@@ -245,10 +246,7 @@ public class FireBaseController {
         this.shoplistAdaptor = shoplistAdaptor;
     }
 
-    public User getUser() {
-        return user;
-    }
-
+    public User getUser() {        return user;    }
     public void setUser(User user) {
         this.user = user;
     }
@@ -263,6 +261,15 @@ public class FireBaseController {
             dictionaryStrings.add(d.getName() + " - " + d.getAmount() + " " + d.getUnit());
 
         }
+        if (dictionaryAdapter!=null) dictionaryAdapter.notifyDataSetChanged();
         return dictionaryStrings;
+    }
+
+    public ArrayAdapter<String> getDictionaryAdapter() {
+        return dictionaryAdapter;
+    }
+
+    public void setDictionaryAdapter(ArrayAdapter<String> dictionaryAdapter) {
+        this.dictionaryAdapter = dictionaryAdapter;
     }
 }

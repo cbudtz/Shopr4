@@ -9,10 +9,23 @@ public class DictionaryItem {
 
 
     private String name ="Test";
+
+
+
     private String unit = "stk";
     private double amount = 1.0;
     private Date lastUsed = new Date();
     private double frequencyOfUse = 1;
+
+    public DictionaryItem(){
+
+    }
+
+    public DictionaryItem(String name, String unit, double amount) {
+        this.name = name;
+        this.unit = unit;
+        this.amount = amount;
+    }
 
     public Date getLastUsed() {
         return lastUsed;
