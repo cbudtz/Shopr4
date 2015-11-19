@@ -83,8 +83,9 @@ public class EditListFragment extends Fragment {
 //        ShopListViewAdapter newAdapter =new ShopListViewAdapter(getActivity(), android.R.layout.simple_list_item_1, testList) ;
 //
 //        listView.setAdapter(newAdapter);
-
-        listView.setAdapter(new ShopListViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents()));
+        ShopListViewAdapter adaptor = new ShopListViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents());
+        listView.setAdapter(adaptor);
+       FireBaseController.getI().setShoplistAdaptor(adaptor);
         // Inflate the layout for this fragment
         return v;
     }

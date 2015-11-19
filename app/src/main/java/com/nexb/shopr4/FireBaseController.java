@@ -7,6 +7,7 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -52,7 +53,7 @@ public class FireBaseController {
 
 
     //ArrayList
-    private ArrayList<ShopListViewContent> shoplistViewContents;
+    private ArrayList<ShopListViewContent> shoplistViewContents = new ArrayList<>();
     private ValueEventListener activeListListener;
 
     //Initialization Methods ---------------------
@@ -162,7 +163,10 @@ public class FireBaseController {
                 System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName() : "null"));
                 //Parse for arrayadaptor.
                 parseShopList();
-                if (shoplistAdaptor != null) shoplistAdaptor.notifyDataSetChanged();
+                if (shoplistAdaptor != null) {
+                    shoplistAdaptor.notifyDataSetChanged();
+                    System.out.println("Notified shopListAdaptor "+shoplistAdaptor);
+                }
             }
 
             @Override
@@ -191,6 +195,9 @@ public class FireBaseController {
 
             }
         }
+        shoplistViewContents.clear();
+        shoplistViewContents.addAll(newShopListViewContents);
+
     }
 
     public String createNewShopList(){
@@ -240,6 +247,7 @@ public class FireBaseController {
     }
 
     public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) {
+        System.out.println("Setting shopListadator "+shoplistAdaptor);
         this.shoplistAdaptor = shoplistAdaptor;
     }
 
@@ -249,7 +257,11 @@ public class FireBaseController {
     }
 
     public ArrayList<ShopListViewContent> getShoplistViewContents() {
-        if (shoplistViewContents == null) return new ArrayList<ShopListViewContent>();
+        if (shoplistViewContents == null) {
+            ArrayList<ShopListViewContent> dummyList = new ArrayList<ShopListViewContent>();
+            dummyList.add(new ShopListViewItem(2,"stk","TestBananer"));
+            return dummyList;
+        }
         return shoplistViewContents;
     }
 

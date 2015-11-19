@@ -24,7 +24,7 @@ import java.util.zip.Inflater;
 public class ShopListViewAdapter extends ArrayAdapter {
 
 
-    private final ArrayList<ShopListViewContent> list;
+    private ArrayList<ShopListViewContent> list;
     LayoutInflater mInflater;
 
     public ShopListViewAdapter(Context context, int resource, ArrayList<ShopListViewContent> list) {
@@ -32,6 +32,11 @@ public class ShopListViewAdapter extends ArrayAdapter {
         this.list = list;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+    }
+    @Override
+    public void notifyDataSetChanged(){
+        this.list = FireBaseController.getI().getShoplistViewContents();
+        super.notifyDataSetChanged();
     }
 
     @Override

@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity
                 //TODO: Find some way to keep track of autobox values!
                 System.out.println("view Clicked:" + view);
                 System.out.println("parent.getItemAtPosition " + parent.getItemAtPosition(position));
+                //find item contents.
+                fireBaseController.addItemToActiveList("Test",new ListItem(1, "stk" , "TestBanan"));
                 autoBox.setText("");
                 autoBox.showDropDown();
             }
