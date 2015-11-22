@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -24,12 +27,15 @@ import com.nexb.shopr4.dataModel.ListItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        EditListFragment.OnFragmentInteractionListener{
+        EditListFragment.OnFragmentInteractionListener, BuyListFragment.OnFragmentInteractionListener{
     public static final boolean DEBUG = true;
 
     private Toolbar toolbar;
     private EditListFragment editListFragment;
+    private BuyListFragment buyListFragment;
+    private boolean shownFragment = false;
     private FloatingActionButton fab;
+    private  FragmentManager f = getSupportFragmentManager();
 
 
     private NavigationView navigationView;
@@ -60,20 +66,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         //setupAutoCompleteBox
         setUpActionBox();
+        setupFloatingActionButton();
 
-
-        //Floating actionButton
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println(fireBaseController.getUser().getOwnLists());
-                fireBaseController.createNewShopList();
-                Snackbar.make(view, "Created new shoplist with id: " + fireBaseController.getUser().getOwnLists().get(fireBaseController.getUser().getOwnLists().size()-1), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                System.out.println(fireBaseController.getUser().getOwnLists());
-            }
-        });
         //Setup Navigation Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -85,11 +79,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Setup EditListFragment
-        FragmentManager f = getSupportFragmentManager();
         editListFragment = new EditListFragment();
-
-
         f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
+        shownFragment = true;
         //autoBox.showDropDown();
 
     }
@@ -168,17 +160,16 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_new_list) {
+            System.out.println(fireBaseController.getUser().getOwnLists());
+            fireBaseController.createNewShopList();
+           // Snackbar.make(view, "Created new shoplist with id: " + fireBaseController.getUser().getOwnLists().get(fireBaseController.getUser().getOwnLists().size()-1), Snackbar.LENGTH_LONG)
+             //       .setAction("Action", null).show();
+            System.out.println(fireBaseController.getUser().getOwnLists());
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
 
         } else {
             FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
@@ -198,5 +189,39 @@ public class MainActivity extends AppCompatActivity
     public NavigationView getNavigationView() {
         return navigationView;
     }
-
+    private void setupFloatingActionButton() {
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_lock_idle_lock));
+        final Animation firstTurn = AnimationUtils.loadAnimation(this, R.anim.first_turn);
+        final Animation secTurn = AnimationUtils.loadAnimation(this, R.anim.sec_turn);
+        firstTurn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                fab.startAnimation(secTurn);
+                if(shownFragment) {
+                    buyListFragment = new BuyListFragment();
+                    f.beginTransaction().replace(R.id.mainContainer, buyListFragment).commit();
+                    shownFragment = false;
+                    fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_preferences));
+                }else{
+                    editListFragment = new EditListFragment();
+                    f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
+                    shownFragment = true;
+                    fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_lock_idle_lock));
+                }
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(firstTurn);
+            }
+        });
+    }
 }
