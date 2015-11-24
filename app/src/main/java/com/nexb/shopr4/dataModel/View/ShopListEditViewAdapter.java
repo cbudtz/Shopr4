@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,14 +53,14 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             //add listViewItem
             ((TextView)view.findViewById(R.id.itemName)).setText(((ShopListViewItem) content).getName());
             ((TextView) view.findViewById(R.id.itemAmount)).setText(String.valueOf(((ShopListViewItem) content).getAmount()));
-            ((TextView)view.findViewById(R.id.itemType)).setText(((ShopListViewItem)content).getUnit());
+            ((TextView)view.findViewById(R.id.itemType)).setText(((ShopListViewItem) content).getUnit());
             //view.setTag(content.getId());
 
             // DELETE BUTTON
             view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FireBaseController.getI().deleteItem(((ShopListViewItem) content).getCategoryID(),((ShopListViewItem) content).getItemId());
+                    FireBaseController.getI().deleteItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId());
                 }
             });
             // MINUS ONE BUTTON
@@ -86,16 +87,21 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             view.findViewById(R.id.itemType).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                 }
             });
+
             // item amount edit text
             view.findViewById(R.id.itemAmount).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    final EditText editAmountText = (EditText) v.findViewById(R.id.itemAmount);
+                    newItem.setName(((ShopListViewItem) content).getName());
+                    newItem.setUnit(((ShopListViewItem) content).getUnit());
+                    newItem.setAmount(Double.parseDouble(editAmountText.getText().toString()));
+                    FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(),newItem);
                 }
             });
+
 
         }
         else if(content.getType().equals(ShopListViewContent.contentType.CATEGORY)){
