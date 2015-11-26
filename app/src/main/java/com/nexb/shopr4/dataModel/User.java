@@ -14,6 +14,8 @@ public class User {
     private ArrayList<ForeignUserlist> foreignLists = new ArrayList<>();
     private String activeList;
     private ArrayList<DictionaryItem> userDictionary = new ArrayList<>();
+    private ArrayList<String> userUnits = new ArrayList<>();
+    private ArrayList<String> userCategories = new ArrayList<>();
 
     public User(){
         //For Testing purposes
@@ -62,5 +64,21 @@ public class User {
 
     public void setUserDictionary(ArrayList<DictionaryItem> userDictionary) {
         this.userDictionary = userDictionary;
+    }
+
+    public ArrayList<String> getUserCategories() {
+        return userCategories;
+    }
+
+    public void setUserCategories(ArrayList<String> userCategories) {
+        this.userCategories = userCategories;
+    }
+
+    public ArrayList<String> getUserUnits() {
+        return userUnits;
+    }
+
+    public void setUserUnits(ArrayList<String> userUnits) {
+        this.userUnits = userUnits;
     }
 }
