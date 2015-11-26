@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Setup Firebase
+        DpToPx.density = getResources().getDisplayMetrics().density;
+
         FireBaseController.setContext(this, getString(R.string.fireBaseUrl));
         fireBaseController= FireBaseController.getI();
         //Setup UI
