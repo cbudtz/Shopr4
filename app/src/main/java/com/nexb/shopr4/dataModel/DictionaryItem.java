@@ -22,8 +22,9 @@ public class DictionaryItem {
 
     }
 
-    public DictionaryItem(String name, String unit, double amount) {
+    public DictionaryItem(String name, String category, String unit, double amount) {
         this.name = name;
+        this.category = category;
         this.unit = unit;
         this.amount = amount;
     }

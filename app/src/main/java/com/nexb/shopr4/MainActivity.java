@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (event!=null && event.getAction() == KeyEvent.ACTION_DOWN) {
                     ListItem newItem = new ListItem(1, " ", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
                 }

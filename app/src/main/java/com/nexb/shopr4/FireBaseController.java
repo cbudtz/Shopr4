@@ -11,11 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.nexb.shopr4.dataModel.Category;
+import com.nexb.shopr4.dataModel.Dictionary;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
@@ -24,6 +26,8 @@ import com.nexb.shopr4.dataModel.User;
 import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
 import com.nexb.shopr4.dataModel.View.ShopListViewItem;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -141,6 +145,21 @@ public class FireBaseController {
                     i++;
                 }
                 if (dictionaryAdapter != null) dictionaryAdapter.notifyDataSetChanged();
+                boolean standardized = false;
+                if (user.getUserCategories() == null || user.getUserCategories().size() <= 0) {
+                    System.out.println("Initializing Dictionary");
+                    initializeStandardCategories(user);
+                    standardized=true;
+                }
+                if (user.getUserUnits() == null || user.getUserUnits().size() <= 0) {
+                    initializeStandardUnits(user);
+                    standardized = true;
+                }
+                if (user.getUserDictionary() == null || user.getUserDictionary().size() <= 0) {
+                    initializeStandardDictionary(user);
+                    standardized = true;
+                }
+                if (standardized)firebaseUserRef.setValue(user);
             }
 
             @Override
@@ -151,6 +170,36 @@ public class FireBaseController {
 
         //Should happen on callback! --  setActiveList(user.getActiveList());
     }
+
+
+
+    private void initializeStandardCategories(User user) {
+        ArrayList<String> userCats = user.getUserCategories();
+        //Ugly Hardcoding, should be // FIXME: 26-11-2015 
+        userCats.add("Frugt og Grønt");userCats.add("Brød");userCats.add("Konserves");
+        userCats.add("Kolonial");userCats.add("Pålæg");userCats.add("Kød");userCats.add("Frost");
+        userCats.add("Vin");userCats.add("Rengøring");userCats.add("Drikkevarer");userCats.add("Mejeri");
+        userCats.add("Slik og Chips");userCats.add("Andet");
+    }
+
+    private void initializeStandardUnits(User user) {
+        ArrayList<String> userUnits = user.getUserUnits();
+        //Ugly Hardcoding, should be fixed later on....
+        userUnits.add("stk");userUnits.add("pk");userUnits.add("bk");userUnits.add("L");
+        userUnits.add("g");userUnits.add("kg");userUnits.add("ruller");
+    }
+
+    private void initializeStandardDictionary(User user) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            user.setUserDictionary(mapper.readValue(activity.getAssets().open("standardDictionary.json"), Dictionary.class).getDictionaryItems());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     //End of initialization ----------------------
     //UI interface methods -----------------
     public void setActiveList(String listID){
