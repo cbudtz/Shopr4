@@ -13,13 +13,17 @@ public class ShopListViewItem extends ShopListViewContent {
     private double amount;
     private final int categoryID;
 
-    public ShopListViewItem(double amount, String unit, String name, int categoryId, int itemId) {
+
+    private ListItem.ListItemState state = ListItem.ListItemState.DEFAULT;
+
+    public ShopListViewItem(double amount, String unit, String name, ListItem.ListItemState state, int categoryId, int itemId) {
         super();
         this.amount = amount;
         this.unit = unit;
         this.name = name;
         this.categoryID = categoryId;
         this.itemId = itemId;
+        this.state = state;
 
 
     }
@@ -39,4 +43,13 @@ public class ShopListViewItem extends ShopListViewContent {
     public int getItemId() {        return itemId;    }
 
     public int getCategoryID() {        return categoryID;    }
+
+    public ListItem.ListItemState getState() {
+        return state;
+    }
+
+    public void setState(ListItem.ListItemState state) {
+        this.state = state;
+    }
+
 }

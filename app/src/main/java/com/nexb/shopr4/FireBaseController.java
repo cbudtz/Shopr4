@@ -6,10 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.DataSnapshot;
@@ -245,7 +242,7 @@ public class FireBaseController {
             newShopListViewContents.add(new ShopListViewCategory(c.getName(), i));
             int j =0;
             for (ListItem l:c.getItems()) {
-                newShopListViewContents.add(new ShopListViewItem(l.getAmount(),l.getUnit(),l.getName(),i,j));
+                newShopListViewContents.add(new ShopListViewItem(l.getAmount(),l.getUnit(),l.getName(),l.getState(),i,j));
                 j++;
             }
             i++;
@@ -366,7 +363,7 @@ public class FireBaseController {
     public ArrayList<ShopListViewContent> getShoplistViewContents() {
         if (shoplistViewContents == null) {
             ArrayList<ShopListViewContent> dummyList = new ArrayList<ShopListViewContent>();
-            dummyList.add(new ShopListViewItem(2,"stk","TestBananer",0,0));
+            dummyList.add(new ShopListViewItem(2,"stk","TestBananer", ListItem.ListItemState.DEFAULT, 0,0));
             return dummyList;
         }
         return shoplistViewContents;
