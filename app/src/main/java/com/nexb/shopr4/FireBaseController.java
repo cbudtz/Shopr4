@@ -155,7 +155,11 @@ public class FireBaseController {
                     initializeStandardDictionary(user);
                     standardized = true;
                 }
-                if (dictionaryAdapter != null) dictionaryAdapter.notifyDataSetChanged();
+                if (dictionaryAdapter != null) {
+                    dictionaryAdapter.clear();
+                    dictionaryAdapter.addAll(getDictionaryStrings());
+                    dictionaryAdapter.notifyDataSetChanged();
+                }
                 if (standardized) firebaseUserRef.setValue(user);
             }
 
