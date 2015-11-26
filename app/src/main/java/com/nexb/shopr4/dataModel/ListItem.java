@@ -8,6 +8,11 @@ public class ListItem {
     private String unit;
     private String name;
 
+
+
+    public enum ListItemState{DEFAULT,FOUND,NOT_FOUND}
+    private ListItemState state = ListItemState.DEFAULT;
+
     public ListItem(){}
 
     public ListItem(double amount, String unit, String name) {
@@ -15,7 +20,13 @@ public class ListItem {
         this.unit = unit;
         this.name = name;
     }
+    public ListItemState getState() {
+        return state;
+    }
 
+    public void setState(ListItemState state) {
+        this.state = state;
+    }
     public double getAmount() {
         return amount;
     }
