@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nexb.shopr4.DpToPx;
 import com.nexb.shopr4.FireBaseController;
 import com.nexb.shopr4.MainActivity;
 import com.nexb.shopr4.R;
@@ -37,8 +38,8 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
     public void notifyDataSetChanged(){
         this.list = FireBaseController.getI().getShoplistViewContents();
         super.notifyDataSetChanged();
-        Toast toast = Toast.makeText(getContext(), "hejHEJEJEHEJE", Toast.LENGTH_SHORT);
-                        toast.show();
+//        Toast toast = Toast.makeText(getContext(), "hejHEJEJEHEJE", Toast.LENGTH_SHORT);
+//                        toast.show();
 
     }
 
@@ -66,12 +67,12 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
             );
 
             if(((ShopListViewItem) content).getState().equals(ListItem.ListItemState.FOUND)){
-                view.setBackgroundColor(Color.argb(90,0,200,0));
-                view.setPadding(20, -10, 20, -10);
+                view.setBackgroundColor(Color.argb(90, 0, 200, 0));
+                view.setPadding(DpToPx.dpToPx(0), DpToPx.dpToPx(0), DpToPx.dpToPx(0), DpToPx.dpToPx(0));
             }
             else if(((ShopListViewItem) content).getState().equals(ListItem.ListItemState.NOT_FOUND)){
                 view.setBackgroundColor(Color.argb(90,200,0,0));
-                view.setPadding(20, -10, 20, -10);
+                view.setPadding(DpToPx.dpToPx(0), DpToPx.dpToPx(0), DpToPx.dpToPx(0), DpToPx.dpToPx(0));
             }
 
 
@@ -81,31 +82,21 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
                 public void onClick(View v) {
 
                     if (((ShopListViewItem) content).getState().equals(ListItem.ListItemState.FOUND)) {
-                        finalView.setBackgroundColor(Color.WHITE);
-                        finalView.setPadding(20, 20, 20, 20);
                         newItem.setState(ListItem.ListItemState.DEFAULT);
                         FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
                     } else {
-                        finalView.setBackgroundColor(Color.argb(90,0,200,0));
-                        finalView.setPadding(20, -10, 20, -10);
                         newItem.setState(ListItem.ListItemState.FOUND);
                         FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
                     }
-//                    Toast toast = Toast.makeText(getContext(), "hej", Toast.LENGTH_SHORT);
-//                        toast.show();
                 }
             });
             view.findViewById(R.id.dont_got_it).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (((ShopListViewItem) content).getState().equals(ListItem.ListItemState.NOT_FOUND)) {
-                        finalView.setBackgroundColor(Color.WHITE);
-                        finalView.setPadding(20, 20, 20, 20);
                         newItem.setState(ListItem.ListItemState.DEFAULT);
                         FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
                     } else {
-                        finalView.setBackgroundColor(Color.argb(90,200,0,0));
-                        finalView.setPadding(20, -10, 20, -10);
                         newItem.setState(ListItem.ListItemState.NOT_FOUND);
                         FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
                     }
