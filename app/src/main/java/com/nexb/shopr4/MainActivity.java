@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
                 System.out.println("view Clicked:" + view);
                 System.out.println("parent.getItemAtPosition " + parent.getItemAtPosition(position));
                 //find item contents.
-                fireBaseController.addItemToActiveList("Test",new ListItem(1, "stk" , "TestBanan"));
+                fireBaseController.addItemToActiveList("Test", new ListItem(1, "stk", "TestBanan"));
                 autoBox.setText("");
                 autoBox.showDropDown();
             }
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event!=null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
                     ListItem newItem = new ListItem(1, " ", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
                 }
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
-        ArrayAdapter<String> autoAdaptor = new DictionaryAdaptor(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
+        ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
         autoBox.setAdapter(autoAdaptor);
         FireBaseController.getI().setDictionaryAdapter(autoAdaptor);
     }

@@ -12,12 +12,13 @@ import java.util.ArrayList;
 /**
  * Created by Christian on 19-11-2015.
  */
-public class DictionaryAdaptor<String> extends ArrayAdapter {
+public class DictionaryAdaptor extends ArrayAdapter {
     private ArrayList<String> dictionaryItems;
 
     public DictionaryAdaptor(Context context, int resource, ArrayList<String> dictionaryItems) {
-        super(context, resource);
+        super(context, resource,dictionaryItems);
         this.dictionaryItems = dictionaryItems;
+
     }
 
     @Override
