@@ -141,12 +141,11 @@ public class FireBaseController {
                     activity.getNavigationView().getMenu().add(1, i, i, s);
                     i++;
                 }
-                if (dictionaryAdapter != null) dictionaryAdapter.notifyDataSetChanged();
                 boolean standardized = false;
                 if (user.getUserCategories() == null || user.getUserCategories().size() <= 0) {
                     System.out.println("Initializing Dictionary");
                     initializeStandardCategories(user);
-                    standardized=true;
+                    standardized = true;
                 }
                 if (user.getUserUnits() == null || user.getUserUnits().size() <= 0) {
                     initializeStandardUnits(user);
@@ -156,7 +155,8 @@ public class FireBaseController {
                     initializeStandardDictionary(user);
                     standardized = true;
                 }
-                if (standardized)firebaseUserRef.setValue(user);
+                if (dictionaryAdapter != null) dictionaryAdapter.notifyDataSetChanged();
+                if (standardized) firebaseUserRef.setValue(user);
             }
 
             @Override
@@ -174,7 +174,8 @@ public class FireBaseController {
         ArrayList<String> userCats = user.getUserCategories();
         //Ugly Hardcoding, should be // FIXME: 26-11-2015 
         userCats.add("Frugt og Grønt");userCats.add("Brød");userCats.add("Konserves");
-        userCats.add("Kolonial");userCats.add("Pålæg");userCats.add("Kød");userCats.add("Frost");
+        userCats.add("Kolonial");userCats.add("Pålæg");userCats.add("Kød");
+        userCats.add("Frost");
         userCats.add("Vin");userCats.add("Rengøring");userCats.add("Drikkevarer");userCats.add("Mejeri");
         userCats.add("Slik og Chips");userCats.add("Andet");
     }
