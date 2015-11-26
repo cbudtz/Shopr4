@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.View.DictionaryAdaptor;
@@ -93,12 +94,8 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListItem newItem = new ListItem(1, " ", parent.getItemAtPosition(position).toString()); //Item at position should return some values from the dictionary
-                //TODO: Find some way to keep track of autobox values!
-                System.out.println("view Clicked:" + view);
-                System.out.println("parent.getItemAtPosition " + parent.getItemAtPosition(position));
-                //find item contents.
-                fireBaseController.addItemToActiveList("Test", new ListItem(1, "stk", "TestBanan"));
+                DictionaryItem newItem = (DictionaryItem)parent.getItemAtPosition(position);
+                fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
                 autoBox.setText("");
                 autoBox.showDropDown();
             }
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
-        ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
+        ArrayAdapter<DictionaryItem> autoAdaptor = new ArrayAdapter<DictionaryItem>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
         autoBox.setAdapter(autoAdaptor);
         FireBaseController.getI().setDictionaryAdapter(autoAdaptor);
     }
@@ -160,13 +157,11 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_new_list) {
             System.out.println(fireBaseController.getUser().getOwnLists());
             fireBaseController.createNewShopList();
-           // Snackbar.make(view, "Created new shoplist with id: " + fireBaseController.getUser().getOwnLists().get(fireBaseController.getUser().getOwnLists().size()-1), Snackbar.LENGTH_LONG)
-             //       .setAction("Action", null).show();
             System.out.println(fireBaseController.getUser().getOwnLists());
 
 
         } else if (id == R.id.nav_share) {
-
+        //TODO share functionality
 
         } else {
             FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));

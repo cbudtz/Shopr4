@@ -51,7 +51,7 @@ public class FireBaseController {
 
     //ArrayAdaptor to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
-    private ArrayAdapter<String> dictionaryAdapter;
+    private ArrayAdapter<DictionaryItem> dictionaryAdapter;
 
 
 
@@ -292,6 +292,7 @@ public class FireBaseController {
     }
 
     public void deleteCategory(int catId){
+        if (catId>0)
         activeShopList.getCategories().remove(catId);
         updateActiveList();
     }
@@ -306,6 +307,7 @@ public class FireBaseController {
     }
 
     public void addItemToActiveListNoCategory(ListItem l){
+        if (activeShopList.getCategories().size()==0) activeShopList.addCategory(new Category("No Category"));
         activeShopList.getCategories().get(0).getItems().add(l);
         updateActiveList();
     }
@@ -328,6 +330,10 @@ public class FireBaseController {
 
     public void deleteItem(int category, int itemID){
         activeShopList.getCategories().get(category).getItems().remove(itemID);
+        if (activeShopList.getCategories().get(category).getItems().size()<=0 && category!=0){
+            //remove Empty Category - if its not No Category
+            activeShopList.getCategories().remove(category);
+        }
         updateActiveList();
     }
 
@@ -374,7 +380,7 @@ public class FireBaseController {
         return shoplistViewContents;
     }
 
-    public ArrayList<String> getDictionaryStrings() {
+    public ArrayList<DictionaryItem> getDictionaryStrings() {
         if (MainActivity.DEBUG){
 //            user.getUserDictionary().add(new DictionaryItem("Bananer", "stk" , 10));
 //            user.getUserDictionary().add(new DictionaryItem("Ananas", "stk" , 1));
@@ -386,10 +392,10 @@ public class FireBaseController {
 
         }
         if (dictionaryAdapter!=null) dictionaryAdapter.notifyDataSetChanged();
-        return dictionaryStrings;
+        return user.getUserDictionary();
     }
 
-    public void setDictionaryAdapter(ArrayAdapter<String> dictionaryAdapter) {
+    public void setDictionaryAdapter(ArrayAdapter<DictionaryItem> dictionaryAdapter) {
         this.dictionaryAdapter = dictionaryAdapter;
     }
 }
