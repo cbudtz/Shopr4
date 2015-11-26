@@ -3,6 +3,8 @@ package com.nexb.shopr4;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
@@ -93,18 +95,24 @@ public class FireBaseController {
         //Find user in android accounts
         //resolve UserID
         user = new User(); //Initializes to new User
-        AccountManager manager = (AccountManager) activity.getSystemService(Context.ACCOUNT_SERVICE);
-        Account[] list = manager.getAccountsByType("com.google");
-        if (list!=null && list.length>0 && list[0]!=null) {
-            String id = list[0].name;
-            id = id.replace('.',':');
-            System.out.println(id);
-            user.setUserID(id);
-        }
-        else {
-
-            user.setUserID("" + Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID));
-
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(activity);
+        String userString = p.getString("userName", null);
+        if (userString == null) {
+            AccountManager manager = (AccountManager) activity.getSystemService(Context.ACCOUNT_SERVICE);
+            Account[] list = manager.getAccountsByType("com.google");
+            if (list != null && list.length > 0 && list[0] != null) {
+                String id = list[0].name;
+                id = id.replace('.', ':');
+                System.out.println(id);
+                user.setUserID(id);
+                p.edit().putString("userName", id);
+            } else {
+                String id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID + "");
+                user.setUserID(id);
+                p.edit().putString("userName",id);
+            }
+        } else {
+            user.setUserID(userString);
         }
         System.out.println("UserID: " + user.getUserID());
         // Listen to database for changes in User!
@@ -141,7 +149,7 @@ public class FireBaseController {
             }
         });
 
-      //Should happen on callback! --  setActiveList(user.getActiveList());
+        //Should happen on callback! --  setActiveList(user.getActiveList());
     }
     //End of initialization ----------------------
     //UI interface methods -----------------
@@ -178,7 +186,7 @@ public class FireBaseController {
 
 
     }
-//TODO clean ugly code!
+    //TODO clean ugly code!
     private void parseShopList() {
         ArrayList<ShopListViewContent> newShopListViewContents = new ArrayList<ShopListViewContent>();
         if (activeShopList==null) return;
@@ -203,7 +211,7 @@ public class FireBaseController {
         shoplistViewContents.addAll(newShopListViewContents);
 
     }
-// Manipulate Shoplist!! -----------------------
+    // Manipulate Shoplist!! -----------------------
     public String createNewShopList(){
         //Get ref from Firebase
         Firebase newListRef = firebaseShopListDir.push();
@@ -285,9 +293,9 @@ public class FireBaseController {
 
 
 //TODO: probably unnecessary
-  //  public ShopList getActiveShopList() {
+    //  public ShopList getActiveShopList() {
     //    return activeShopList;
-   // }
+    // }
 
     public void setActiveShopList(ShopList activeShopList) {
         this.activeShopList = activeShopList;
@@ -302,7 +310,7 @@ public class FireBaseController {
     public void setUser(User user) {
         this.user = user;
     }
-//Adaptor Calls
+    //Adaptor Calls
     public ArrayList<ShopListViewContent> getShoplistViewContents() {
         if (shoplistViewContents == null) {
             ArrayList<ShopListViewContent> dummyList = new ArrayList<ShopListViewContent>();
