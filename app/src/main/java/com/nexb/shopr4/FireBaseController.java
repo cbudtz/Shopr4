@@ -277,6 +277,9 @@ public class FireBaseController {
         return newListRef.getKey();
     }
 
+    public void updateActiveShoplistName(String name){
+        activeShopList.setName(name);
+    }
     public void addCategory(String name){
         activeShopList.getCategories().add(new Category(name));
         updateActiveList();
