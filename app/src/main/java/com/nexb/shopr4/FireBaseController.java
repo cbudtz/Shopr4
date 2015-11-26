@@ -238,6 +238,11 @@ public class FireBaseController {
         activeShopList.getCategories().add(catId, cat);
 
     }
+
+    public ArrayList<Category> getActiveCategories(){
+        return activeShopList.getCategories();
+    }
+
     public void addItemToActiveListNoCategory(ListItem l){
         activeShopList.getCategories().get(0).getItems().add(l);
         updateActiveList();
@@ -248,6 +253,7 @@ public class FireBaseController {
             if (c.getName().equalsIgnoreCase(category)){
                 //Found category in Shoplist
                 c.getItems().add(l);
+                updateActiveList();
                 return;
             }
         }
@@ -308,9 +314,9 @@ public class FireBaseController {
 
     public ArrayList<String> getDictionaryStrings() {
         if (MainActivity.DEBUG){
-            user.getUserDictionary().add(new DictionaryItem("Bananer", "stk" , 10));
-            user.getUserDictionary().add(new DictionaryItem("Ananas", "stk" , 1));
-            System.out.println("Adding some items to Dictionary");
+//            user.getUserDictionary().add(new DictionaryItem("Bananer", "stk" , 10));
+//            user.getUserDictionary().add(new DictionaryItem("Ananas", "stk" , 1));
+//            System.out.println("Adding some items to Dictionary");
         }
         ArrayList<String> dictionaryStrings = new ArrayList<>();
         for (DictionaryItem d : user.getUserDictionary()) {
