@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity
         f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
         shownFragment = true;
         //autoBox.showDropDown();
-
     }
 
     private void setUpActionBox() {
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DictionaryItem newItem = (DictionaryItem)parent.getItemAtPosition(position);
+                DictionaryItem newItem = (DictionaryItem) parent.getItemAtPosition(position);
                 fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
                 autoBox.setText("");
                 autoBox.showDropDown();
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity
         ArrayAdapter<DictionaryItem> autoAdaptor = new ArrayAdapter<DictionaryItem>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
         autoBox.setAdapter(autoAdaptor);
         FireBaseController.getI().setDictionaryAdapter(autoAdaptor);
+
     }
 
     @Override

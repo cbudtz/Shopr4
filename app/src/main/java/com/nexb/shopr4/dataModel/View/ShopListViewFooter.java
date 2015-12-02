@@ -6,6 +6,6 @@ package com.nexb.shopr4.dataModel.View;
 public class ShopListViewFooter extends ShopListViewContent {
     @Override
     public contentType getType() {
-        return contentType.ITEM;
+        return contentType.FOOTER;
     }
 }

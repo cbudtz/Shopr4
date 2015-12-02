@@ -9,14 +9,13 @@ public class ShopListViewHeader extends ShopListViewContent{
 
     private String name;
 
-    public ShopListViewHeader(String name) {
+    public ShopListViewHeader() {
         super();
-        this.name = name;
     }
 
     @Override
     public contentType getType() {
-        return contentType.ITEM;
+        return contentType.HEADER;
     }
 
     public String getName() {

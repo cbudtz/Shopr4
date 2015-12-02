@@ -21,6 +21,8 @@ import com.nexb.shopr4.dataModel.ShopList;
 import com.nexb.shopr4.dataModel.View.ShopListViewContent;
 import com.nexb.shopr4.dataModel.User;
 import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
+import com.nexb.shopr4.dataModel.View.ShopListViewFooter;
+import com.nexb.shopr4.dataModel.View.ShopListViewHeader;
 import com.nexb.shopr4.dataModel.View.ShopListViewItem;
 
 import java.io.File;
@@ -260,6 +262,7 @@ public class FireBaseController {
         }
         shoplistViewContents.clear();
         shoplistViewContents.addAll(newShopListViewContents);
+       // shoplistViewContents.add(new ShopListViewFooter());
 
     }
     // Manipulate Shoplist!! -----------------------
@@ -338,7 +341,7 @@ public class FireBaseController {
     }
 
     public void updateItem(int category, int itemID, ListItem item){
-        activeShopList.getCategories().get(category).getItems().set(itemID,item);
+        activeShopList.getCategories().get(category).getItems().set(itemID, item);
         updateActiveList();
     }
 
@@ -397,5 +400,8 @@ public class FireBaseController {
 
     public void setDictionaryAdapter(ArrayAdapter<DictionaryItem> dictionaryAdapter) {
         this.dictionaryAdapter = dictionaryAdapter;
+    }
+    public String getActiveShopListName(){
+        return activeShopList.getName();
     }
 }
