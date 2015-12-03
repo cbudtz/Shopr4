@@ -314,6 +314,9 @@ public class FireBaseController {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User foreignUser = dataSnapshot.getValue(User.class);
+                if (foreignUser== null) {
+                    foreignUser = new User();
+                }
                 ArrayList<String> foreignShoplistsIDs = new ArrayList<>();
                 foreignShoplistsIDs.add(shopListID);
                 foreignUser.getForeignLists().add(new ForeignUserlist(user.getUserName(), foreignShoplistsIDs));
