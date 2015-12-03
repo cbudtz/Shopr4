@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.DataSnapshot;
@@ -24,16 +23,16 @@ import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.ForeignUserlist;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
-import com.nexb.shopr4.dataModel.View.ShopListViewContent;
 import com.nexb.shopr4.dataModel.User;
 import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
+import com.nexb.shopr4.dataModel.View.ShopListViewContent;
 import com.nexb.shopr4.dataModel.View.ShopListViewItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by Christian on 12-11-2015.
+ * @author Christian on 12-11-2015.
  */
 public class FireBaseController {
     public static FireBaseController instance;
@@ -41,6 +40,7 @@ public class FireBaseController {
     private static MainActivity activity;
     private static String url;
     //Folders
+    @SuppressWarnings("FieldCanBeLocal")
     private Firebase firebaseRoot;
     private Firebase firebaseUserDir;
     private Firebase firebaseShopListDir;
@@ -307,6 +307,7 @@ public class FireBaseController {
     // }
 
     public void shareShopListWithUserID(String userID, final String shopListID){
+        userID = userID.replace(".",":");
         Firebase foreignUserRef = firebaseUserDir.child(userID);
         foreignUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
