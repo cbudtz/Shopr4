@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private EditListFragment editListFragment;
     private BuyListFragment buyListFragment;
-    private boolean shownFragment = false;
+    private boolean editFragment = false;
     private FloatingActionButton fab;
     private  FragmentManager f = getSupportFragmentManager();
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         //Setup EditListFragment
         editListFragment = new EditListFragment();
         f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
-        shownFragment = true;
+        editFragment = true;
         //autoBox.showDropDown();
     }
 
@@ -169,7 +169,9 @@ public class MainActivity extends AppCompatActivity
         //TODO share functionality
 
         } else {
+
             FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -198,15 +200,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onAnimationEnd(Animation animation) {
                 fab.startAnimation(secTurn);
-                if(shownFragment) {
+                if(editFragment) {
                     buyListFragment = new BuyListFragment();
                     f.beginTransaction().replace(R.id.mainContainer, buyListFragment).commit();
-                    shownFragment = false;
+                    editFragment = false;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_preferences));
                 }else{
                     editListFragment = new EditListFragment();
                     f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
-                    shownFragment = true;
+                    editFragment = true;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_lock_idle_lock));
                 }
             }

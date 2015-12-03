@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nexb.shopr4.dataModel.View.ShopListBuyViewAdapter;
 
@@ -67,6 +68,8 @@ public class BuyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_buy_list, container, false);
+        ((TextView)v.findViewById(R.id.listName)).setText(FireBaseController.getI().getActiveShopListName());
+
         ListView listView = (ListView) v.findViewById(R.id.buyfragmentlistview);
 
         ShopListBuyViewAdapter adaptor = new ShopListBuyViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents());

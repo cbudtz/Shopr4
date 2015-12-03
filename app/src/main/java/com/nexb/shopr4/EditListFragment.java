@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nexb.shopr4.dataModel.View.ShopListEditViewAdapter;
 
@@ -67,11 +69,22 @@ public class EditListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_edit_list, container, false);
+
         ListView listView = (ListView) v.findViewById(R.id.editfragmentlistview);
 
         ShopListEditViewAdapter adaptor = new ShopListEditViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents());
         listView.setAdapter(adaptor);
-       FireBaseController.getI().setShoplistAdaptor(adaptor);
+        FireBaseController.getI().setShoplistAdaptor(adaptor);
+
+        ((EditText)v.findViewById(R.id.listNameEdit)).setText(FireBaseController.getI().getActiveShopListName());
+        ((EditText)v.findViewById(R.id.listNameEdit)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FireBaseController.getI().setActiveShopListName(((EditText) v.findViewById(R.id.listNameEdit)).getText().toString());
+                ((EditText) v.findViewById(R.id.listNameEdit)).clearFocus();
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }

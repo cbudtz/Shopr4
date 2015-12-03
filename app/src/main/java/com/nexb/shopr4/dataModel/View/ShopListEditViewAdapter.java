@@ -146,9 +146,8 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             ((TextView)view.findViewById(R.id.catName)).setText(((ShopListViewCategory) content).getName());
         }
         else if(content.getType().equals(ShopListViewContent.contentType.HEADER)){
-            //view = mInflater.inflate(R.layout.list_header_view, null);
-
-            // ((TextView)view.findViewById(R.id.headName)).setText(FireBaseController.getI().getActiveShopListName());
+            view = mInflater.inflate(R.layout.list_header_view, null);
+            ((TextView)view.findViewById(R.id.headName)).setText(FireBaseController.getI().getActiveShopListName());
         }
         else if(content.getType().equals(ShopListViewContent.contentType.FOOTER)) {
         }

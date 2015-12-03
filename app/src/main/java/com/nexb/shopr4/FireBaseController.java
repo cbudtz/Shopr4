@@ -411,4 +411,8 @@ public class FireBaseController {
     public String getActiveShopListName(){
         return activeShopList.getName();
     }
+    public  void setActiveShopListName(String name){
+        activeShopList.setName(name);
+        updateActiveList();
+    }
 }
