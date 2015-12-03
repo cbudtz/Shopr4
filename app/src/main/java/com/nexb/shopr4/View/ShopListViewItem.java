@@ -1,4 +1,4 @@
-package com.nexb.shopr4.dataModel.View;
+package com.nexb.shopr4.View;
 
 import com.nexb.shopr4.dataModel.ListItem;
 

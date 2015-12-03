@@ -1,4 +1,4 @@
-package com.nexb.shopr4;
+package com.nexb.shopr4.Utility;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexb.shopr4.dataModel.Dictionary;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 /**
  * Created by Christian on 26-11-2015.
  */
-public class saveDictionary {
+public class saveDictionaryUtitility {
     public static void main(String[] args){
-        new saveDictionary().run();
+        new saveDictionaryUtitility().run();
     }
 
     private void run() {

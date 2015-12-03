@@ -1,4 +1,4 @@
-package com.nexb.shopr4.dataModel.View;
+package com.nexb.shopr4.View;
 
 /**
  * Created by mac on 26/11/15.

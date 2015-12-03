@@ -24,9 +24,9 @@ import com.nexb.shopr4.dataModel.ForeignUserlist;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
 import com.nexb.shopr4.dataModel.User;
-import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
-import com.nexb.shopr4.dataModel.View.ShopListViewContent;
-import com.nexb.shopr4.dataModel.View.ShopListViewItem;
+import com.nexb.shopr4.View.ShopListViewCategory;
+import com.nexb.shopr4.View.ShopListViewContent;
+import com.nexb.shopr4.View.ShopListViewItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class FireBaseController {
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
     private ArrayAdapter<DictionaryItem> dictionaryAdapter;
     private ArrayList<TextView> shopListTitleViews = new ArrayList<>();
-        public void addTitleListener(TextView t){shopListTitleViews.add(t);};
+        public void addTitleListener(TextView t){shopListTitleViews.add(t);}
 
 
 
@@ -68,8 +68,8 @@ public class FireBaseController {
 
     //Initialization Methods ---------------------
     public static void setContext(MainActivity mainActivity, String Firebaseurl){
-        activity = mainActivity;
-        url = Firebaseurl;
+        FireBaseController.activity = mainActivity;
+        FireBaseController.url = Firebaseurl;
     }
 
     public static synchronized FireBaseController getI() {
@@ -86,8 +86,8 @@ public class FireBaseController {
     }
 
     private FireBaseController(MainActivity mainActivity, String url) {
-        this.activity = mainActivity;
-        this.url = url;
+        activity = mainActivity;
+        FireBaseController.url = url;
         Firebase.setAndroidContext(activity);
         Firebase.getDefaultConfig().setPersistenceEnabled(true);
     }
@@ -410,7 +410,7 @@ public class FireBaseController {
                 i++;
             }
             for (ForeignUserlist s : user.getForeignLists()){
-                activity.getNavigationView().getMenu().add(2,i,i, s.getUserName());
+                if (s!=null)activity.getNavigationView().getMenu().add(2,i,i, s.getShopListIDs().get(0));
                 i++;
             }
             System.out.println(shopListTitleViews.size());

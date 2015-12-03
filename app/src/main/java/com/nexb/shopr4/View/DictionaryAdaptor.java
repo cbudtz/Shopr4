@@ -1,10 +1,9 @@
-package com.nexb.shopr4.dataModel.View;
+package com.nexb.shopr4.View;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import com.nexb.shopr4.FireBaseController;
-import com.nexb.shopr4.MainActivity;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 
 import java.util.ArrayList;

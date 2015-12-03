@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.nexb.shopr4.FireBaseController;
 import com.nexb.shopr4.R;
-import com.nexb.shopr4.dataModel.View.ShopListBuyViewAdapter;
+import com.nexb.shopr4.View.ShopListBuyViewAdapter;
 
 
 /**

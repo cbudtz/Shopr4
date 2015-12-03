@@ -1,6 +1,4 @@
-package com.nexb.shopr4.dataModel.View;
-
-import com.nexb.shopr4.dataModel.ListItem;
+package com.nexb.shopr4.View;
 
 /**
  * Created by mac on 26/11/15.

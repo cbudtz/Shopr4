@@ -1,4 +1,4 @@
-package com.nexb.shopr4.dataModel.View;
+package com.nexb.shopr4.View;
 
 /**
  * Created by Christian on 14-11-2015.

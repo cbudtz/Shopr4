@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * @author Christian
  */
 public class ForeignUserlist {
-    private String UserName;
-    private ArrayList<String> ShopListIDs;
+    private String UserName = "noName";
+    private ArrayList<String> ShopListIDs = new ArrayList<>();
 
     public ForeignUserlist() {
     }

@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.nexb.shopr4.dataModel.DictionaryItem;
+import com.nexb.shopr4.dataModel.ForeignUserlist;
 import com.nexb.shopr4.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.fragments.BuyListFragment;
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        int groupId = item.getGroupId();
 
         if (id == R.id.nav_new_list) {
             System.out.println(fireBaseController.getUser().getOwnLists());
@@ -169,8 +171,12 @@ public class MainActivity extends AppCompatActivity
             fragmentType = fragmentState.SHARE;
 
         } else {
-
-            FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
+            if (groupId == 1) {
+                FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
+            }
+            if (groupId == 2){
+                FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getForeignLists().get(0).getShopListIDs().get(0));
+            }
             if(fragmentType == fragmentState.SHARE){
                 f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
                 fragmentType = fragmentState.EDIT;

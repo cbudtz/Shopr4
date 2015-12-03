@@ -1,19 +1,15 @@
-package com.nexb.shopr4.dataModel.View;
+package com.nexb.shopr4.View;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nexb.shopr4.DpToPx;
 import com.nexb.shopr4.FireBaseController;
-import com.nexb.shopr4.MainActivity;
 import com.nexb.shopr4.R;
 import com.nexb.shopr4.dataModel.ListItem;
 
