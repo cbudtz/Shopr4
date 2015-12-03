@@ -288,6 +288,7 @@ public class FireBaseController {
 
     public void insertItem(int category, int itemID, ListItem item){
         activeShopList.getCategories().get(category).getItems().add(itemID, item);
+        updateActiveList();
     }
 
 
