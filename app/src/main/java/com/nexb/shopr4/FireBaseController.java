@@ -306,8 +306,23 @@ public class FireBaseController {
     //    return activeShopList;
     // }
 
-    public void shareShopListWithUserID(String userID, String shopListID){
+    public void shareShopListWithUserID(String userID, final String shopListID){
         Firebase foreignUserRef = firebaseUserDir.child(userID);
+        foreignUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User ForeignUser = dataSnapshot.getValue(User.class);
+                ArrayList<String> foreignShoplistsIDs = new ArrayList<>();
+                foreignShoplistsIDs.add(shopListID);
+                ForeignUser.getForeignLists().add(new ForeignUserlist(user. getUserName(), foreignShoplistsIDs));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
 
     }
 
