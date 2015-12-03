@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.nexb.shopr4.FireBaseController;
 import com.nexb.shopr4.R;
+import com.nexb.shopr4.dataModel.View.ShopListBuyViewAdapter;
 
 /**
  * Created by mac on 03/12/15.
@@ -24,7 +28,7 @@ public class ShareListFragment  extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    private String mail = null;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -60,8 +64,16 @@ public class ShareListFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_share, container, false);
-       // ((TextView)v.findViewById(R.id.listName)).setText(FireBaseController.getI().getActiveShopListName());
+        FireBaseController.getI().addTitleListener(((TextView) v.findViewById(R.id.shareInfo)));
+        ((TextView)v.findViewById(R.id.shareInfo)).setText(FireBaseController.getI().getActiveShopListName());
 
+
+        ((EditText) v.findViewById(R.id.mailString)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FireBaseController.getI().shareShopListWithUserID(mail, FireBaseController.getI().getActiveShopListID());
+            }
+        });
 
         return v;
     }

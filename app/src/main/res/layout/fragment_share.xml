@@ -4,10 +4,7 @@
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top">
-
-
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/shareInfo"
             android:text="Info"
@@ -17,9 +14,27 @@
             android:textSize="20dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-        
 
+        <EditText
+            android:id="@+id/mailString"
+            android:hint="Enter Mail here."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shareInfo"
+            android:layout_alignLeft="@+id/sendResult"
+            android:layout_alignStart="@+id/sendResult"
+            android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            />
 
-
+        <TextView
+            android:id="@+id/sendResult"
+            android:text=""
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mailString"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
+
 </LinearLayout>
