@@ -1,4 +1,4 @@
-package com.nexb.shopr4;
+package com.nexb.shopr4.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.nexb.shopr4.FireBaseController;
+import com.nexb.shopr4.R;
 import com.nexb.shopr4.dataModel.View.ShopListEditViewAdapter;
 
 
@@ -76,8 +77,8 @@ public class EditListFragment extends Fragment {
         listView.setAdapter(adaptor);
         FireBaseController.getI().setShoplistAdaptor(adaptor);
 
-        ((EditText)v.findViewById(R.id.listNameEdit)).setText(FireBaseController.getI().getActiveShopListName());
-        ((EditText)v.findViewById(R.id.listNameEdit)).setOnClickListener(new View.OnClickListener() {
+        FireBaseController.getI().addTitleListener(((EditText) v.findViewById(R.id.listNameEdit)));
+        ((EditText) v.findViewById(R.id.listNameEdit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FireBaseController.getI().setActiveShopListName(((EditText) v.findViewById(R.id.listNameEdit)).getText().toString());

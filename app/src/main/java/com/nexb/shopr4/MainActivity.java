@@ -23,19 +23,19 @@ import android.widget.TextView;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr4.dataModel.ListItem;
+import com.nexb.shopr4.fragments.BuyListFragment;
+import com.nexb.shopr4.fragments.EditListFragment;
+import com.nexb.shopr4.fragments.ShareListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        EditListFragment.OnFragmentInteractionListener, BuyListFragment.OnFragmentInteractionListener{
+        EditListFragment.OnFragmentInteractionListener, BuyListFragment.OnFragmentInteractionListener, ShareListFragment.OnFragmentInteractionListener{
     public static final boolean DEBUG = true;
-
+    public enum fragmentState {EDIT,BUY,SHARE};
+    private fragmentState fragmentType;
     private Toolbar toolbar;
-    private EditListFragment editListFragment;
-    private BuyListFragment buyListFragment;
-    private boolean editFragment = false;
     private FloatingActionButton fab;
     private  FragmentManager f = getSupportFragmentManager();
-
 
     private NavigationView navigationView;
     public String userMail = "userID";
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Setup Firebase
+
         DpToPx.density = getResources().getDisplayMetrics().density;
 
         FireBaseController.setContext(this, getString(R.string.fireBaseUrl));
@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Setup EditListFragment
-        editListFragment = new EditListFragment();
-        f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
-        editFragment = true;
+
+        f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
+        fragmentType = fragmentState.EDIT;
         //autoBox.showDropDown();
     }
 
@@ -165,11 +165,16 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_share) {
-        //TODO share functionality
+            f.beginTransaction().replace(R.id.mainContainer, new ShareListFragment()).commit();
+            fragmentType = fragmentState.SHARE;
 
         } else {
 
             FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
+            if(fragmentType == fragmentState.SHARE){
+                f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
+                fragmentType = fragmentState.EDIT;
+            }
 
         }
 
@@ -200,15 +205,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onAnimationEnd(Animation animation) {
                 fab.startAnimation(secTurn);
-                if(editFragment) {
-                    buyListFragment = new BuyListFragment();
-                    f.beginTransaction().replace(R.id.mainContainer, buyListFragment).commit();
-                    editFragment = false;
+                if(fragmentType == fragmentState.EDIT) {
+                    f.beginTransaction().replace(R.id.mainContainer, new BuyListFragment()).commit();
+                    fragmentType = fragmentState.BUY;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_preferences));
                 }else{
-                    editListFragment = new EditListFragment();
-                    f.beginTransaction().replace(R.id.mainContainer, editListFragment).commit();
-                    editFragment = true;
+                    f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
+                    fragmentType = fragmentState.EDIT;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_lock_idle_lock));
                 }
             }

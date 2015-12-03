@@ -1,4 +1,4 @@
-package com.nexb.shopr4;
+package com.nexb.shopr4.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -10,18 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nexb.shopr4.FireBaseController;
+import com.nexb.shopr4.R;
 import com.nexb.shopr4.dataModel.View.ShopListBuyViewAdapter;
 
-
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BuyListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BuyListFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by mac on 03/12/15.
  */
-public class BuyListFragment extends Fragment {
+public class ShareListFragment  extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,8 +38,8 @@ public class BuyListFragment extends Fragment {
      * @return A new instance of fragment EditListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BuyListFragment newInstance(String param1, String param2) {
-        BuyListFragment fragment = new BuyListFragment();
+    public static ShareListFragment newInstance(String param1, String param2) {
+        ShareListFragment fragment = new ShareListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -51,7 +47,7 @@ public class BuyListFragment extends Fragment {
         return fragment;
     }
 
-    public BuyListFragment() {
+    public ShareListFragment() {
         // Required empty public constructor
     }
 
@@ -67,15 +63,10 @@ public class BuyListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_buy_list, container, false);
-        ((TextView)v.findViewById(R.id.listName)).setText(FireBaseController.getI().getActiveShopListName());
+        View v = inflater.inflate(R.layout.fragment_share, container, false);
+       // ((TextView)v.findViewById(R.id.listName)).setText(FireBaseController.getI().getActiveShopListName());
 
-        ListView listView = (ListView) v.findViewById(R.id.buyfragmentlistview);
 
-        ShopListBuyViewAdapter adaptor = new ShopListBuyViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents());
-        listView.setAdapter(adaptor);
-       FireBaseController.getI().setShoplistAdaptor(adaptor);
-        // Inflate the layout for this fragment
         return v;
     }
 
@@ -119,3 +110,4 @@ public class BuyListFragment extends Fragment {
     }
 
 }
+
