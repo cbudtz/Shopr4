@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr4.dataModel.ListItem;
-import com.nexb.shopr4.dataModel.View.DictionaryAdaptor;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -40,6 +38,8 @@ public class MainActivity extends AppCompatActivity
 
 
     private NavigationView navigationView;
+    public String userMail = "userID";
+    public String userName = "userName";
 
     public FireBaseController getFireBaseController() {
         return fireBaseController;
@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity
         //Setup Navigation View
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        ((TextView)findViewById(R.id.userMail)).setText(userMail);
+        ((TextView)findViewById(R.id.userName)).setText(userName);
 
         //Setup EditListFragment
         editListFragment = new EditListFragment();

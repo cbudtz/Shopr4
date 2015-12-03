@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.design.widget.NavigationView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.DataSnapshot;
@@ -21,11 +23,8 @@ import com.nexb.shopr4.dataModel.ShopList;
 import com.nexb.shopr4.dataModel.View.ShopListViewContent;
 import com.nexb.shopr4.dataModel.User;
 import com.nexb.shopr4.dataModel.View.ShopListViewCategory;
-import com.nexb.shopr4.dataModel.View.ShopListViewFooter;
-import com.nexb.shopr4.dataModel.View.ShopListViewHeader;
 import com.nexb.shopr4.dataModel.View.ShopListViewItem;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -139,7 +138,13 @@ public class FireBaseController {
                 //Update active shopping list
                 setActiveList(user.getActiveList());
                 //Update NavigationDrawer
-                activity.getNavigationView().getMenu().removeGroup(1);
+                NavigationView navDrawer = activity.getNavigationView();
+                activity.userMail = user.getUserID(); //Tell Main activity the users name and email
+                activity.userName = user.getUserName();
+                if (activity.findViewById(R.id.userMail)!=null) ((TextView)activity.findViewById(R.id.userMail)).setText(user.getUserID());
+                if (activity.findViewById(R.id.userName)!=null) ((TextView)activity.findViewById(R.id.userName)).setText(user.getUserName());
+                navDrawer.getMenu().removeGroup(1);
+
                 int i = 0;
                 for (String s : user.getOwnLists()) {
                     activity.getNavigationView().getMenu().add(1, i, i, s);
