@@ -124,17 +124,19 @@ public class FireBaseController {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("User data changed!");
+                //Resolve if user is new
                 User userFromFirebase = dataSnapshot.getValue(User.class);
                 if (userFromFirebase == null || userFromFirebase.getUserName() == null) {
+                    //Create new user
                     firebaseUserRef.setValue(user);
                     System.out.println("User created");
                 } else {
+                    //Found user in db
                     user = userFromFirebase;
                     System.out.println("User already Exists");
                     System.out.println(user.getActiveList());
-
-
                 }
+                //Update active shopping list
                 setActiveList(user.getActiveList());
                 //Update NavigationDrawer
                 activity.getNavigationView().getMenu().removeGroup(1);
