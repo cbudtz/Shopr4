@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity
         } else {
 
             FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
+
             if(fragmentType == fragmentState.SHARE){
                 f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
                 fragmentType = fragmentState.EDIT;

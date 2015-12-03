@@ -78,6 +78,7 @@ public class EditListFragment extends Fragment {
         FireBaseController.getI().setShoplistAdaptor(adaptor);
 
         FireBaseController.getI().addTitleListener(((EditText) v.findViewById(R.id.listNameEdit)));
+        ((EditText)v.findViewById(R.id.listNameEdit)).setText(FireBaseController.getI().getActiveShopListName());
         ((EditText) v.findViewById(R.id.listNameEdit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
