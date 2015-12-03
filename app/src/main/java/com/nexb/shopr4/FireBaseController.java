@@ -178,6 +178,10 @@ public class FireBaseController {
         firebaseUserRef.setValue(user);
 
     }
+
+    public String getActiveShopListID(){
+        return activeShopList.getId();
+    }
     //TODO clean ugly code!
     private void parseShopList() {
         ArrayList<ShopListViewContent> newShopListViewContents = new ArrayList<ShopListViewContent>();
@@ -292,7 +296,7 @@ public class FireBaseController {
     }
 
 
-    public void updateActiveList(){
+    private void updateActiveList(){
         activeListRef.setValue(activeShopList);
     }
 
@@ -302,11 +306,8 @@ public class FireBaseController {
     //    return activeShopList;
     // }
 
-    public void setActiveShopList(ShopList activeShopList) {
-        this.activeShopList = activeShopList;
-    }
-
     public void shareShopListWithUserID(String userID, String shopListID){
+        Firebase foreignUserRef = firebaseUserDir.child(userID);
 
     }
 
