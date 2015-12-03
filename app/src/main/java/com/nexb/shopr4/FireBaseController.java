@@ -309,14 +309,15 @@ public class FireBaseController {
     public void shareShopListWithUserID(String userID, final String shopListID){
         System.out.println("Tried to set foreignList on user:" + userID + ", shopListID: " + shopListID);
         userID = userID.replace(".",":");
-        Firebase foreignUserRef = firebaseUserDir.child(userID);
+        final Firebase foreignUserRef = firebaseUserDir.child(userID);
         foreignUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User ForeignUser = dataSnapshot.getValue(User.class);
+                User foreignUser = dataSnapshot.getValue(User.class);
                 ArrayList<String> foreignShoplistsIDs = new ArrayList<>();
                 foreignShoplistsIDs.add(shopListID);
-                ForeignUser.getForeignLists().add(new ForeignUserlist(user. getUserName(), foreignShoplistsIDs));
+                foreignUser.getForeignLists().add(new ForeignUserlist(user.getUserName(), foreignShoplistsIDs));
+                foreignUserRef.setValue(foreignUser);
             }
 
             @Override
