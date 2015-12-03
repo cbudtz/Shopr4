@@ -408,9 +408,10 @@ public class FireBaseController {
                 activity.getNavigationView().getMenu().add(2,i,i, s.getUserName());
                 i++;
             }
+            System.out.println(shopListTitleViews.size());
             for (TextView t:shopListTitleViews ) {
                 t.setText(activeShopList.getName());
-                System.out.println("Updated title to: "+ activeShopList.getName() + t.getId());
+                System.out.println("Updated title to: " + activeShopList.getName() + t.getId());
 
             }
 
