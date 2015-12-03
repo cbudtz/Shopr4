@@ -307,6 +307,7 @@ public class FireBaseController {
     // }
 
     public void shareShopListWithUserID(String userID, final String shopListID){
+        System.out.println("Tried to set foreignList on user:" + userID + ", shopListID: " + shopListID);
         userID = userID.replace(".",":");
         Firebase foreignUserRef = firebaseUserDir.child(userID);
         foreignUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
