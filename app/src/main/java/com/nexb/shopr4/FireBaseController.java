@@ -410,7 +410,7 @@ public class FireBaseController {
             }
             for (TextView t:shopListTitleViews ) {
                 t.setText(activeShopList.getName());
-                Toast.makeText(activity.getApplicationContext(),"Updated title to: "+ activeShopList.getName(),Toast.LENGTH_SHORT).show();
+                System.out.println("Updated title to: "+ activeShopList.getName() + t.getId());
 
             }
 
