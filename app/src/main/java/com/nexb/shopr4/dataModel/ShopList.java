@@ -12,7 +12,7 @@ public class ShopList {
     private ArrayList<Category> categories = new ArrayList<>();
 
     public ShopList(){
-        categories.add(new Category("No Category"));
+        //categories.add(new Category("No Category"));
     }
 
 
