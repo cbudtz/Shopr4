@@ -173,25 +173,7 @@ public class FireBaseController {
         activeListRef = firebaseShopListDir.child(listID);
         if (MainActivity.DEBUG) System.out.println(activeListRef);
         //Listen to new location
-        activeListListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ShopList newShopList = dataSnapshot.getValue(ShopList.class);
-                activeShopList = newShopList;
-                System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName() : "null"));
-                //Parse for arrayadaptor.
-                parseShopList();
-                if (shoplistAdaptor != null) {
-                    shoplistAdaptor.notifyDataSetChanged();
-                    System.out.println("Notified shopListAdaptor "+shoplistAdaptor);
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        };
+        activeListListener = new ShopListValueEventListener();
         activeListRef.addValueEventListener(activeListListener);
         firebaseUserRef.setValue(user);
 
@@ -438,6 +420,32 @@ public class FireBaseController {
             }
 
             if (standardized) firebaseUserRef.setValue(user);
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+
+        }
+    }
+
+    private class ShopListValueEventListener implements ValueEventListener {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            ShopList newShopList = dataSnapshot.getValue(ShopList.class);
+            activeShopList = newShopList;
+            System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName() : "null"));
+            //Parse for arrayadaptor.
+            parseShopList();
+            if (shoplistAdaptor != null) {
+                shoplistAdaptor.notifyDataSetChanged();
+                System.out.println("Notified shopListAdaptor "+shoplistAdaptor);
+            }
+            //Tell title views that data Changed:
+            for (TextView t :
+                    shopListTitleViews) {
+                t.setText(newShopList.getName());
+                System.out.println("Notified " + shopListTitleViews.size() +" views" + ". Title : " + newShopList.getName());
+            }
         }
 
         @Override
