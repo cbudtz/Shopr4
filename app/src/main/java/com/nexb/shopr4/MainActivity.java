@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity
         //Setup Navigation View
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ((TextView)findViewById(R.id.userMail)).setText(userMail);
-        ((TextView)findViewById(R.id.userName)).setText(userName);
 
         //Setup EditListFragment
         editListFragment = new EditListFragment();
@@ -116,6 +114,7 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
+        //Change
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
         ArrayAdapter<DictionaryItem> autoAdaptor = new ArrayAdapter<DictionaryItem>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
         autoBox.setAdapter(autoAdaptor);

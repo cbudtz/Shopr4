@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.firebase.client.ValueEventListener;
 import com.nexb.shopr4.dataModel.Category;
 import com.nexb.shopr4.dataModel.Dictionary;
 import com.nexb.shopr4.dataModel.DictionaryItem;
+import com.nexb.shopr4.dataModel.ForeignUserlist;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
 import com.nexb.shopr4.dataModel.View.ShopListViewContent;
@@ -141,15 +144,21 @@ public class FireBaseController {
                 NavigationView navDrawer = activity.getNavigationView();
                 activity.userMail = user.getUserID(); //Tell Main activity the users name and email
                 activity.userName = user.getUserName();
-                if (activity.findViewById(R.id.userMail)!=null) ((TextView)activity.findViewById(R.id.userMail)).setText(user.getUserID());
+                if (activity.findViewById(R.id.userMail)!=null) ((TextView)activity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":","."));
                 if (activity.findViewById(R.id.userName)!=null) ((TextView)activity.findViewById(R.id.userName)).setText(user.getUserName());
                 navDrawer.getMenu().removeGroup(1);
+                navDrawer.getMenu().removeGroup(2);
 
                 int i = 0;
                 for (String s : user.getOwnLists()) {
                     activity.getNavigationView().getMenu().add(1, i, i, s);
                     i++;
                 }
+                for (ForeignUserlist s : user.getForeignLists()){
+                    activity.getNavigationView().getMenu().add(2,i,i, s.getUserName());
+                    i++;
+                }
+                View header = LayoutInflater.from(activity).inflate(R.layout.nav_header_main, null);
                 boolean standardized = false;
                 if (user.getUserCategories() == null || user.getUserCategories().size() <= 0) {
                     System.out.println("Initializing Dictionary");
@@ -185,7 +194,7 @@ public class FireBaseController {
 
     private void initializeStandardCategories(User user) {
         ArrayList<String> userCats = user.getUserCategories();
-        //Ugly Hardcoding, should be // FIXME: 26-11-2015 
+        //Ugly Hardcoding, should be // FIXME: 26-11-2015
         userCats.add("Frugt og Grønt");userCats.add("Brød");userCats.add("Konserves");
         userCats.add("Kolonial");userCats.add("Pålæg");userCats.add("Kød");
         userCats.add("Frost");
@@ -220,6 +229,7 @@ public class FireBaseController {
         };
         if (activeListRef!=null) activeListRef.removeEventListener(activeListListener);
         //Change location for active list storage
+        user.setActiveList(listID);
         activeListRef = firebaseShopListDir.child(listID);
         if (MainActivity.DEBUG) System.out.println(activeListRef);
         //Listen to new location
@@ -243,7 +253,7 @@ public class FireBaseController {
             }
         };
         activeListRef.addValueEventListener(activeListListener);
-
+        firebaseUserRef.setValue(user);
 
     }
     //TODO clean ugly code!
@@ -286,7 +296,9 @@ public class FireBaseController {
         user.addOwnList(newShopList.getId());
         if (user.getActiveList()==null) user.setActiveList(newShopList.getId());
         firebaseUserRef.setValue(user);
+        setActiveList(newListRef.getKey());
         return newListRef.getKey();
+
     }
 
     public void updateActiveShoplistName(String name){
