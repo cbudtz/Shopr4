@@ -12,7 +12,6 @@ public interface IDataBaseController {
     //DataBaseConnectionSetup
 
     void setContext(Activity mainActivity, String dataBaseUrl);
-    void init();
     //CUD operations
     String createNewShopList();
     void setActiveList(String ShopListID);
@@ -20,17 +19,15 @@ public interface IDataBaseController {
     void deleteList(String shopListID);
 
     void addCategory(String name);
-    void updateCategoryName(String oldName, String newName);
+    void updateCategoryName(int catID, String newName);
     void deleteCategory(int catID);
-    void insertCategory(int catID, Category Category);
+    void insertCategory(int catID, Category category);
 
     void addItemToActiveList(String categoryName, ListItem listItem);
-    void deleteItem(String catID, int itemID);
-    void deleteItem(String catID, String itemName);
-
-
-
+    void deleteItem(int catID, int itemID);
 
     //ShopListListening
+    void addUserDataListener(IUserDataListener userDataListener);
+    void addActiveShopListListener(IShopListListener shopListListner);
 
 }
