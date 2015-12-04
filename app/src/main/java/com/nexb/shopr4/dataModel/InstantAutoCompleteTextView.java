@@ -20,7 +20,7 @@ public class InstantAutoCompleteTextView extends AutoCompleteTextView {
     public InstantAutoCompleteTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
+//
 //    @Override
 //    protected void onFocusChanged(boolean focused, int direction,
 //                                  Rect previouslyFocusedRect) {

@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:singleLine="true"
-        android:maxLength="4"
+        android:maxLength="6"
         android:layout_toRightOf="@+id/minusOne"/>
 
 
@@ -75,6 +75,7 @@
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:src="@android:drawable/presence_busy"
+        android:layout_marginRight="2dp"
         android:padding="0dp"
         />
 

@@ -17,11 +17,10 @@
 
     <item
         android:id="@+id/action4"
-        android:title="Gram"
+        android:title="bk"
         />
-
     <item
         android:id="@+id/action5"
-        android:title="pose"
+        android:title="pk"
         />
 </menu>

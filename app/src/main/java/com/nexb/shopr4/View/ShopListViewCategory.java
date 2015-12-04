@@ -18,6 +18,10 @@ public class ShopListViewCategory extends ShopListViewContent {
         return name;
     }
 
+    public void setName(String newName){
+        name = newName;
+    }
+
 
     @Override
     public contentType getType() {

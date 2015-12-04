@@ -206,7 +206,6 @@ public class FireBaseController {
         }
         shoplistViewContents.clear();
         shoplistViewContents.addAll(newShopListViewContents);
-       // shoplistViewContents.add(new ShopListViewFooter());
 
     }
     // Manipulate Shoplist!! -----------------------

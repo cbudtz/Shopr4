@@ -22,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.nexb.shopr4.dataModel.DictionaryItem;
-import com.nexb.shopr4.dataModel.ForeignUserlist;
 import com.nexb.shopr4.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.fragments.BuyListFragment;
@@ -83,15 +82,14 @@ public class MainActivity extends AppCompatActivity
         //Setup Navigation View
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.inflateHeaderView(R.layout.list_header_view);
+        navigationView.inflateHeaderView(R.layout.list_nav_header_view);
         //Setup EditListFragment
 
         f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
         fragmentType = fragmentState.EDIT;
         //autoBox.showDropDown();
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
+        autoBox.clearFocus();
+        hideKeyboard();
     }
 
     private void setUpActionBox() {
@@ -102,34 +100,40 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(fragmentType == fragmentState.EDIT){
-                 autoBox.showDropDown();
-               }
+                if (fragmentType == fragmentState.EDIT) {
+                    autoBox.showDropDown();
+                }
             }
         });
         autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(fragmentType == fragmentState.EDIT){
-                DictionaryItem newItem = (DictionaryItem) parent.getItemAtPosition(position);
-                fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
-                autoBox.setText("");
-                autoBox.showDropDown();
+                if (fragmentType == fragmentState.EDIT) {
+                    DictionaryItem newItem = (DictionaryItem) parent.getItemAtPosition(position);
+                    fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
+                    autoBox.setText("");
+                    autoBox.showDropDown();
                 }
             }
         });
         autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-               if(fragmentType == fragmentState.EDIT){
-                //if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (fragmentType == fragmentState.EDIT) {
                     ListItem newItem = new ListItem(1, " ", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
-                //}
-                System.out.println(v.getText());
-                v.setText("");
-               }
+                    System.out.println(v.getText());
+                    v.setText("");
+                }
                 return true;
+            }
+        });
+        autoBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                  hideKeyboard();
+                }
             }
         });
         //Change
@@ -164,10 +168,15 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_cat) {
-
+            if(fragmentType == fragmentState.EDIT){
+                FireBaseController.getI().addCategory("Enter category name");
+            }
             return true;
         }
         if(id == R.id.delete_list){
+            if(fragmentType == fragmentState.EDIT){
+                // todo if time.
+            }
             return true;
         }
 
@@ -236,6 +245,7 @@ public class MainActivity extends AppCompatActivity
                     f.beginTransaction().replace(R.id.mainContainer, new BuyListFragment()).commit();
                     fragmentType = fragmentState.BUY;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_preferences));
+                    hideKeyboard();
                 }else{
                     f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
                     fragmentType = fragmentState.EDIT;
@@ -252,5 +262,10 @@ public class MainActivity extends AppCompatActivity
                 view.startAnimation(firstTurn);
             }
         });
+    }
+    public void hideKeyboard(){
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
     }
 }

@@ -102,14 +102,10 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
 
         }
         else if(content.getType().equals(ShopListViewContent.contentType.CATEGORY)){
-            view = mInflater.inflate(R.layout.list_category_view, null);
+            view = mInflater.inflate(R.layout.list_category_buy_view, null);
             ((TextView)view.findViewById(R.id.catName)).setText(((ShopListViewCategory) content).getName());
         }
-        else if(position == getCount()){
-            //add last element
-        }
-        else {
-        }
+
 
         return view;
     }

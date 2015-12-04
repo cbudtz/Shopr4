@@ -14,6 +14,6 @@ public abstract class ShopListViewContent {
         this.id = id;
     }
 
-    public enum contentType {CATEGORY,ITEM,HEADER,FOOTER};
+    public enum contentType {CATEGORY,ITEM};
     public abstract contentType getType();
 }

@@ -51,6 +51,7 @@ public class User {
     }
     public void setForeignLists(ArrayList<ForeignUserlist> foreignLists) {        this.foreignLists = foreignLists;    }
 
+    
     public String getActiveList() {       return activeList;    }
     public void setActiveList(String activeList) {        this.activeList = activeList;    }
 

@@ -55,6 +55,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             ((TextView)view.findViewById(R.id.itemName)).setText(((ShopListViewItem) content).getName());
             ((TextView) view.findViewById(R.id.itemAmount)).setText(String.valueOf(((ShopListViewItem) content).getAmount()));
             ((TextView)view.findViewById(R.id.itemType)).setText(((ShopListViewItem) content).getUnit());
+
             (view.findViewById(R.id.itemName)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -121,8 +122,6 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             view.findViewById(R.id.itemType).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-
-
                     final PopupMenu popUpTypeMenu = new PopupMenu(getContext(), v);
                     popUpTypeMenu.getMenuInflater().inflate(R.menu.pop_up_type_menu, popUpTypeMenu.getMenu());
                     popUpTypeMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -139,7 +138,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                     popUpTypeMenu.show();
                 }
             });
-            ((TextView) view.findViewById(R.id.itemType)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            ((EditText) view.findViewById(R.id.itemType)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     newItem.setName(((ShopListViewItem) content).getName());
@@ -151,28 +150,39 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             });
 
             // item amount edit text
-            view.findViewById(R.id.itemAmount).setOnClickListener(new View.OnClickListener() {
+            ((TextView) view.findViewById(R.id.itemAmount)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     final EditText editAmountText = (EditText) v.findViewById(R.id.itemAmount);
                     newItem.setName(((ShopListViewItem) content).getName());
                     newItem.setUnit(((ShopListViewItem) content).getUnit());
                     newItem.setAmount(Double.parseDouble(editAmountText.getText().toString()));
-                    FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(),newItem);
+                    FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
+                    return true;
                 }
             });
 
 
         }
         else if(content.getType().equals(ShopListViewContent.contentType.CATEGORY)){
-            view = mInflater.inflate(R.layout.list_category_view, null);
-            ((TextView)view.findViewById(R.id.catName)).setText(((ShopListViewCategory) content).getName());
-        }
-        else if(content.getType().equals(ShopListViewContent.contentType.HEADER)){
-            view = mInflater.inflate(R.layout.list_header_view, null);
-            ((TextView)view.findViewById(R.id.headName)).setText(FireBaseController.getI().getActiveShopListName());
-        }
-        else if(content.getType().equals(ShopListViewContent.contentType.FOOTER)) {
+            view = mInflater.inflate(R.layout.list_category_edit_view, null);
+            ((EditText)view.findViewById(R.id.catEditName)).setText(((ShopListViewCategory) content).getName());
+            ((EditText)view.findViewById(R.id.catEditName)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    FireBaseController.getI().updateCategoryname(((ShopListViewCategory) content).getCatId(),((EditText)v.findViewById(R.id.catEditName)).getText().toString());
+                    return false;
+                }
+            });
+
+
+            view.findViewById(R.id.catEditDelete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FireBaseController.getI().deleteCategory(((ShopListViewCategory) content).getCatId());
+                }
+            });
+
         }
 
         return view;
