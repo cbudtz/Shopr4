@@ -172,7 +172,7 @@ public class FireBaseController {
         user.setActiveList(listID);
         activeListRef = firebaseShopListDir.child(listID);
         if (MainActivity.DEBUG) System.out.println(activeListRef);
-        //Listen to new location
+        //Listen to new locationss
         activeListListener = new ShopListValueEventListener();
         activeListRef.addValueEventListener(activeListListener);
         firebaseUserRef.setValue(user);
@@ -182,6 +182,7 @@ public class FireBaseController {
     public String getActiveShopListID(){
         return activeShopList.getId();
     }
+
     //TODO clean ugly code!
     private void parseShopList() {
         ArrayList<ShopListViewContent> newShopListViewContents = new ArrayList<ShopListViewContent>();
@@ -417,9 +418,10 @@ public class FireBaseController {
             }
             System.out.println(shopListTitleViews.size());
             for (TextView t:shopListTitleViews ) {
-                t.setText(activeShopList.getName());
-                System.out.println("Updated title to: " + activeShopList.getName() + t.getId());
-
+                if (activeShopList!=null) {
+                    t.setText(activeShopList.getName());
+                    System.out.println("Updated title to: " + activeShopList.getName() + t.getId());
+                }
             }
 
 
