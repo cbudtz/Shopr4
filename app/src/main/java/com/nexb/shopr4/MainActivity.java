@@ -79,10 +79,11 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
         //Setup Navigation View
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.inflateHeaderView(R.layout.list_header_view);
         //Setup EditListFragment
 
         f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();

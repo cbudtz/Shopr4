@@ -410,7 +410,7 @@ public class FireBaseController {
                 i++;
             }
             for (ForeignUserlist s : user.getForeignLists()){
-                if (s.getShopListIDs()!=null && s!=null) {
+                if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
                     activity.getNavigationView().getMenu().add(2, i, i, s.getShopListIDs().get(0));
                     i++;
                 }
