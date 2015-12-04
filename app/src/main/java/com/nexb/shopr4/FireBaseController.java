@@ -232,12 +232,20 @@ public class FireBaseController {
         activeShopList.setName(name);
     }
     public void addCategory(String name){
-        activeShopList.getCategories().add(new Category(name));
-        updateActiveList();
+        if (activeShopList!=null && activeShopList.getCategories()!=null) {
+            activeShopList.getCategories().add(new Category(name));
+            updateActiveList();
+        }
     }
     public void updateCategory(int catId, Category category){
         activeShopList.getCategories().set(catId, category);
         updateActiveList();
+    }
+
+    public void updateCategoryname (int catID, String name){
+        if (activeShopList!= null && activeShopList.getCategories()!=null && activeShopList.getCategories().get(catID)!=null) {
+            activeShopList.getCategories().get(catID).setName(name);
+        }
     }
 
     public void deleteCategory(int catId){
