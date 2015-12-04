@@ -410,8 +410,10 @@ public class FireBaseController {
                 i++;
             }
             for (ForeignUserlist s : user.getForeignLists()){
-                if (s!=null)activity.getNavigationView().getMenu().add(2,i,i, s.getShopListIDs().get(0));
-                i++;
+                if (s.getShopListIDs()!=null && s!=null) {
+                    activity.getNavigationView().getMenu().add(2, i, i, s.getShopListIDs().get(0));
+                    i++;
+                }
             }
             System.out.println(shopListTitleViews.size());
             for (TextView t:shopListTitleViews ) {
