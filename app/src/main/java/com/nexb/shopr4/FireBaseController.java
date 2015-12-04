@@ -238,13 +238,16 @@ public class FireBaseController {
         }
     }
     public void updateCategory(int catId, Category category){
-        activeShopList.getCategories().set(catId, category);
-        updateActiveList();
+        if (activeShopList!=null && activeShopList.getCategories()!=null && activeShopList.getCategories().get(catId)!=null) {
+            activeShopList.getCategories().set(catId, category);
+            updateActiveList();
+        }
     }
 
     public void updateCategoryname (int catID, String name){
         if (activeShopList!= null && activeShopList.getCategories()!=null && activeShopList.getCategories().get(catID)!=null) {
             activeShopList.getCategories().get(catID).setName(name);
+            updateActiveList();
         }
     }
 
