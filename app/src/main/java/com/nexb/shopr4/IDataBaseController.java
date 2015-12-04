@@ -17,14 +17,16 @@ public interface IDataBaseController {
     String createNewShopList();
     void setActiveList(String ShopListID);
     void setActiveShopListName(String shopListName);
+    void deleteList(String shopListID);
 
     void addCategory(String name);
-    void updateCategory(int catID, Category category);
+    void updateCategoryName(String oldName, String newName);
     void deleteCategory(int catID);
     void insertCategory(int catID, Category Category);
 
     void addItemToActiveList(String categoryName, ListItem listItem);
-    void deleteItem(int categoryID, int itemID);
+    void deleteItem(String catID, int itemID);
+    void deleteItem(String catID, String itemName);
 
 
 
