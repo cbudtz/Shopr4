@@ -1,6 +1,7 @@
 package com.nexb.shopr4.View;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,14 +55,13 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             ((TextView)view.findViewById(R.id.itemName)).setText(((ShopListViewItem) content).getName());
             ((TextView) view.findViewById(R.id.itemAmount)).setText(String.valueOf(((ShopListViewItem) content).getAmount()));
             ((TextView)view.findViewById(R.id.itemType)).setText(((ShopListViewItem) content).getUnit());
-            //view.setTag(content.getId());
             (view.findViewById(R.id.itemName)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     final PopupMenu popUpCatMenu = new PopupMenu(getContext(), v);
-                    for(int i = 0; i < list.size(); i++) {
-                        if(list.get(i).getType() == ShopListViewContent.contentType.CATEGORY) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getType() == ShopListViewContent.contentType.CATEGORY) {
                             popUpCatMenu.getMenu().add(((ShopListViewCategory) list.get(i)).getCatId(), 0, 0, ((ShopListViewCategory) list.get(i)).getName());
                         }
 
@@ -78,7 +78,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                             return true;
                         }
                     });
-                 popUpCatMenu.show();
+                    popUpCatMenu.show();
                 }
 
 
@@ -97,7 +97,13 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                 public void onClick(View v) {
                     newItem.setName(((ShopListViewItem) content).getName());
                     newItem.setUnit(((ShopListViewItem) content).getUnit());
-                    newItem.setAmount(((ShopListViewItem) content).getAmount() - 1);
+
+                    if(((ShopListViewItem) content).getAmount()>= 1) {
+                        newItem.setAmount(((ShopListViewItem) content).getAmount() - 1);
+                    }else{
+                        newItem.setAmount(((ShopListViewItem) content).getAmount());
+                    }
+
                     FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
                 }
             });
@@ -108,13 +114,39 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                     newItem.setName(((ShopListViewItem) content).getName());
                     newItem.setUnit(((ShopListViewItem) content).getUnit());
                     newItem.setAmount(((ShopListViewItem) content).getAmount() + 1);
-                    FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(),((ShopListViewItem) content).getItemId(),newItem);
+                    FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
                 }
             });
             // item type edit text
             view.findViewById(R.id.itemType).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
+
+
+                    final PopupMenu popUpTypeMenu = new PopupMenu(getContext(), v);
+                    popUpTypeMenu.getMenuInflater().inflate(R.menu.pop_up_type_menu, popUpTypeMenu.getMenu());
+                    popUpTypeMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            newItem.setName(((ShopListViewItem) content).getName());
+                            newItem.setAmount(((ShopListViewItem) content).getAmount());
+                            newItem.setUnit(item.getTitle().toString());
+                            ((EditText)v.findViewById(R.id.itemType)).setText(item.getTitle());
+                            FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
+                            return true;
+                        }
+                    });
+                    popUpTypeMenu.show();
+                }
+            });
+            ((TextView) view.findViewById(R.id.itemType)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    newItem.setName(((ShopListViewItem) content).getName());
+                    newItem.setUnit(((TextView) v.findViewById(R.id.itemType)).getText().toString());
+                    newItem.setAmount(((ShopListViewItem) content).getAmount());
+                    FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
+                    return false;
                 }
             });
 

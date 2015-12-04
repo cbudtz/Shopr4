@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -87,6 +88,9 @@ public class MainActivity extends AppCompatActivity
         f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
         fragmentType = fragmentState.EDIT;
         //autoBox.showDropDown();
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
     }
 
     private void setUpActionBox() {
@@ -94,24 +98,36 @@ public class MainActivity extends AppCompatActivity
         autoBox.setThreshold(0);
         autoBox.setSingleLine(true);
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
+        autoBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if(fragmentType == fragmentState.EDIT){
+                 autoBox.showDropDown();
+               }
+            }
+        });
         autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(fragmentType == fragmentState.EDIT){
                 DictionaryItem newItem = (DictionaryItem) parent.getItemAtPosition(position);
                 fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
                 autoBox.setText("");
                 autoBox.showDropDown();
+                }
             }
         });
         autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+               if(fragmentType == fragmentState.EDIT){
+                //if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
                     ListItem newItem = new ListItem(1, " ", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
-                }
+                //}
                 System.out.println(v.getText());
                 v.setText("");
+               }
                 return true;
             }
         });
@@ -146,7 +162,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.add_cat) {
+
+            return true;
+        }
+        if(id == R.id.delete_list){
             return true;
         }
 

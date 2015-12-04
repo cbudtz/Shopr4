@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action1"
+        android:title="Stk"
+        />
+
+    <item
+        android:id="@+id/action2"
+        android:title="L"
+        />
+
+    <item
+        android:id="@+id/action3"
+        android:title="Kg"
+        />
+
+    <item
+        android:id="@+id/action4"
+        android:title="Gram"
+        />
+
+    <item
+        android:id="@+id/action5"
+        android:title="pose"
+        />
+</menu>
