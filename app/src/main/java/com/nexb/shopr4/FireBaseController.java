@@ -222,7 +222,7 @@ public class FireBaseController {
         user.addOwnList(newShopList.getId());
         if (user.getActiveList()==null) user.setActiveList(newShopList.getId());
         firebaseUserRef.setValue(user);
-        setActiveList(newListRef.getKey());
+        //setActiveList(newListRef.getKey());
         return newListRef.getKey();
 
     }
