@@ -227,6 +227,10 @@ public class FireBaseController {
 
     }
 
+    public void deleteActiveList(){
+
+    }
+
     public void deleteList(String listID){
         for (String sID :user.getOwnLists()) {
             if (sID.equals(listID)) user.getOwnLists().remove(sID);

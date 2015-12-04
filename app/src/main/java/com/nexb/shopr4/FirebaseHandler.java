@@ -43,8 +43,8 @@ public class FirebaseHandler implements IDataBaseController{
     private ShopListValueEventListener firebaseShoplistValueEventListener;
 
     //Listeners
-    private ArrayList<IUserDataListener> userDataListeners;
-    private ArrayList<IShopListListener> shopListListeners;
+    private ArrayList<IUserDataListener> userDataListeners = new ArrayList<>();
+    private ArrayList<IShopListListener> shopListListeners = new ArrayList<>();
 
 
 
@@ -57,8 +57,8 @@ public class FirebaseHandler implements IDataBaseController{
     public void setContext(Activity mainActivity, String dataBaseUrl) {
         this.mainActivity = mainActivity;
         this.fireBaseURL = dataBaseUrl;
-        Firebase.setAndroidContext(mainActivity);
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
+//        Firebase.setAndroidContext(mainActivity);
+//        Firebase.getDefaultConfig().setPersistenceEnabled(true);
         firebaseRoot = new Firebase(fireBaseURL);
         firebaseUserRef = firebaseRoot.child(mainActivity.getString(R.string.userDir));
         firebaseShopListRef = firebaseRoot.child(mainActivity.getString(R.string.shopListDir));
@@ -218,6 +218,7 @@ public class FirebaseHandler implements IDataBaseController{
                     userDataListeners) {
                 userdataListener.userdataChanged(activeUser);
             }
+            System.out.println("FireBasehandler - got notified of User data Change -User: " + activeUser.getUserName() + ", " + activeUser.getUserID());
         }
 
         @Override
@@ -242,6 +243,7 @@ public class FirebaseHandler implements IDataBaseController{
                     shopListListeners) {
                 shopListListener.shopListDataChanged(activeShopList);
             }
+            System.out.println("FireBasehandler - got notified of shoplistChange - activeShopList: " + activeShopList.getName());
 
         }
 

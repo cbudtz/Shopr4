@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.nexb.shopr4.dataModel.DictionaryItem;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private FireBaseController fireBaseController;
-    private InstantAutoCompleteTextView autoBox;
+    private AutoCompleteTextView autoBox;
 
 
     @Override
@@ -90,10 +91,12 @@ public class MainActivity extends AppCompatActivity
         //autoBox.showDropDown();
         autoBox.clearFocus();
         hideKeyboard();
+        FirebaseHandler firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
+
     }
 
     private void setUpActionBox() {
-        autoBox = (InstantAutoCompleteTextView) findViewById(R.id.toolbarAutobox);
+        autoBox = (AutoCompleteTextView) findViewById(R.id.toolbarAutobox);
         autoBox.setThreshold(0);
         autoBox.setSingleLine(true);
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
