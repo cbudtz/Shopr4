@@ -21,17 +21,17 @@ public class InstantAutoCompleteTextView extends AutoCompleteTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    protected void onFocusChanged(boolean focused, int direction,
-                                  Rect previouslyFocusedRect) {
-        super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        System.out.println("Focus changed - InstantAutoComplete");
-        if (focused) {
-            //performFiltering(getText(), 0);
-            this.showDropDown();
-
-        }
-    }
+//    @Override
+//    protected void onFocusChanged(boolean focused, int direction,
+//                                  Rect previouslyFocusedRect) {
+//        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+//        System.out.println("Focus changed - InstantAutoComplete");
+//        if (focused) {
+//            //performFiltering(getText(), 0);
+//            //this.showDropDown();
+//
+//        }
+//    }
 
 
 }

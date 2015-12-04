@@ -16,4 +16,6 @@
     <string name="itemTitle">title</string>
     <string name="itemAmount">amount</string>
     <string name="itemType">lol</string>
+    <string name="add_cat">Add category</string>
+    <string name="delete_list">Delete list</string>
 </resources>
