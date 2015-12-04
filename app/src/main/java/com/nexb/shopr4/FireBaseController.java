@@ -228,6 +228,18 @@ public class FireBaseController {
     }
 
     public void deleteActiveList(){
+        String deleteID = user.getActiveList();
+        for (String listId : user.getOwnLists()) {
+            if (listId.equals(deleteID)) {
+                user.getOwnLists().remove(listId);
+                user.setActiveList(user.getOwnLists().get(0));
+                if (user.getActiveList() == null) {
+                    createNewShopList();
+                    user.setActiveList(user.getOwnLists().get(0));
+                }
+                firebaseUserRef.setValue(user);
+            }
+        }
 
     }
 
