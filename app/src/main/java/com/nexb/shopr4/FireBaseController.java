@@ -468,9 +468,10 @@ public class FireBaseController {
             //Tell title views that data Changed:
             for (TextView t :
                     shopListTitleViews) {
-                if (newShopList!=null)
-                t.setText(newShopList.getName());
-                System.out.println("Notified " + shopListTitleViews.size() +" views" + ". Title : " + newShopList.getName());
+                if (newShopList!=null) {
+                    t.setText(newShopList.getName());
+                    System.out.println("Notified " + shopListTitleViews.size() + " views" + ". Title : " + newShopList.getName());
+                }
             }
         }
 
