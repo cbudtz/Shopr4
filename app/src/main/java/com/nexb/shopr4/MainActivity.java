@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
                 FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
             }
             if (groupId == 2){
-                FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getForeignLists().get(0).getShopListIDs().get(0));
+                FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getForeignLists().get(id).getShopListIDs().get(0));
             }
             if(fragmentType == fragmentState.SHARE){
                 f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
