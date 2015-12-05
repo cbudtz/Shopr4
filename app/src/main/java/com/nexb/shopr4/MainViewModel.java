@@ -41,8 +41,13 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     //Adaptors to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
+        public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) { this.shoplistAdaptor = shoplistAdaptor; }
+
     private ArrayAdapter<DictionaryItem> dictionaryAdapter;
-    private ArrayList<TextView> shopListTitleViews;
+        public void setDictionaryAdapter(ArrayAdapter<DictionaryItem> dictionaryAdapter) { this.dictionaryAdapter = dictionaryAdapter; }
+
+    private ArrayList<TextView> shopListTitleViews = new ArrayList<>();
+        public void addTitleTextView(TextView t){shopListTitleViews.add(t);}
 
     //Views to be updatesd on dataChange
     private NavigationView navigationDrawerView;
@@ -78,6 +83,7 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
     @Override
     public void userdataChanged(User user) {
                 //Update active shopping list
+        System.out.println("MainViewModel - Got callback from Database - userData: " + user.getUserName());
         mainActivity.userMail = user.getUserID(); //Tell Main activity the users name and email
         mainActivity.userName = user.getUserName();
         if (mainActivity.findViewById(R.id.userMail)!=null) ((TextView)mainActivity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":","."));
@@ -110,10 +116,16 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     @Override
     public void shopListDataChanged(ShopList shopList) {
+        System.out.println("MainViewModel - Got callback from database. Shoplist Changed: " + shopList.getName());
         activeShopList = shopList;
         //sortShopList();  //Sort shopList by superMarket
         parseShopListToViewList();
-        shoplistAdaptor.notifyDataSetChanged();
+        if (shoplistAdaptor!=null) shoplistAdaptor.notifyDataSetChanged();
+        for (TextView t : shopListTitleViews) {
+            if (t !=null) {
+                t.setText(activeShopList.getName());
+            }
+        }
 
     }
 
