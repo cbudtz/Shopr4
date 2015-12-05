@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity
         fragmentType = fragmentState.EDIT;
         //autoBox.showDropDown();
 
-        FirebaseHandler firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
+        IDataBaseController firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
+        IMainViewModel mainViewModel = new MainViewModel(this, firebaseHandler);
 
     }
 
