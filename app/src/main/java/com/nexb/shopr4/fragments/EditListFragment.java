@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nexb.shopr4.FireBaseController;
+import com.nexb.shopr4.MainActivity;
 import com.nexb.shopr4.R;
 import com.nexb.shopr4.View.ShopListEditViewAdapter;
 
@@ -69,22 +72,21 @@ public class EditListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_edit_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_edit_list, MainActivity.roots, false);
 
         ListView listView = (ListView) v.findViewById(R.id.editfragmentlistview);
 
         ShopListEditViewAdapter adaptor = new ShopListEditViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents());
         listView.setAdapter(adaptor);
         FireBaseController.getI().setShoplistAdaptor(adaptor);
-
         FireBaseController.getI().addTitleListener(((EditText) v.findViewById(R.id.listNameEdit)));
 
         ((EditText)v.findViewById(R.id.listNameEdit)).setText(FireBaseController.getI().getActiveShopListName());
-        v.findViewById(R.id.listNameEdit).setOnClickListener(new View.OnClickListener() {
+        ((EditText) v.findViewById(R.id.listNameEdit)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 FireBaseController.getI().setActiveShopListName(((EditText) v.findViewById(R.id.listNameEdit)).getText().toString());
-                v.findViewById(R.id.listNameEdit).clearFocus();
+                return false;
             }
         });
 

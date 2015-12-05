@@ -12,6 +12,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.nexb.shopr4.FireBaseController;
+import com.nexb.shopr4.MainActivity;
 import com.nexb.shopr4.R;
 import com.nexb.shopr4.dataModel.ListItem;
 
@@ -48,7 +49,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
 
 
         if(content.getType().equals(ShopListViewContent.contentType.ITEM)){
-            view = mInflater.inflate(R.layout.list_item_edit_view, null);
+            view = mInflater.inflate(R.layout.list_item_edit_view, MainActivity.roots, false);
 
 
             //add listViewItem
@@ -76,7 +77,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                             FireBaseController.getI().insertItem(item.getGroupId(), ((ShopListViewItem) content).getItemId(), newItem);
                             FireBaseController.getI().deleteItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId());
 
-                            return true;
+                            return false;
                         }
                     });
                     popUpCatMenu.show();
@@ -132,7 +133,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                             newItem.setUnit(item.getTitle().toString());
                             ((EditText)v.findViewById(R.id.itemType)).setText(item.getTitle());
                             FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
-                            return true;
+                            return false;
                         }
                     });
                     popUpTypeMenu.show();
@@ -158,14 +159,14 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                     newItem.setUnit(((ShopListViewItem) content).getUnit());
                     newItem.setAmount(Double.parseDouble(editAmountText.getText().toString()));
                     FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
-                    return true;
+                    return false;
                 }
             });
 
 
         }
         else if(content.getType().equals(ShopListViewContent.contentType.CATEGORY)){
-            view = mInflater.inflate(R.layout.list_category_edit_view, null);
+            view = mInflater.inflate(R.layout.list_category_edit_view, parent, false);
             ((EditText)view.findViewById(R.id.catEditName)).setText(((ShopListViewCategory) content).getName());
             ((EditText)view.findViewById(R.id.catEditName)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override

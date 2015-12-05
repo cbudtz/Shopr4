@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity
 
     private FireBaseController fireBaseController;
     private AutoCompleteTextView autoBox;
-
+    public static ViewGroup roots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,7 @@ public class MainActivity extends AppCompatActivity
         f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
         fragmentType = fragmentState.EDIT;
         //autoBox.showDropDown();
-        autoBox.clearFocus();
-        hideKeyboard();
+
         FirebaseHandler firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
 
     }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (fragmentType == fragmentState.EDIT) {
-                    ListItem newItem = new ListItem(1, " ", v.getText().toString());
+                    ListItem newItem = new ListItem(1, "stk", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
                     System.out.println(v.getText());
                     v.setText("");
@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                  hideKeyboard();
                 }
             }
         });
@@ -178,7 +177,7 @@ public class MainActivity extends AppCompatActivity
         }
         if(id == R.id.delete_list){
             if(fragmentType == fragmentState.EDIT){
-                // todo if time.
+                FireBaseController.getI().deleteActiveList();
             }
             return true;
         }
@@ -248,7 +247,6 @@ public class MainActivity extends AppCompatActivity
                     f.beginTransaction().replace(R.id.mainContainer, new BuyListFragment()).commit();
                     fragmentType = fragmentState.BUY;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_preferences));
-                    hideKeyboard();
                 }else{
                     f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
                     fragmentType = fragmentState.EDIT;
