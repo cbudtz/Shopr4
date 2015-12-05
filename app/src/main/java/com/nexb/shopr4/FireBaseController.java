@@ -247,13 +247,13 @@ public class FireBaseController {
 
     public void deleteActiveList(){
         String deleteID = user.getActiveList();
-        for (String listId : user.getOwnLists()) {
+        for (int i = 0;i<user.getOwnLists().size();i++) {
+            String listId = user.getOwnLists().get(i);
             if (listId.equals(deleteID)) {
-                user.getOwnLists().remove(listId);
-                user.setActiveList(user.getOwnLists().get(0));
-                if (user.getActiveList() == null) {
-                    createNewShopList();
-                    user.setActiveList(user.getOwnLists().get(0));
+                user.getOwnLists().remove(i);
+                user.getOwnListNames().remove(i);
+                if (user.getOwnLists() != null && user.getOwnLists().size()>0) {
+                    user.setActiveList(user.getOwnLists().get(0));;
                 }
                 firebaseUserRef.setValue(user);
             }
@@ -262,9 +262,15 @@ public class FireBaseController {
     }
 
     public void deleteList(String listID){
+        int i = 0;
         for (String sID :user.getOwnLists()) {
-            if (sID.equals(listID)) user.getOwnLists().remove(sID);
+            if (sID.equals(listID)) {
+                user.getOwnLists().remove(sID);
+                user.getOwnListNames().remove(i);
+            }
+            i++;
         }
+        firebaseUserRef.setValue(user);
     }
 
     public void updateActiveShoplistName(String name){
