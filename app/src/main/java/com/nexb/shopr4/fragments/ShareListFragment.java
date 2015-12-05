@@ -9,11 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nexb.shopr4.FireBaseController;
+import com.nexb.shopr4.IMainViewModel;
+import com.nexb.shopr4.MainViewModel;
 import com.nexb.shopr4.R;
 
 /**
@@ -24,7 +25,7 @@ public class ShareListFragment  extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private IMainViewModel mainViewModel;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -65,14 +66,19 @@ public class ShareListFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_share, container, false);
-        FireBaseController.getI().addTitleListener(((TextView) v.findViewById(R.id.shareInfo)));
+
+
+        mainViewModel.addTitleTextView(((TextView) v.findViewById(R.id.shareInfo)));
         ((TextView)v.findViewById(R.id.shareInfo)).setText(FireBaseController.getI().getActiveShopListName());
 
         ((EditText) v.findViewById(R.id.mailString)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 FireBaseController.getI().shareShopListWithUserID(((EditText) v.findViewById(R.id.mailString)).getText().toString(), FireBaseController.getI().getActiveShopListID());
-                return true;
+
+                Toast toast = Toast.makeText(getContext(), R.string.toastListShared, Toast.LENGTH_SHORT);
+                toast.show();
+                return false;
             }
         });
 
@@ -102,6 +108,10 @@ public class ShareListFragment  extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setMainViewModel(IMainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
 
     /**

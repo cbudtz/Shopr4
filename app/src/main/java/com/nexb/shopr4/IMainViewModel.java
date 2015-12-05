@@ -24,7 +24,15 @@ public interface IMainViewModel extends IShopListListener, ISuperMarketListener,
     void autoBoxItemSelected(DictionaryItem dictionaryItem);
     ArrayList<ShopListViewContent> getShopListViewContents();
 
+    void insertItemFrom(ListItem tempItem, String newCatName, int oldCatId, int itemId);
 
+    void deleteItem(int categoryID, int itemId);
 
+    void updateItem(int categoryID, int itemId, ListItem item);
 
+    void updateCategoryName(int catId, String newName);
+
+    void deleteCategory(int catId);
+
+    void setActiveShopListName(String listName);
 }

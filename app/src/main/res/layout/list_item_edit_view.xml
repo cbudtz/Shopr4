@@ -9,7 +9,7 @@
     android:background="@android:color/darker_gray">
 
     <ImageButton
-        android:id="@+id/plusOne"
+        android:id="@+id/itemEditViewPlusOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -20,55 +20,55 @@
         android:background="@android:color/darker_gray"/>
 
     <EditText
-        android:id="@+id/itemAmount"
-        android:text="@string/itemAmount"
+        android:id="@+id/itemEditViewAmount"
+        android:text="@string/itemEditViewAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLength="5"
         android:inputType="numberDecimal"
         android:singleLine="true"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/plusOne"/>
+        android:layout_toRightOf="@+id/itemEditViewPlusOne"/>
 
     <ImageButton
-        android:id="@+id/minusOne"
+        android:id="@+id/itemEditViewMinusOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:scaleX="1.5"
         android:scaleY="1.5"
-        android:layout_toRightOf="@+id/itemAmount"
+        android:layout_toRightOf="@+id/itemEditViewAmount"
         android:src="@android:drawable/presence_busy"
         android:padding="1dp"
         />
 
     <EditText
-        android:id="@+id/itemType"
-        android:text="@string/itemType"
+        android:id="@+id/itemEditViewType"
+        android:text="@string/itemEditViewType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:singleLine="true"
         android:maxLength="6"
         android:inputType="textAutoComplete"
-        android:layout_toRightOf="@+id/minusOne" />
+        android:layout_toRightOf="@+id/itemEditViewMinusOne" />
 
 
     <TextView
-        android:id="@+id/itemName"
-        android:text="@string/itemTitle"
+        android:id="@+id/itemEditViewName"
+        android:text="@string/itemEditViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:textStyle="bold"
         android:textSize="20dp"
-        android:layout_toLeftOf="@+id/delete"
+        android:layout_toLeftOf="@+id/itemEditViewDelete"
         android:textColor="@android:color/background_dark"
         android:paddingRight="20dp"
         />
 
     <ImageButton
-        android:id="@+id/delete"
+        android:id="@+id/itemEditViewDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

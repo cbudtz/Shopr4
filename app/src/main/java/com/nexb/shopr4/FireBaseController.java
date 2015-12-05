@@ -103,7 +103,7 @@ public class FireBaseController {
         firebaseRoot = new Firebase(url);
         firebaseUserDir = firebaseRoot.child(activity.getString(R.string.userDir));
         firebaseShopListDir = firebaseRoot.child(activity.getString(R.string.shopListDir));
-        firebaseSuperMarketDir = firebaseRoot.child(activity.getString(R.string.SupermarketDir));
+        firebaseSuperMarketDir = firebaseRoot.child(activity.getString(R.string.supermarketDir));
         //DEBUG
         LinkedHashMap<String, ArrayList<String>> categories = new LinkedHashMap<>();
         categories.put("Brød", new ArrayList<String>(asList("Rugbrød", "KnækBrød", "Franskbrød", "Flutes")));

@@ -13,7 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nexb.shopr4.FireBaseController;
-import com.nexb.shopr4.MainActivity;
+import com.nexb.shopr4.IMainViewModel;
+import com.nexb.shopr4.MainViewModel;
 import com.nexb.shopr4.R;
 import com.nexb.shopr4.View.ShopListEditViewAdapter;
 
@@ -31,7 +32,7 @@ public class EditListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private IMainViewModel mainViewModel;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -57,7 +58,7 @@ public class EditListFragment extends Fragment {
     }
 
     public EditListFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -76,18 +77,18 @@ public class EditListFragment extends Fragment {
 
         ListView listView = (ListView) v.findViewById(R.id.editfragmentlistview);
 
-        ShopListEditViewAdapter adaptor = new ShopListEditViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents());
+        ShopListEditViewAdapter adaptor = new ShopListEditViewAdapter(getActivity(), android.R.layout.simple_list_item_1, mainViewModel);
         listView.setAdapter(adaptor);
-        FireBaseController.getI().setShoplistAdaptor(adaptor);
-        FireBaseController.getI().addTitleListener(((EditText) v.findViewById(R.id.listNameEdit)));
+        mainViewModel.setShoplistAdaptor(adaptor);
+        mainViewModel.addTitleTextView(((EditText) v.findViewById(R.id.listNameEdit)));
 
         ((EditText)v.findViewById(R.id.listNameEdit)).setText(FireBaseController.getI().getActiveShopListName());
         ((EditText) v.findViewById(R.id.listNameEdit)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                FireBaseController.getI().setActiveShopListName(((EditText) v.findViewById(R.id.listNameEdit)).getText().toString());
-                //MainActivity.hideKeyboard();
-                return true;
+                mainViewModel.setActiveShopListName(((EditText) v.findViewById(R.id.listNameEdit)).getText().toString());
+                //FireBaseController.getI().setActiveShopListName(((EditText) v.findViewById(R.id.listNameEdit)).getText().toString());
+                return false;
             }
         });
 
@@ -116,6 +117,10 @@ public class EditListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setMainViewModel(IMainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
 
     /**

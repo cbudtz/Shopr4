@@ -56,7 +56,7 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
             newItem.setAmount(((ShopListViewItem) content).getAmount());
 
             //add listViewItem
-            ((TextView)view.findViewById(R.id.buyItemName)).setText(
+            ((TextView)view.findViewById(R.id.itemBuyViewName)).setText(
                     ((ShopListViewItem) content).getAmount() + " " +
                             ((ShopListViewItem) content).getUnit() + " " +
                             ((ShopListViewItem) content).getName()
@@ -73,7 +73,7 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
 
 
                 final View finalView = view;
-            view.findViewById(R.id.got_it).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.itemBuyViewGotItem).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -86,7 +86,7 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
                     }
                 }
             });
-            view.findViewById(R.id.dont_got_it).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.itemBuyViewDontGotItem).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (((ShopListViewItem) content).getState().equals(ListItem.ListItemState.NOT_FOUND)) {
@@ -103,7 +103,7 @@ public class ShopListBuyViewAdapter extends ArrayAdapter {
         }
         else if(content.getType().equals(ShopListViewContent.contentType.CATEGORY)){
             view = mInflater.inflate(R.layout.list_category_buy_view, null);
-            ((TextView)view.findViewById(R.id.catName)).setText(((ShopListViewCategory) content).getName());
+            ((TextView)view.findViewById(R.id.categoryBuyViewNitle)).setText(((ShopListViewCategory) content).getName());
         }
 
 

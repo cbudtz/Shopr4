@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,8 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -25,9 +22,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nexb.shopr4.dataModel.DictionaryItem;
-import com.nexb.shopr4.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.fragments.BuyListFragment;
 import com.nexb.shopr4.fragments.EditListFragment;
@@ -39,9 +36,14 @@ public class MainActivity extends AppCompatActivity
     public static final boolean DEBUG = true;
     public enum fragmentState {EDIT,BUY,SHARE};
     private fragmentState fragmentType;
+    private EditListFragment editFragment;
+    private BuyListFragment buyFragment;
+    private ShareListFragment shareFragment;
     private Toolbar toolbar;
     private FloatingActionButton fab;
-    private  FragmentManager f = getSupportFragmentManager();
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+
+    private IMainViewModel mainViewModel;
 
     private NavigationView navigationView;
     public String userMail = "userID";
@@ -93,19 +95,28 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.inflateHeaderView(R.layout.list_nav_header_view);
-        //Setup EditListFragment
 
-        f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
-        fragmentType = fragmentState.EDIT;
-        //autoBox.showDropDown();
+
 
         IDataBaseController firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
-        MainViewModel mainViewModel = new MainViewModel(this, firebaseHandler);
+        mainViewModel = new MainViewModel(this, firebaseHandler);
         firebaseHandler.addActiveShopListListener(mainViewModel);
         firebaseHandler.addActiveSuperMarketListener(mainViewModel);
         firebaseHandler.addUserDataListener(mainViewModel);
 
+        //Setup Fragments
+        editFragment = new EditListFragment();
+        editFragment.setMainViewModel(mainViewModel);
 
+        buyFragment = new BuyListFragment();
+        buyFragment.setMainViewModel(mainViewModel);
+
+        shareFragment = new ShareListFragment();
+        shareFragment.setMainViewModel(mainViewModel);
+
+        //Show editlistfragment
+        fragmentManager.beginTransaction().replace(R.id.mainContainer, editFragment).commit();
+        fragmentType = fragmentState.EDIT;
     }
 
     private void setUpActionBox() {
@@ -127,7 +138,9 @@ public class MainActivity extends AppCompatActivity
                 if (fragmentType == fragmentState.EDIT) {
                     DictionaryItem newItem = (DictionaryItem) parent.getItemAtPosition(position);
                     fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
-                    autoBox.showDropDown();
+                    autoBox.setText("");
+                    makeToast(R.string.toastItemAdded);
+                    hideKeyboard();
                 }
             }
         });
@@ -138,9 +151,10 @@ public class MainActivity extends AppCompatActivity
                     ListItem newItem = new ListItem(1, "stk", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
                     System.out.println(v.getText());
+                    makeToast(R.string.toastItemAdded);
                     hideKeyboard();
                 }
-                return true;
+                return false;
             }
         });
         //Change
@@ -174,13 +188,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.add_cat) {
+        if (id == R.id.toolbarAddCategory) {
             if(fragmentType == fragmentState.EDIT){
                 FireBaseController.getI().addCategory("Indtast navn");
+                makeToast(R.string.toastCatAdded);
             }
             return true;
         }
-        if(id == R.id.delete_list){
+        if(id == R.id.toolbarDeleteList){
             if(fragmentType == fragmentState.EDIT){
                 FireBaseController.getI().deleteActiveList();
             }
@@ -201,10 +216,10 @@ public class MainActivity extends AppCompatActivity
             System.out.println(fireBaseController.getUser().getOwnLists());
             fireBaseController.createNewShopList();
             System.out.println(fireBaseController.getUser().getOwnLists());
-
+            makeToast(R.string.toastNewListAdded);
 
         } else if (id == R.id.nav_share) {
-            f.beginTransaction().replace(R.id.mainContainer, new ShareListFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.mainContainer, shareFragment).commit();
             fragmentType = fragmentState.SHARE;
 
         } else {
@@ -216,7 +231,7 @@ public class MainActivity extends AppCompatActivity
                 FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getForeignLists().get(id).getShopListIDs().get(0));
             }
             if(fragmentType == fragmentState.SHARE){
-                f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.mainContainer, editFragment).commit();
                 fragmentType = fragmentState.EDIT;
             }
 
@@ -241,11 +256,11 @@ public class MainActivity extends AppCompatActivity
             public void onAnimationEnd(Animation animation) {
                 fab.startAnimation(secTurn);
                 if(fragmentType == fragmentState.EDIT) {
-                    f.beginTransaction().replace(R.id.mainContainer, new BuyListFragment()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.mainContainer, buyFragment).commit();
                     fragmentType = fragmentState.BUY;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_preferences));
                 }else{
-                    f.beginTransaction().replace(R.id.mainContainer, new EditListFragment()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.mainContainer, editFragment).commit();
                     fragmentType = fragmentState.EDIT;
                     fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_lock_idle_lock));
                 }
@@ -264,7 +279,7 @@ public class MainActivity extends AppCompatActivity
     public void hideKeyboard(){
         View v = getWindow().getCurrentFocus();
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.hideSoftInputFromWindow(navigationView.getWindowToken(),0);
+        manager.hideSoftInputFromWindow(navigationView.getWindowToken(), 0);
 
     }
 
@@ -273,6 +288,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void makeToast(int stringID) {
+        Toast toast = Toast.makeText(getApplicationContext(), stringID, Toast.LENGTH_SHORT);
+        toast.show();
+    }
     //Getters and setters
     public NavigationView getNavigationView() {
         return navigationView;
