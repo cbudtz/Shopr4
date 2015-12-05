@@ -1,18 +1,23 @@
 package com.nexb.shopr4;
 
+import android.support.design.widget.NavigationView;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.nexb.shopr4.View.ShopListViewContent;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.ListItem;
+import com.nexb.shopr4.dataModel.ShopList;
+import com.nexb.shopr4.dataModel.SuperMarket;
+import com.nexb.shopr4.dataModel.User;
 
 import java.util.ArrayList;
 
 /**
  * @author Christian on 04-12-2015.
  */
-public interface IMainViewModel extends IShopListListener, ISuperMarketListener, IUserDataListener{
+public interface IMainViewModel extends IShopListListener, ISuperMarketListener, IUserDataListener, NavigationView.OnNavigationItemSelectedListener {
     void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor);
 
     void setDictionaryAdapter(ArrayAdapter<DictionaryItem> dictionaryAdapter);
@@ -35,4 +40,16 @@ public interface IMainViewModel extends IShopListListener, ISuperMarketListener,
     void deleteCategory(int catId);
 
     void setActiveShopListName(String listName);
+
+    @Override
+    void shopListDataChanged(ShopList shopList);
+
+    @Override
+    void superMarketChanged(SuperMarket superMarket);
+
+    @Override
+    void userdataChanged(User user);
+
+    @Override
+    boolean onNavigationItemSelected(MenuItem item);
 }

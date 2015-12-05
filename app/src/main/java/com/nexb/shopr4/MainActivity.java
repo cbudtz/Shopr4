@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity
 
         //Setup Navigation Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this
+                , drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -91,18 +91,20 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        //Setup Navigation View
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.inflateHeaderView(R.layout.list_nav_header_view);
 
 
 
+        //Instantiate fireBaseController and ViewModel
         IDataBaseController firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
         mainViewModel = new MainViewModel(this, firebaseHandler);
         firebaseHandler.addActiveShopListListener(mainViewModel);
         firebaseHandler.addActiveSuperMarketListener(mainViewModel);
         firebaseHandler.addUserDataListener(mainViewModel);
+
+        //Setup Navigation View
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(mainViewModel);
+        navigationView.inflateHeaderView(R.layout.list_nav_header_view);
 
         //Setup Fragments
         editFragment = new EditListFragment();
@@ -224,6 +226,7 @@ public class MainActivity extends AppCompatActivity
 
         } else {
             if (groupId == 1) {
+                //TODO replace with
                 FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
             }
             if (groupId == 2){
