@@ -449,43 +449,43 @@ public class FireBaseController {
         firebaseUserRef.setValue(user);
         updateActiveList();
     }
-
+@Deprecated
     private class UserValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            System.out.println("User data changed!");
-            //Resolve if user is new
-            System.out.println(dataSnapshot);
-            User userFromFirebase = null;
-            try {
-                userFromFirebase = dataSnapshot.getValue(User.class);
-            } catch (Exception e ) {
-                firebaseUserRef.setValue(user);
-                userFromFirebase = user;
-            }
+//            System.out.println("User data changed!");
+//            //Resolve if user is new
+//            System.out.println(dataSnapshot);
+//            User userFromFirebase = null;
+//            try {
+//                userFromFirebase = dataSnapshot.getValue(User.class);
+//            } catch (Exception e ) {
+//                firebaseUserRef.setValue(user);
+//                userFromFirebase = user;
+//            }
 
-            if (userFromFirebase == null || userFromFirebase.getUserName() == null) {
-                //Create new user
-                firebaseUserRef.setValue(user);
-                System.out.println("User created");
-            } else {
-                //Found user in db
-                user = userFromFirebase;
-                System.out.println("User already Exists");
-                System.out.println(user.getActiveList());
-            }
-            //Update active shopping list
-            setActiveList(user.getActiveList());
+//            if (userFromFirebase == null || userFromFirebase.getUserName() == null) {
+//                //Create new user
+//                firebaseUserRef.setValue(user);
+//                System.out.println("User created");
+//            } else {
+//                //Found user in db
+//                user = userFromFirebase;
+//                System.out.println("User already Exists");
+//                System.out.println(user.getActiveList());
+//            }
+//            //Update active shopping list
+//            setActiveList(user.getActiveList());
             //Update NavigationDrawer
-            NavigationView navDrawer = activity.getNavigationView();
-            activity.userMail = user.getUserID(); //Tell Main activity the users name and email
-            activity.userName = user.getUserName();
-            if (activity.findViewById(R.id.userMail)!=null) ((TextView)activity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":","."));
-            if (activity.findViewById(R.id.userName)!=null) ((TextView)activity.findViewById(R.id.userName)).setText(user.getUserName());
-            navDrawer.getMenu().removeGroup(1);
-            navDrawer.getMenu().removeGroup(2);
-
-            int i = 0;
+//            NavigationView navDrawer = activity.getNavigationView();
+//            activity.userMail = user.getUserID(); //Tell Main activity the users name and email
+//            activity.userName = user.getUserName();
+//            if (activity.findViewById(R.id.userMail)!=null) ((TextView)activity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":","."));
+//            if (activity.findViewById(R.id.userName)!=null) ((TextView)activity.findViewById(R.id.userName)).setText(user.getUserName());
+//            navDrawer.getMenu().removeGroup(1);
+//            navDrawer.getMenu().removeGroup(2);
+//
+//            int i = 0;
 //            for (String s : user.getOwnListNames()) {
 //                activity.getNavigationView().getMenu().add(1, i, i, s);
 //                i++;
@@ -509,37 +509,37 @@ public class FireBaseController {
 //                    i++;
 //                }
 //            }
-            System.out.println(shopListTitleViews.size());
-            for (TextView t:shopListTitleViews ) {
-                if (activeShopList!=null) {
-                    t.setText(activeShopList.getName());
-                    System.out.println("Updated title to: " + activeShopList.getName() + t.getId());
-                }
-            }
+//            System.out.println(shopListTitleViews.size());
+//            for (TextView t:shopListTitleViews ) {
+//                if (activeShopList!=null) {
+//                    t.setText(activeShopList.getName());
+//                    System.out.println("Updated title to: " + activeShopList.getName() + t.getId());
+//                }
+//            }
 
 
-            View header = LayoutInflater.from(activity).inflate(R.layout.nav_header_main, null);
-            boolean standardized = false;
-            if (user.getUserCategories() == null || user.getUserCategories().size() <= 0) {
-                System.out.println("Initializing Dictionary");
-                initializeStandardCategories(user);
-                standardized = true;
-            }
-            if (user.getUserUnits() == null || user.getUserUnits().size() <= 0) {
-                initializeStandardUnits(user);
-                standardized = true;
-            }
-            if (user.getUserDictionary() == null || user.getUserDictionary().size() <= 0) {
-                initializeStandardDictionary(user);
-                standardized = true;
-            }
-            if (dictionaryAdapter != null) {
-                dictionaryAdapter.clear();
-                dictionaryAdapter.addAll(getDictionaryStrings());
-                dictionaryAdapter.notifyDataSetChanged();
-            }
-
-            if (standardized) firebaseUserRef.setValue(user);
+//            View header = LayoutInflater.from(activity).inflate(R.layout.nav_header_main, null);
+//            boolean standardized = false;
+//            if (user.getUserCategories() == null || user.getUserCategories().size() <= 0) {
+//                System.out.println("Initializing Dictionary");
+//                initializeStandardCategories(user);
+//                standardized = true;
+//            }
+//            if (user.getUserUnits() == null || user.getUserUnits().size() <= 0) {
+//                initializeStandardUnits(user);
+//                standardized = true;
+//            }
+//            if (user.getUserDictionary() == null || user.getUserDictionary().size() <= 0) {
+//                initializeStandardDictionary(user);
+//                standardized = true;
+//            }
+//            if (dictionaryAdapter != null) {
+//                dictionaryAdapter.clear();
+//                dictionaryAdapter.addAll(getDictionaryStrings());
+//                dictionaryAdapter.notifyDataSetChanged();
+//            }
+//
+//            if (standardized) firebaseUserRef.setValue(user);
         }
 
         @Override
@@ -551,23 +551,23 @@ public class FireBaseController {
     private class ShopListValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            ShopList newShopList = dataSnapshot.getValue(ShopList.class);
-            activeShopList = newShopList;
-            System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName() : "null"));
-            //Parse for arrayadaptor.
-            parseShopList();
-            if (shoplistAdaptor != null) {
-                shoplistAdaptor.notifyDataSetChanged();
-                System.out.println("Notified shopListAdaptor "+shoplistAdaptor);
-            }
-            //Tell title views that data Changed:
-            for (TextView t :
-                    shopListTitleViews) {
-                if (newShopList!=null) {
-                    t.setText(newShopList.getName());
-                    System.out.println("Notified " + shopListTitleViews.size() + " views" + ". Title : " + newShopList.getName());
-                }
-            }
+//            ShopList newShopList = dataSnapshot.getValue(ShopList.class);
+//            activeShopList = newShopList;
+//            System.out.println("ShopList Changed:" + ((activeShopList != null) ? newShopList.getId() + newShopList.getName() : "null"));
+//            //Parse for arrayadaptor.
+//            parseShopList();
+//            if (shoplistAdaptor != null) {
+//                shoplistAdaptor.notifyDataSetChanged();
+//                System.out.println("Notified shopListAdaptor "+shoplistAdaptor);
+//            }
+//            //Tell title views that data Changed:
+//            for (TextView t :
+//                    shopListTitleViews) {
+//                if (newShopList!=null) {
+//                    t.setText(newShopList.getName());
+//                    System.out.println("Notified " + shopListTitleViews.size() + " views" + ". Title : " + newShopList.getName());
+//                }
+//            }
         }
 
         @Override
