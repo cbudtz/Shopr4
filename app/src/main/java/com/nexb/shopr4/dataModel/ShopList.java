@@ -55,4 +55,17 @@ public class ShopList {
 
     public String getSuperMarketID() { return superMarketID; }
     public void setSuperMarketID(String superMarketID) { this.superMarketID = superMarketID; }
+
+    public void addItem(String categoryName, ListItem listItem) {
+        Category entercat = null;
+        for (Category c : categories) {
+            if (c.getName().equals(categoryName)){
+                entercat = c;
+            }
+        }
+        if (entercat == null){
+            categories.add(new Category(categoryName));
+        }
+        entercat.getItems().add(listItem);
+    }
 }
