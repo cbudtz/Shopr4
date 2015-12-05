@@ -23,7 +23,7 @@
                 android:width="65dp"
                 android:id="@+id/toolbarAutobox" />
 
-            </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 

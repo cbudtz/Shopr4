@@ -49,7 +49,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
 
 
         if(content.getType().equals(ShopListViewContent.contentType.ITEM)){
-            view = mInflater.inflate(R.layout.list_item_edit_view, MainActivity.roots, false);
+            view = mInflater.inflate(R.layout.list_item_edit_view, parent, false);
 
 
             //add listViewItem

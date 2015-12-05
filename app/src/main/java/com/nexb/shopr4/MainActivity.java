@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity
 
     private FireBaseController fireBaseController;
     private AutoCompleteTextView autoBox;
-    public static ViewGroup roots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
