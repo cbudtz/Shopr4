@@ -1,5 +1,6 @@
 package com.nexb.shopr4;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -76,7 +78,13 @@ public class MainActivity extends AppCompatActivity
         //Setup Navigation Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                hideKeyboard();
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -256,9 +264,12 @@ public class MainActivity extends AppCompatActivity
         });
     }
     public void hideKeyboard(){
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
+        View v = getWindow().getCurrentFocus();
+        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.hideSoftInputFromWindow(navigationView.getWindowToken(),0);
+//        getWindow().setSoftInputMode(
+//                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+//        );
     }
 
     @Override
