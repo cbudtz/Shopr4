@@ -426,6 +426,11 @@ public class FireBaseController {
     }
     public  void setActiveShopListName(String name){
         activeShopList.setName(name);
+        for(int i =0;i<user.getOwnLists().size();i++){
+            if (user.getOwnLists().get(i).equals(name)){
+                user.getOwnListNames().set(i, name);
+            }
+        }
         updateActiveList();
     }
 
