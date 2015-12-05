@@ -241,6 +241,23 @@ public class FirebaseHandler implements IDataBaseController{
                 firebaseShoplistValueEventListener = new ShopListValueEventListener();
                 firebaseActiveShopListRef.addValueEventListener(firebaseShoplistValueEventListener);
             };
+            boolean standardized = false;
+            if (activeUser.getUserCategories() == null || activeUser.getUserCategories().size() <= 0) {
+                System.out.println("Initializing Dictionary");
+                initializeStandardCategories(activeUser);
+                standardized = true;
+            }
+            if (activeUser.getUserUnits() == null || activeUser.getUserUnits().size() <= 0) {
+                initializeStandardUnits(activeUser);
+                standardized = true;
+            }
+            if (activeUser.getUserDictionary() == null || activeUser.getUserDictionary().size() <= 0) {
+                initializeStandardDictionary(activeUser);
+                standardized = true;
+            }
+
+          //  if (standardized) firebaseUserRef.setValue(activeUser);
+
 
             //Notify interested parties...
             for (IUserDataListener userdataListener :
