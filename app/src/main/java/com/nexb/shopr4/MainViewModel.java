@@ -49,16 +49,10 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
 
     public MainViewModel(MainActivity mainActivity,
-            IDataBaseController dataBaseController, ArrayAdapter<ShopListViewContent> shoplistAdaptor,
-                         ArrayAdapter<DictionaryItem> dictionaryAdapter, ArrayList<TextView> shopListTitleViews,
-                         NavigationView navigationDrawerView) {
+            IDataBaseController dataBaseController) {
         this.mainActivity = mainActivity;
         this.dataBaseController = dataBaseController;
-        this.shoplistAdaptor = shoplistAdaptor;
-        this.dictionaryAdapter = dictionaryAdapter;
-        this.shopListTitleViews = shopListTitleViews;
-        this.navigationDrawerView = navigationDrawerView;
-    }
+            }
 //---------------------------------- Input
     //AutoBoxClicks----------------
     @Override
