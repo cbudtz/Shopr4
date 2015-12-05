@@ -17,7 +17,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/autobox"
-                android:hint="@string/autoBoxId"
+                android:hint="@string/toolbarAutoboxHintText"
                 android:textColor="@android:color/black"
                 android:padding="10dp"
                 android:width="65dp"

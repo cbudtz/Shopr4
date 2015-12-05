@@ -165,7 +165,7 @@ public class FirebaseHandler implements IDataBaseController{
     @Override
     public void setActiveSuperMarket(String SuperMarketID) {
         if (firebaseActiveSupermarketRef != null) firebaseActiveSupermarketRef.removeEventListener(firebaseSupermarketValueEventListener);
-        firebaseActiveSupermarketRef = firebaseRoot.child(mainActivity.getString(R.string.SupermarketDir)).child(SuperMarketID);
+        firebaseActiveSupermarketRef = firebaseRoot.child(mainActivity.getString(R.string.supermarketDir)).child(SuperMarketID);
         firebaseSupermarketValueEventListener = new SuperMarketValueEventListener();
         firebaseActiveSupermarketRef.addValueEventListener(firebaseSupermarketValueEventListener);
 

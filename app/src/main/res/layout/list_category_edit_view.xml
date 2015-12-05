@@ -7,8 +7,8 @@
     android:orientation="vertical"
     >
     <EditText
-        android:id="@+id/catEditName"
-        android:text="@string/itemTitle"
+        android:id="@+id/CategoryEditViewName"
+        android:text="@string/categoryEditViewName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
@@ -24,7 +24,7 @@
     </EditText>
 
     <ImageButton
-        android:id="@+id/catEditDelete"
+        android:id="@+id/categoryEditViewDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

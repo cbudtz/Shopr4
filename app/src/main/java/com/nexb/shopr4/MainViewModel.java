@@ -31,38 +31,70 @@ public class MainViewModel implements IMainViewModel {
     IDataBaseController dataBaseController;
 
     private SuperMarket activeSuperMarket;
-        public SuperMarket getActiveSuperMarket() { return activeSuperMarket; }
+    public SuperMarket getActiveSuperMarket() { return activeSuperMarket; }
     private ShopList activeShopList; //public ShopList getActiveShopList() { return activeShopList; }
     //Observable elements
     private ArrayList<ShopListViewContent> shopListViewContents = new ArrayList<>();
-    @Override
-        public ArrayList<ShopListViewContent> getShopListViewContents() { return shopListViewContents; }
 
+    @Override
+    public ArrayList<ShopListViewContent> getShopListViewContents() { return shopListViewContents; }
+
+    @Override
+    public void insertItemFrom(ListItem tempItem, String newCatName, int oldCatId, int itemId) {
+        FireBaseController.getI().addItemToActiveList(newCatName, tempItem);
+        FireBaseController.getI().deleteItem(oldCatId, itemId);
+
+    }
+
+    @Override
+    public void deleteItem(int categoryID, int itemId) {
+        FireBaseController.getI().deleteItem(categoryID, itemId);
+    }
+
+    @Override
+    public void updateItem(int categoryID, int itemId, ListItem item) {
+        FireBaseController.getI().updateItem(categoryID, itemId, item);
+    }
+
+    @Override
+    public void updateCategoryName(int catId, String newName) {
+        FireBaseController.getI().updateCategoryname(catId, newName);
+    }
+
+    @Override
+    public void deleteCategory(int catId) {
+        FireBaseController.getI().deleteCategory(catId);
+    }
+
+    @Override
+    public void setActiveShopListName(String listName) {
+        FireBaseController.getI().setActiveShopListName(listName);
+    }
 
 
     //Adaptors to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
     @Override
-        public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) { this.shoplistAdaptor = shoplistAdaptor; }
+    public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) { this.shoplistAdaptor = shoplistAdaptor; }
 
     private ArrayAdapter<DictionaryItem> dictionaryAdapter;
     @Override
-        public void setDictionaryAdapter(ArrayAdapter<DictionaryItem> dictionaryAdapter) { this.dictionaryAdapter = dictionaryAdapter; }
+    public void setDictionaryAdapter(ArrayAdapter<DictionaryItem> dictionaryAdapter) { this.dictionaryAdapter = dictionaryAdapter; }
 
     private ArrayList<TextView> shopListTitleViews = new ArrayList<>();
     @Override
-        public void addTitleTextView(TextView t){shopListTitleViews.add(t);}
+    public void addTitleTextView(TextView t){shopListTitleViews.add(t);}
 
     //Views to be updatesd on dataChange
     private NavigationView navigationDrawerView;
 
 
     public MainViewModel(MainActivity mainActivity,
-            IDataBaseController dataBaseController) {
+                         IDataBaseController dataBaseController) {
         this.mainActivity = mainActivity;
         this.dataBaseController = dataBaseController;
-            }
-//---------------------------------- Input
+    }
+    //---------------------------------- Input
     //AutoBoxClicks----------------
     @Override
     public void autoBoxClicked() {
@@ -82,11 +114,11 @@ public class MainViewModel implements IMainViewModel {
 
 
 
-//----------------------------------- Output
+    //----------------------------------- Output
     //CallBacks from database
     @Override
     public void userdataChanged(User user) {
-                //Update active shopping list
+        //Update active shopping list
         System.out.println("MainViewModel - Got callback from Database - userData: " + ((user==null)?"null":user.getUserName()));
         mainActivity.userMail = user.getUserID(); //Tell Main activity the users name and email
         mainActivity.userName = user.getUserName();
@@ -168,8 +200,8 @@ public class MainViewModel implements IMainViewModel {
     @Override
     public void superMarketChanged(SuperMarket superMarket) {
         System.out.println("MainViewModel - got callBackFrom database - supermarket Changed: " + ((superMarket==null)?"null":superMarket.getName()));
-            activeSuperMarket = superMarket;
-            sortShopList();
+        activeSuperMarket = superMarket;
+        sortShopList();
     }
 
     private void sortShopList() {
@@ -202,7 +234,7 @@ public class MainViewModel implements IMainViewModel {
             @Override
             protected void onPostExecute(Object o) {
                 if (shoplistAdaptor!=null)
-                shoplistAdaptor.notifyDataSetChanged();;
+                    shoplistAdaptor.notifyDataSetChanged();;
             }
         };
         task.execute();

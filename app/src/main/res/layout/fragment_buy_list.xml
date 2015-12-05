@@ -9,8 +9,8 @@
 
 
         <TextView
-            android:id="@+id/listName"
-            android:text="listTitle"
+            android:id="@+id/listNameBuy"
+            android:text="@string/buyFragmentListName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -22,6 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buyfragmentlistview"
-            android:layout_below="@+id/listName" />
+            android:layout_below="@+id/listNameBuy" />
     </RelativeLayout>
 </FrameLayout>

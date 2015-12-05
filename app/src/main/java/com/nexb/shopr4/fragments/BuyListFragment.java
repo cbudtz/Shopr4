@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nexb.shopr4.FireBaseController;
+import com.nexb.shopr4.IMainViewModel;
+import com.nexb.shopr4.MainViewModel;
 import com.nexb.shopr4.R;
 import com.nexb.shopr4.View.ShopListBuyViewAdapter;
 
@@ -28,7 +30,7 @@ public class BuyListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private IMainViewModel mainViewModel;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -70,13 +72,13 @@ public class BuyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_buy_list, container, false);
-        ((TextView)v.findViewById(R.id.listName)).setText(FireBaseController.getI().getActiveShopListName());
+        ((TextView)v.findViewById(R.id.listNameBuy)).setText(FireBaseController.getI().getActiveShopListName());
 
         ListView listView = (ListView) v.findViewById(R.id.buyfragmentlistview);
 
-        ShopListBuyViewAdapter adaptor = new ShopListBuyViewAdapter(getActivity(), android.R.layout.simple_list_item_1, FireBaseController.getI().getShoplistViewContents());
+        ShopListBuyViewAdapter adaptor = new ShopListBuyViewAdapter(getActivity(), android.R.layout.simple_list_item_1, mainViewModel.getShopListViewContents());
         listView.setAdapter(adaptor);
-       FireBaseController.getI().setShoplistAdaptor(adaptor);
+        mainViewModel.setShoplistAdaptor(adaptor);
         // Inflate the layout for this fragment
         return v;
     }
@@ -103,6 +105,10 @@ public class BuyListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setMainViewModel(IMainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
 
     /**

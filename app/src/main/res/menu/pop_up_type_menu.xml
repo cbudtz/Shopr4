@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action1"
-        android:title="Stk"
+        android:id="@+id/popupTypeAction1"
+        android:title="@string/popupTypeAction1"
         />
 
     <item
-        android:id="@+id/action2"
-        android:title="L"
+        android:id="@+id/popupTypeAction2"
+        android:title="@string/popupTypeAction2"
         />
 
     <item
-        android:id="@+id/action3"
-        android:title="Kg"
+        android:id="@+id/popupTypeAction3"
+        android:title="@string/popupTypeAction3"
         />
 
     <item
-        android:id="@+id/action4"
-        android:title="bk"
+        android:id="@+id/popupTypeAction4"
+        android:title="@string/popupTypeAction4"
         />
     <item
-        android:id="@+id/action5"
-        android:title="pk"
+        android:id="@+id/popupTypeAction5"
+        android:title="@string/popupTypeAction5"
         />
 </menu>
