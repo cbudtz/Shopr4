@@ -115,6 +115,39 @@ public class MainViewModel implements IMainViewModel {
         dataBaseController.addItemToActiveList(dictionaryItem.getCategory(), new ListItem(dictionaryItem.getAmount(), dictionaryItem.getUnit(), dictionaryItem.getName()));
     }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        int groupId = item.getGroupId();
+
+        if (id == R.id.nav_new_list) {
+            FireBaseController.getI().createNewShopList();
+            mainActivity.newListToast();
+
+        } else if (id == R.id.nav_share) {
+            mainActivity.switchToShareFragment();
+
+
+        } else {
+            if (groupId == 1) {
+                //TODO replace with
+                System.out.println("ItemName : " + id);
+
+            }
+            if (groupId == 2){
+                System.out.println("ItemSelected :" + id);
+
+            }
+
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) mainActivity.findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 
 
     //----------------------------------- Output
@@ -163,37 +196,7 @@ public class MainViewModel implements IMainViewModel {
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        int groupId = item.getGroupId();
 
-        if (id == R.id.nav_new_list) {
-           FireBaseController.getI().createNewShopList();
-            mainActivity.newListToast();
-
-        } else if (id == R.id.nav_share) {
-            mainActivity.switchToShareFragment();
-
-
-        } else {
-            if (groupId == 1) {
-                //TODO replace with
-
-            }
-            if (groupId == 2){
-                System.out.println("ItemSelected :" + id);
-
-            }
-
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) mainActivity.findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     @Override
     public void shopListDataChanged(ShopList shopList) {
