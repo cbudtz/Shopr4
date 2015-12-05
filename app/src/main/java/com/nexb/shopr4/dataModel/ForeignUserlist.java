@@ -8,13 +8,15 @@ import java.util.ArrayList;
 public class ForeignUserlist {
     private String UserName = "noName";
     private ArrayList<String> ShopListIDs = new ArrayList<>();
+    private String listName = "";
 
     public ForeignUserlist() {
     }
 
-    public ForeignUserlist(String userName, ArrayList<String> shopListIDs) {
+    public ForeignUserlist(String userName, ArrayList<String> shopListIDs, String listName) {
         UserName = userName;
         ShopListIDs = shopListIDs;
+        this.listName = listName;
     }
 
     public ArrayList<String> getShopListIDs() {
@@ -31,5 +33,13 @@ public class ForeignUserlist {
 
     public void setUserName(String userName) {
         UserName = userName;
+    }
+
+    public String getListName() {
+        return listName;
+    }
+
+    public void setListName(String listName) {
+        this.listName = listName;
     }
 }

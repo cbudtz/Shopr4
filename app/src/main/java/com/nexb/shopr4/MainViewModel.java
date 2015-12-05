@@ -100,9 +100,11 @@ public class MainViewModel implements IMainViewModel {
             mainActivity.getNavigationView().getMenu().add(1, i, i, s);
             i++;
         }
+        //reset id counter ;))
+        i = 0;
         for (ForeignUserlist s : user.getForeignLists()){
             if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
-                mainActivity.getNavigationView().getMenu().add(2, i, i, s.getShopListIDs().get(0));
+                mainActivity.getNavigationView().getMenu().add(2, i, i, s.getUserName() + " - " + s.getListName());
                 i++;
             }
         }

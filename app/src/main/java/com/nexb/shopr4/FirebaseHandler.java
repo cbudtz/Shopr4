@@ -86,7 +86,7 @@ public class FirebaseHandler implements IDataBaseController{
         newList.setId(newListRef.getKey());
         //add new shopList
         newListRef.setValue(newList);
-        activeUser.addOwnList(newListRef.getKey(),"New ShopList");
+        activeUser.addOwnList(newListRef.getKey(), "New ShopList");
         firebaseActiveUserRef.setValue(activeUser);
         return newListRef.getKey();
     }
@@ -112,6 +112,7 @@ public class FirebaseHandler implements IDataBaseController{
             }
         firebaseActiveUserRef.setValue(activeUser);
     }
+
 
     @Override
     public void addCategory(String name) {

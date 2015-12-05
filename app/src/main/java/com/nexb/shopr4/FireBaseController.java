@@ -375,7 +375,7 @@ public class FireBaseController {
                 }
                 ArrayList<String> foreignShoplistsIDs = new ArrayList<>();
                 foreignShoplistsIDs.add(shopListID);
-                foreignUser.getForeignLists().add(new ForeignUserlist(user.getUserName(), foreignShoplistsIDs));
+                foreignUser.getForeignLists().add(new ForeignUserlist(user.getUserName(), foreignShoplistsIDs, activeShopList.getName()));
 
                 foreignUserRef.setValue(foreignUser);
                 System.out.println(foreignUser.getForeignLists().size());
@@ -485,24 +485,24 @@ public class FireBaseController {
 //                i++;
 //            }
 
-            for (ForeignUserlist s : user.getForeignLists()){
-                if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
-                    final int finalI = i;
-                    firebaseShopListDir.child(s.getShopListIDs().get(0)).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            activity.getNavigationView().getMenu().add(2, finalI, finalI, dataSnapshot.getValue(ShopList.class).getName());
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-                    i++;
-                }
-            }
+//            for (ForeignUserlist s : user.getForeignLists()){
+//                if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
+//                    final int finalI = i;
+//                    firebaseShopListDir.child(s.getShopListIDs().get(0)).addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            activity.getNavigationView().getMenu().add(2, finalI, finalI, dataSnapshot.getValue(ShopList.class).getName());
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(FirebaseError firebaseError) {
+//
+//                        }
+//                    });
+//                    i++;
+//                }
+//            }
             System.out.println(shopListTitleViews.size());
             for (TextView t:shopListTitleViews ) {
                 if (activeShopList!=null) {
