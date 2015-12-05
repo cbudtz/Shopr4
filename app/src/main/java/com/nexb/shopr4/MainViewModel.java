@@ -83,7 +83,7 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
     @Override
     public void userdataChanged(User user) {
                 //Update active shopping list
-        System.out.println("MainViewModel - Got callback from Database - userData: " + user.getUserName());
+        System.out.println("MainViewModel - Got callback from Database - userData: " + user==null?"null":user.getUserName());
         mainActivity.userMail = user.getUserID(); //Tell Main activity the users name and email
         mainActivity.userName = user.getUserName();
         if (mainActivity.findViewById(R.id.userMail)!=null) ((TextView)mainActivity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":","."));
@@ -116,7 +116,7 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     @Override
     public void shopListDataChanged(ShopList shopList) {
-        System.out.println("MainViewModel - Got callback from database. Shoplist Changed: " + shopList.getName());
+        System.out.println("MainViewModel - Got callback from database. Shoplist Changed: " + shopList==null?"null":shopList.getName());
         activeShopList = shopList;
         //sortShopList();  //Sort shopList by superMarket
         parseShopListToViewList();
@@ -156,6 +156,7 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     @Override
     public void superMarketChanged(SuperMarket superMarket) {
+        System.out.println("MainViewModel - got callBackFrom database - supermarket Changed: " + superMarket==null?"null":superMarket.getName());
             activeSuperMarket = superMarket;
             sortShopList();
     }
