@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity
                 FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getOwnLists().get(id));
             }
             if (groupId == 2){
+                System.out.println("ItemSelected :" + id);
                 FireBaseController.getI().setActiveList(FireBaseController.getI().getUser().getForeignLists().get(id).getShopListIDs().get(0));
             }
             if(fragmentType == fragmentState.SHARE){
