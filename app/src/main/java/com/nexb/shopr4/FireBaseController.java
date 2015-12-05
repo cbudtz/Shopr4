@@ -453,30 +453,30 @@ public class FireBaseController {
     private class UserValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-//            System.out.println("User data changed!");
-//            //Resolve if user is new
-//            System.out.println(dataSnapshot);
-//            User userFromFirebase = null;
-//            try {
-//                userFromFirebase = dataSnapshot.getValue(User.class);
-//            } catch (Exception e ) {
-//                firebaseUserRef.setValue(user);
-//                userFromFirebase = user;
-//            }
+            System.out.println("User data changed!");
+            //Resolve if user is new
+            System.out.println(dataSnapshot);
+            User userFromFirebase = null;
+            try {
+                userFromFirebase = dataSnapshot.getValue(User.class);
+            } catch (Exception e ) {
+                firebaseUserRef.setValue(user);
+                userFromFirebase = user;
+            }
 
-//            if (userFromFirebase == null || userFromFirebase.getUserName() == null) {
-//                //Create new user
-//                firebaseUserRef.setValue(user);
-//                System.out.println("User created");
-//            } else {
-//                //Found user in db
-//                user = userFromFirebase;
-//                System.out.println("User already Exists");
-//                System.out.println(user.getActiveList());
-//            }
-//            //Update active shopping list
-//            setActiveList(user.getActiveList());
-            //Update NavigationDrawer
+            if (userFromFirebase == null || userFromFirebase.getUserName() == null) {
+                //Create new user
+                firebaseUserRef.setValue(user);
+                System.out.println("User created");
+            } else {
+                //Found user in db
+                user = userFromFirebase;
+                System.out.println("User already Exists");
+                System.out.println(user.getActiveList());
+            }
+            //Update active shopping list
+            setActiveList(user.getActiveList());
+//            Update NavigationDrawer
 //            NavigationView navDrawer = activity.getNavigationView();
 //            activity.userMail = user.getUserID(); //Tell Main activity the users name and email
 //            activity.userName = user.getUserName();
