@@ -3,6 +3,8 @@ package com.nexb.shopr4;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -128,22 +130,26 @@ public class MainViewModel implements IMainViewModel {
         if (navigationDrawerView!= null) navigationDrawerView.getMenu().removeGroup(1);  //Own Lists
         if (navigationDrawerView!= null) navigationDrawerView.getMenu().removeGroup(2); //Foreign Lists
         System.out.println("Updating navigation drawer");
-        mainActivity.getNavigationView().getMenu().clear();
-        mainActivity.getNavigationView().inflateMenu(R.menu.activity_main_drawer);
-        int i = 0, j = 0;
-        for (String s : user.getOwnListNames()) {
-            mainActivity.getNavigationView().getMenu().add(1, i, j, s);
-            j++;
-            i++;
-        }
-        //reset id counter ;))
-        i = 0;
-        for (ForeignUserlist s : user.getForeignLists()){
-            if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
-                mainActivity.getNavigationView().getMenu().add(2, i, j, s.getUserName() + " - " + s.getListName());
-                i++;
+        if (mainActivity.getNavigationView() !=null) {
+            mainActivity.getNavigationView().getMenu().clear();
+            mainActivity.getNavigationView().inflateMenu(R.menu.activity_main_drawer);
+            int i = 0, j = 0;
+            for (String s : user.getOwnListNames()) {
+                mainActivity.getNavigationView().getMenu().add(1, i, j, s);
                 j++;
+                i++;
             }
+            //reset id counter ;))
+            i = 0;
+            for (ForeignUserlist s : user.getForeignLists()) {
+                if (s != null && s.getShopListIDs() != null && s.getShopListIDs().size() > 0) {
+                    mainActivity.getNavigationView().getMenu().add(2, i, j, s.getUserName() + " - " + s.getListName());
+                    i++;
+                    j++;
+                }
+            }
+
+
         }
 
         View header = LayoutInflater.from(mainActivity).inflate(R.layout.nav_header_main, null);
@@ -159,7 +165,34 @@ public class MainViewModel implements IMainViewModel {
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        return false;
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        int groupId = item.getGroupId();
+
+        if (id == R.id.nav_new_list) {
+           FireBaseController.getI().createNewShopList();
+            mainActivity.newListToast();
+
+        } else if (id == R.id.nav_share) {
+            mainActivity.switchToShareFragment();
+
+
+        } else {
+            if (groupId == 1) {
+                //TODO replace with
+
+            }
+            if (groupId == 2){
+                System.out.println("ItemSelected :" + id);
+
+            }
+
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) mainActivity.findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override

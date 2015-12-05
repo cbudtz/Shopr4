@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EditListFragment.OnFragmentInteractionListener, BuyListFragment.OnFragmentInteractionListener, ShareListFragment.OnFragmentInteractionListener{
     public static final boolean DEBUG = true;
+
+
+
+
     public enum fragmentState {EDIT,BUY,SHARE};
     private fragmentState fragmentType;
     private EditListFragment editFragment;
@@ -59,6 +63,15 @@ public class MainActivity extends AppCompatActivity
 
     private FireBaseController fireBaseController;
     private AutoCompleteTextView autoBox;
+
+    public void switchToShareFragment() {
+        fragmentManager.beginTransaction().replace(R.id.mainContainer, shareFragment).commit();
+        fragmentType = MainActivity.fragmentState.SHARE;
+    }
+
+    public void newListToast() {
+        makeToast(R.string.toastNewListAdded);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
