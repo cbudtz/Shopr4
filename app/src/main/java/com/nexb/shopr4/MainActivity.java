@@ -100,7 +100,11 @@ public class MainActivity extends AppCompatActivity
         //autoBox.showDropDown();
 
         IDataBaseController firebaseHandler = new FirebaseHandler(this, getString(R.string.fireBaseUrl));
-        IMainViewModel mainViewModel = new MainViewModel(this, firebaseHandler);
+        MainViewModel mainViewModel = new MainViewModel(this, firebaseHandler);
+        firebaseHandler.addActiveShopListListener(mainViewModel);
+        firebaseHandler.addActiveSuperMarketListener(mainViewModel);
+        firebaseHandler.addUserDataListener(mainViewModel);
+
 
     }
 

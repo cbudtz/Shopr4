@@ -142,6 +142,7 @@ public class FireBaseController {
         System.out.println("UserID: " + user.getUserID());
         // Listen to database for changes in User!
         firebaseUserRef = firebaseUserDir.child(user.getUserID());
+        System.out.println("FireBaseController - User : " + user.getUserID());
         firebaseUserRef.addValueEventListener(new UserValueEventListener());
 
         //Should happen on callback! --  setActiveList(user.getActiveList());
@@ -267,6 +268,9 @@ public class FireBaseController {
     }
 
     public void updateActiveShoplistName(String name){
+        for (String s :user.getOwnLists()) {
+            if (s == activeShopList.getName()) s = name;
+        }
         activeShopList.setName(name);
     }
     public void addCategory(String name){
@@ -372,6 +376,7 @@ public class FireBaseController {
                 foreignShoplistsIDs.add(shopListID);
                 foreignUser.getForeignLists().add(new ForeignUserlist(user.getUserName(), foreignShoplistsIDs));
                 foreignUserRef.setValue(foreignUser);
+                System.out.println("FireBaseController Added list to foreignUser");
             }
 
             @Override
@@ -425,12 +430,14 @@ public class FireBaseController {
         return activeShopList.getName();
     }
     public  void setActiveShopListName(String name){
-        activeShopList.setName(name);
-        for(int i =0;i<user.getOwnLists().size();i++){
-            if (user.getOwnLists().get(i).equals(name)){
+       //Find active listID
+        for (int i = 0; i <user.getOwnLists().size(); i++) {
+            if (activeShopList.getId().equals(user.getOwnLists().get(i))){
                 user.getOwnListNames().set(i, name);
             }
         }
+        activeShopList.setName(name);
+        firebaseUserRef.setValue(user);
         updateActiveList();
     }
 
@@ -439,7 +446,15 @@ public class FireBaseController {
         public void onDataChange(DataSnapshot dataSnapshot) {
             System.out.println("User data changed!");
             //Resolve if user is new
-            User userFromFirebase = dataSnapshot.getValue(User.class);
+            System.out.println(dataSnapshot);
+            User userFromFirebase = null;
+            try {
+                userFromFirebase = dataSnapshot.getValue(User.class);
+            } catch (Exception e ) {
+                firebaseUserRef.setValue(user);
+                userFromFirebase = user;
+            }
+
             if (userFromFirebase == null || userFromFirebase.getUserName() == null) {
                 //Create new user
                 firebaseUserRef.setValue(user);
@@ -462,10 +477,10 @@ public class FireBaseController {
             navDrawer.getMenu().removeGroup(2);
 
             int i = 0;
-            for (String s : user.getOwnListNames()) {
-                activity.getNavigationView().getMenu().add(1, i, i, s);
-                i++;
-            }
+//            for (String s : user.getOwnListNames()) {
+//                activity.getNavigationView().getMenu().add(1, i, i, s);
+//                i++;
+//            }
 
             for (ForeignUserlist s : user.getForeignLists()){
                 if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
@@ -474,7 +489,7 @@ public class FireBaseController {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            activity.getNavigationView().getMenu().add(2, finalI,finalI, dataSnapshot.getValue(ShopList.class).getName());
+                            activity.getNavigationView().getMenu().add(2, finalI, finalI, dataSnapshot.getValue(ShopList.class).getName());
                         }
 
                         @Override

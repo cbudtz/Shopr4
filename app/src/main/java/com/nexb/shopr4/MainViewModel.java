@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @authour Christian on 04-12-2015.
  */
-public class MainViewModel implements IMainViewModel, IUserDataListener, IShopListListener, ISuperMarketListener{
+public class MainViewModel implements IMainViewModel, IUserDataListener,IShopListListener,ISuperMarketListener{
 
     MainActivity mainActivity;
     IDataBaseController dataBaseController;
@@ -83,16 +83,16 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
     @Override
     public void userdataChanged(User user) {
                 //Update active shopping list
-        System.out.println("MainViewModel - Got callback from Database - userData: " + user==null?"null":user.getUserName());
+        System.out.println("MainViewModel - Got callback from Database - userData: " + ((user==null)?"null":user.getUserName()));
         mainActivity.userMail = user.getUserID(); //Tell Main activity the users name and email
         mainActivity.userName = user.getUserName();
         if (mainActivity.findViewById(R.id.userMail)!=null) ((TextView)mainActivity.findViewById(R.id.userMail)).setText(user.getUserID().replace(":","."));
         if (mainActivity.findViewById(R.id.userName)!=null) ((TextView)mainActivity.findViewById(R.id.userName)).setText(user.getUserName());
-        navigationDrawerView.getMenu().removeGroup(1);  //Own Lists
-        navigationDrawerView.getMenu().removeGroup(2); //Foreign Lists
+        if (navigationDrawerView!= null) navigationDrawerView.getMenu().removeGroup(1);  //Own Lists
+        if (navigationDrawerView!= null) navigationDrawerView.getMenu().removeGroup(2); //Foreign Lists
 
         int i = 0;
-        for (String s : user.getOwnLists()) {
+        for (String s : user.getOwnListNames()) {
             mainActivity.getNavigationView().getMenu().add(1, i, i, s);
             i++;
         }
@@ -116,7 +116,8 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     @Override
     public void shopListDataChanged(ShopList shopList) {
-        System.out.println("MainViewModel - Got callback from database. Shoplist Changed: " + shopList==null?"null":shopList.getName());
+        System.out.println("MainViewModel - Got callback from database. Shoplist Changed: " + ((shopList==null)?"null":shopList.getName()));
+        System.out.println("Test");
         activeShopList = shopList;
         //sortShopList();  //Sort shopList by superMarket
         parseShopListToViewList();
@@ -156,7 +157,7 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     @Override
     public void superMarketChanged(SuperMarket superMarket) {
-        System.out.println("MainViewModel - got callBackFrom database - supermarket Changed: " + superMarket==null?"null":superMarket.getName());
+        System.out.println("MainViewModel - got callBackFrom database - supermarket Changed: " + ((superMarket==null)?"null":superMarket.getName()));
             activeSuperMarket = superMarket;
             sortShopList();
     }
@@ -190,6 +191,7 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
             @Override
             protected void onPostExecute(Object o) {
+                if (shoplistAdaptor!=null)
                 shoplistAdaptor.notifyDataSetChanged();;
             }
         };

@@ -244,6 +244,7 @@ public class FirebaseHandler implements IDataBaseController{
             //Notify interested parties...
             for (IUserDataListener userdataListener :
                     userDataListeners) {
+                System.out.println("FireBaseHandler - Notifying userDataListener - " + userdataListener);
                 userdataListener.userdataChanged(activeUser);
             }
             System.out.println("FireBasehandler - got notified of User data Change -User: " + activeUser.getUserName() + ", " + activeUser.getUserID());
@@ -270,9 +271,9 @@ public class FirebaseHandler implements IDataBaseController{
             //Notify Interested Parties
             for (IShopListListener shopListListener : shopListListeners) {
                 shopListListener.shopListDataChanged(activeShopList);
+                System.out.println("FireBasehandler - Notifying IShopListListener: " + shopListListener);
             }
             System.out.println("FireBasehandler - got notified of shoplistChange - activeShopList: " + activeShopList.getName());
-
         }
 
         @Override
@@ -289,6 +290,7 @@ public class FirebaseHandler implements IDataBaseController{
             //Notify Interested Parties...
             for(ISuperMarketListener superMarketListener: superMarketListeners){
                 superMarketListener.superMarketChanged(activeSuperMarket);
+                System.out.println("FireBasehandler - notifying supermarketListeners: " +superMarketListener);
             }
             System.out.println("FireBaseHandler - got notified of SupermarketChange - activeSuperMarket: " + activeSuperMarket.getName());
         }
