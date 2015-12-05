@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @authour Christian on 04-12-2015.
  */
-public class MainViewModel implements IMainViewModel, IUserDataListener,IShopListListener,ISuperMarketListener{
+public class MainViewModel implements IMainViewModel {
 
     MainActivity mainActivity;
     IDataBaseController dataBaseController;
@@ -35,18 +35,22 @@ public class MainViewModel implements IMainViewModel, IUserDataListener,IShopLis
     private ShopList activeShopList; //public ShopList getActiveShopList() { return activeShopList; }
     //Observable elements
     private ArrayList<ShopListViewContent> shopListViewContents = new ArrayList<>();
+    @Override
         public ArrayList<ShopListViewContent> getShopListViewContents() { return shopListViewContents; }
 
 
 
     //Adaptors to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
+    @Override
         public void setShoplistAdaptor(ArrayAdapter<ShopListViewContent> shoplistAdaptor) { this.shoplistAdaptor = shoplistAdaptor; }
 
     private ArrayAdapter<DictionaryItem> dictionaryAdapter;
+    @Override
         public void setDictionaryAdapter(ArrayAdapter<DictionaryItem> dictionaryAdapter) { this.dictionaryAdapter = dictionaryAdapter; }
 
     private ArrayList<TextView> shopListTitleViews = new ArrayList<>();
+    @Override
         public void addTitleTextView(TextView t){shopListTitleViews.add(t);}
 
     //Views to be updatesd on dataChange

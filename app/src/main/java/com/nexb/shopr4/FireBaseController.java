@@ -96,7 +96,7 @@ public class FireBaseController {
         activity = mainActivity;
         FireBaseController.url = url;
         Firebase.setAndroidContext(activity);
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
+        Firebase.getDefaultConfig().setPersistenceEnabled(false);
     }
 
     public void init() {
@@ -369,13 +369,16 @@ public class FireBaseController {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User foreignUser = dataSnapshot.getValue(User.class);
+                System.out.println(foreignUser.getForeignLists().size());
                 if (foreignUser== null) {
                     foreignUser = new User();
                 }
                 ArrayList<String> foreignShoplistsIDs = new ArrayList<>();
                 foreignShoplistsIDs.add(shopListID);
                 foreignUser.getForeignLists().add(new ForeignUserlist(user.getUserName(), foreignShoplistsIDs));
+
                 foreignUserRef.setValue(foreignUser);
+                System.out.println(foreignUser.getForeignLists().size());
                 System.out.println("FireBaseController Added list to foreignUser");
             }
 
