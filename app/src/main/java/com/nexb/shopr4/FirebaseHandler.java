@@ -8,15 +8,19 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.nexb.shopr4.dataModel.Category;
+import com.nexb.shopr4.dataModel.Dictionary;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
+import com.nexb.shopr4.dataModel.SuperMarket;
 import com.nexb.shopr4.dataModel.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -28,28 +32,34 @@ public class FirebaseHandler implements IDataBaseController{
     private User activeUser = new User();
     private String activeShopListID = "";
     private ShopList activeShopList = new ShopList();
+    private SuperMarket activeSuperMarket;
 
     //FireBase references
     private Activity mainActivity;
     private String fireBaseURL;
-    private Firebase firebaseRoot;
-    private Firebase firebaseUserRef;
-    private Firebase firebaseShopListRef;
+    private Firebase firebaseRoot;//root folder
+    private Firebase firebaseUserRef; //User folder
+    private Firebase firebaseShopListRef; //ShopList folder
 
-    private Firebase firebaseActiveUserRef;
-    private Firebase firebaseActiveShopListRef;
+    private Firebase firebaseActiveUserRef; // Active user ref
+    private Firebase firebaseActiveShopListRef; //Active shoplist ref
+    private Firebase firebaseActiveSupermarketRef;
 
     private UserValueEventListener firebaseUserValueEventListener;
     private ShopListValueEventListener firebaseShoplistValueEventListener;
+    private SuperMarketValueEventListener firebaseSupermarketValueEventListener;
 
     //Listeners
     private ArrayList<IUserDataListener> userDataListeners = new ArrayList<>();
     private ArrayList<IShopListListener> shopListListeners = new ArrayList<>();
-
+    private ArrayList<ISuperMarketListener> superMarketListeners = new ArrayList<>();
 
 
     public FirebaseHandler(Activity mainActivity, String dataBaseUrl){
         this.setContext(mainActivity, dataBaseUrl);
+
+        //DEBUG
+        setActiveSuperMarket("RemaGammelmosevej261");
 
     }
 
@@ -76,7 +86,7 @@ public class FirebaseHandler implements IDataBaseController{
         newList.setId(newListRef.getKey());
         //add new shopList
         newListRef.setValue(newList);
-        activeUser.getOwnLists().add(newListRef.getKey());
+        activeUser.addOwnList(newListRef.getKey(),"New ShopList");
         firebaseActiveUserRef.setValue(activeUser);
         return newListRef.getKey();
     }
@@ -151,6 +161,14 @@ public class FirebaseHandler implements IDataBaseController{
 
     }
 
+    @Override
+    public void setActiveSuperMarket(String SuperMarketID) {
+        if (firebaseActiveSupermarketRef != null) firebaseActiveSupermarketRef.removeEventListener(firebaseSupermarketValueEventListener);
+        firebaseActiveSupermarketRef = firebaseRoot.child(mainActivity.getString(R.string.SupermarketDir)).child(SuperMarketID);
+        firebaseSupermarketValueEventListener = new SuperMarketValueEventListener();
+        firebaseActiveSupermarketRef.addValueEventListener(firebaseSupermarketValueEventListener);
+
+    }
 
 
     @Override
@@ -164,6 +182,12 @@ public class FirebaseHandler implements IDataBaseController{
     public void addActiveShopListListener(IShopListListener shopListListener) {
         shopListListeners.add(shopListListener);
         shopListListener.shopListDataChanged(activeShopList);
+    }
+
+    @Override
+    public void addActiveSuperMarketListener(ISuperMarketListener superMarketListener) {
+        superMarketListeners.add(superMarketListener);
+        superMarketListener.superMarketChanged(activeSuperMarket);
     }
 
     //Look in phones Accounts
@@ -200,7 +224,11 @@ public class FirebaseHandler implements IDataBaseController{
             activeUser = dataSnapshot.getValue(User.class);
             if (activeUser == null){
                 activeUser = new User();
+                initializeStandardCategories(activeUser);
+                initializeStandardDictionary(activeUser);
+                initializeStandardUnits(activeUser);
                 activeUser.setUserID(resolveUserId());
+                firebaseActiveUserRef.setValue(activeUser); //Will trigger secondary callback!
             }
             //Check users activeList:
             if (!activeShopListID.equals(activeUser.getActiveList())) {
@@ -237,10 +265,10 @@ public class FirebaseHandler implements IDataBaseController{
                 Firebase shopListRef = firebaseShopListRef.push();
                 activeShopList = new ShopList();
                 activeShopList.setId(shopListRef.getKey());
+                firebaseActiveShopListRef.setValue(activeShopList);
             }
             //Notify Interested Parties
-            for (IShopListListener shopListListener :
-                    shopListListeners) {
+            for (IShopListListener shopListListener : shopListListeners) {
                 shopListListener.shopListDataChanged(activeShopList);
             }
             System.out.println("FireBasehandler - got notified of shoplistChange - activeShopList: " + activeShopList.getName());
@@ -252,4 +280,52 @@ public class FirebaseHandler implements IDataBaseController{
 
         }
     }
+
+    //Listen to supermarket
+    private class SuperMarketValueEventListener implements ValueEventListener {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            activeSuperMarket = dataSnapshot.getValue(SuperMarket.class);
+            //Notify Interested Parties...
+            for(ISuperMarketListener superMarketListener: superMarketListeners){
+                superMarketListener.superMarketChanged(activeSuperMarket);
+            }
+            System.out.println("FireBaseHandler - got notified of SupermarketChange - activeSuperMarket: " + activeSuperMarket.getName());
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+
+        }
+    }
+
+    //Convenience methods
+
+    private void initializeStandardCategories(User user) {
+        ArrayList<String> userCats = user.getUserCategories();
+        //Ugly Hardcoding, should be // FIXME: 26-11-2015
+        userCats.add("Frugt og Grønt");userCats.add("Brød");userCats.add("Konserves");
+        userCats.add("Kolonial");userCats.add("Pålæg");userCats.add("Kød");
+        userCats.add("Frost");
+        userCats.add("Vin");userCats.add("Rengøring");userCats.add("Drikkevarer");userCats.add("Mejeri");
+        userCats.add("Slik og Chips");userCats.add("Andet");
+    }
+
+    private void initializeStandardUnits(User user) {
+        ArrayList<String> userUnits = user.getUserUnits();
+        //Ugly Hardcoding, should be fixed later on....
+        userUnits.add("stk");userUnits.add("pk");userUnits.add("bk");userUnits.add("L");
+        userUnits.add("g");userUnits.add("kg");userUnits.add("ruller");
+    }
+
+    private void initializeStandardDictionary(User user) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            user.setUserDictionary(mapper.readValue(mainActivity.getAssets().open("standardDictionary.json"), Dictionary.class).getDictionaryItems());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+

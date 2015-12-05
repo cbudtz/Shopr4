@@ -11,6 +11,11 @@ public class User {
     private String UserName = "New user";
 
     private ArrayList<String> ownLists = new ArrayList<>();
+
+    public ArrayList<String> getOwnListNames() { return ownListNames; }
+    public void setOwnListNames(ArrayList<String> ownListNames) { this.ownListNames = ownListNames; }
+
+    private ArrayList<String> ownListNames = new ArrayList<>();
     private ArrayList<ForeignUserlist> foreignLists = new ArrayList<>();
     private String activeList = "TestList";
     private ArrayList<DictionaryItem> userDictionary = new ArrayList<>();
@@ -55,8 +60,8 @@ public class User {
     public String getActiveList() {       return activeList;    }
     public void setActiveList(String activeList) {        this.activeList = activeList;    }
 
-    public void addOwnList(String id) {
-        ownLists.add(id);
+    public void addOwnList(String id, String name) {
+        ownLists.add(id); ownListNames.add(name);
     }
 
     public ArrayList<DictionaryItem> getUserDictionary() {

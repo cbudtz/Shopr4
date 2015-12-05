@@ -17,12 +17,14 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.nexb.shopr4.Utility.SuperMarketFactory;
 import com.nexb.shopr4.dataModel.Category;
 import com.nexb.shopr4.dataModel.Dictionary;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.ForeignUserlist;
 import com.nexb.shopr4.dataModel.ListItem;
 import com.nexb.shopr4.dataModel.ShopList;
+import com.nexb.shopr4.dataModel.SuperMarket;
 import com.nexb.shopr4.dataModel.User;
 import com.nexb.shopr4.View.ShopListViewCategory;
 import com.nexb.shopr4.View.ShopListViewContent;
@@ -30,6 +32,9 @@ import com.nexb.shopr4.View.ShopListViewItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+
+import static java.util.Arrays.asList;
 
 /**
  * @author Christian on 12-11-2015.
@@ -44,6 +49,7 @@ public class FireBaseController {
     private Firebase firebaseRoot;
     private Firebase firebaseUserDir;
     private Firebase firebaseShopListDir;
+    private Firebase firebaseSuperMarketDir;
 
 
     //User data:
@@ -58,6 +64,7 @@ public class FireBaseController {
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
     private ArrayAdapter<DictionaryItem> dictionaryAdapter;
     private ArrayList<TextView> shopListTitleViews = new ArrayList<>();
+
         public void addTitleListener(TextView t){shopListTitleViews.add(t);}
 
 
@@ -96,6 +103,16 @@ public class FireBaseController {
         firebaseRoot = new Firebase(url);
         firebaseUserDir = firebaseRoot.child(activity.getString(R.string.userDir));
         firebaseShopListDir = firebaseRoot.child(activity.getString(R.string.shopListDir));
+        firebaseSuperMarketDir = firebaseRoot.child(activity.getString(R.string.SupermarketDir));
+        //DEBUG
+        LinkedHashMap<String, ArrayList<String>> categories = new LinkedHashMap<>();
+        categories.put("Brød", new ArrayList<String>(asList("Rugbrød", "KnækBrød", "Franskbrød", "Flutes")));
+        categories.put("Frugt og Grønt", new ArrayList<String>(asList("Bananer", "Æbler", "Gulerødder", "Porrer")));
+
+        SuperMarket s = SuperMarketFactory.generateSuperMarket("Rema",categories, 55.7558436, 12.4750958);
+
+        firebaseSuperMarketDir.child("RemaGammelmosevej261").setValue(s);
+        //DEBUG
         resolveUser();
     }
 
@@ -219,7 +236,7 @@ public class FireBaseController {
         newShopList.setCreatedByID(user.getUserID());
         newShopList.addCategory(new Category("No Category"));
         newListRef.setValue(newShopList);
-        user.addOwnList(newShopList.getId());
+        user.addOwnList(newShopList.getId(), newShopList.getName());
         if (user.getActiveList()==null) user.setActiveList(newShopList.getId());
         firebaseUserRef.setValue(user);
         //setActiveList(newListRef.getKey());
@@ -403,6 +420,7 @@ public class FireBaseController {
         this.dictionaryAdapter = dictionaryAdapter;
     }
     public String getActiveShopListName(){
+        if (activeShopList == null) return "";
         return activeShopList.getName();
     }
     public  void setActiveShopListName(String name){
@@ -438,7 +456,7 @@ public class FireBaseController {
             navDrawer.getMenu().removeGroup(2);
 
             int i = 0;
-            for (String s : user.getOwnLists()) {
+            for (String s : user.getOwnListNames()) {
                 activity.getNavigationView().getMenu().add(1, i, i, s);
                 i++;
             }

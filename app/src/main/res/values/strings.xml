@@ -18,4 +18,5 @@
     <string name="itemType">lol</string>
     <string name="add_cat">Add category</string>
     <string name="delete_list">Delete list</string>
+    <string name="SupermarketDir">Supermarkets</string>
 </resources>

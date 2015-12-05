@@ -26,8 +26,11 @@ public interface IDataBaseController {
     void addItemToActiveList(String categoryName, ListItem listItem);
     void deleteItem(int catID, int itemID);
 
+    void setActiveSuperMarket(String SuperMarketID);
+
     //ShopListListening
     void addUserDataListener(IUserDataListener userDataListener);
     void addActiveShopListListener(IShopListListener shopListListner);
+    void addActiveSuperMarketListener(ISuperMarketListener superMarketListener);
 
 }

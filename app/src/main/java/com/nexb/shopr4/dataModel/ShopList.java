@@ -9,6 +9,7 @@ public class ShopList {
     private String name = "new shoplist";
     private String id = "";
     private String createdByID ="";
+    private String superMarketID = "";
     private ArrayList<Category> categories = new ArrayList<>();
 
     public ShopList(){
@@ -51,4 +52,7 @@ public class ShopList {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getSuperMarketID() { return superMarketID; }
+    public void setSuperMarketID(String superMarketID) { this.superMarketID = superMarketID; }
 }
