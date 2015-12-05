@@ -16,12 +16,12 @@
         android:textStyle="bold"
         android:textSize="20dp"
         android:singleLine="true"
-        android:inputType="text"
         android:maxLength="20"
+        android:inputType="textAutoComplete"
         android:textColor="@android:color/background_light"
         android:background="@color/colorPrimary"
-        android:textAlignment="center"
-        />
+        android:textAlignment="center">
+    </EditText>
 
     <ImageButton
         android:id="@+id/catEditDelete"

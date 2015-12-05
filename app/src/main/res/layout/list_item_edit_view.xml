@@ -42,7 +42,7 @@
         android:padding="1dp"
         />
 
-    <com.nexb.shopr4.dataModel.InstantAutoCompleteTextView
+    <EditText
         android:id="@+id/itemType"
         android:text="@string/itemType"
         android:layout_width="wrap_content"
@@ -50,8 +50,8 @@
         android:layout_centerVertical="true"
         android:singleLine="true"
         android:maxLength="6"
-        android:layout_toRightOf="@+id/minusOne"
-        android:inputType="text" />
+        android:inputType="textAutoComplete"
+        android:layout_toRightOf="@+id/minusOne" />
 
 
     <TextView

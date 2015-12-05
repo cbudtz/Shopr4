@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -121,7 +122,6 @@ public class MainActivity extends AppCompatActivity
                 if (fragmentType == fragmentState.EDIT) {
                     DictionaryItem newItem = (DictionaryItem) parent.getItemAtPosition(position);
                     fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
-//                    autoBox.setText("");
                     autoBox.showDropDown();
                 }
             }
@@ -133,18 +133,11 @@ public class MainActivity extends AppCompatActivity
                     ListItem newItem = new ListItem(1, "stk", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
                     System.out.println(v.getText());
-//                    v.setText("");
+                    hideKeyboard();
                 }
                 return true;
             }
         });
-//        autoBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if(!hasFocus){
-//                }
-//            }
-//        });
         //Change
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
         ArrayAdapter<DictionaryItem> autoAdaptor = new ArrayAdapter<DictionaryItem>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());
@@ -267,9 +260,7 @@ public class MainActivity extends AppCompatActivity
         View v = getWindow().getCurrentFocus();
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(navigationView.getWindowToken(),0);
-//        getWindow().setSoftInputMode(
-//                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-//        );
+
     }
 
     @Override

@@ -21,7 +21,8 @@
                 android:textColor="@android:color/black"
                 android:padding="10dp"
                 android:width="65dp"
-                android:id="@+id/toolbarAutobox" />
+                android:id="@+id/toolbarAutobox"
+                />
 
         </android.support.v7.widget.Toolbar>
 

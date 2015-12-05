@@ -86,6 +86,7 @@ public class EditListFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 FireBaseController.getI().setActiveShopListName(((EditText) v.findViewById(R.id.listNameEdit)).getText().toString());
+                //MainActivity.hideKeyboard();
                 return true;
             }
         });
