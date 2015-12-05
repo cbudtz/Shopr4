@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
 
     private void setUpActionBox() {
         autoBox = (AutoCompleteTextView) findViewById(R.id.toolbarAutobox);
-        autoBox.setThreshold(0);
+        autoBox.setThreshold(1);
         autoBox.setSingleLine(true);
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
         autoBox.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
                 if (fragmentType == fragmentState.EDIT) {
                     DictionaryItem newItem = (DictionaryItem) parent.getItemAtPosition(position);
                     fireBaseController.addItemToActiveList(newItem.getCategory(), new ListItem(newItem.getAmount(), newItem.getUnit(), newItem.getName()));
-                    autoBox.setText("");
+//                    autoBox.setText("");
                     autoBox.showDropDown();
                 }
             }
@@ -125,18 +125,18 @@ public class MainActivity extends AppCompatActivity
                     ListItem newItem = new ListItem(1, "stk", v.getText().toString());
                     fireBaseController.addItemToActiveListNoCategory(newItem);
                     System.out.println(v.getText());
-                    v.setText("");
+//                    v.setText("");
                 }
                 return true;
             }
         });
-        autoBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                }
-            }
-        });
+//        autoBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if(!hasFocus){
+//                }
+//            }
+//        });
         //Change
         autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
         ArrayAdapter<DictionaryItem> autoAdaptor = new ArrayAdapter<DictionaryItem>(this, android.R.layout.simple_dropdown_item_1line, FireBaseController.getI().getDictionaryStrings());

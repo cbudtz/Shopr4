@@ -357,7 +357,8 @@ public class FireBaseController {
     // }
 
     public void shareShopListWithUserID(String userID, final String shopListID){
-        System.out.println("Tried to set foreignList on user:" + userID + ", shopListID: " + shopListID);
+        System.out.println("UserID = " + userID + "Tried to set foreignList on user:" + userID + ", shopListID: " + shopListID);
+        if (userID == null) return;
         userID = userID.replace(".",":");
         final Firebase foreignUserRef = firebaseUserDir.child(userID);
         foreignUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -460,6 +461,7 @@ public class FireBaseController {
                 activity.getNavigationView().getMenu().add(1, i, i, s);
                 i++;
             }
+            i=0;
             for (ForeignUserlist s : user.getForeignLists()){
                 if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
                     activity.getNavigationView().getMenu().add(2, i, i, s.getShopListIDs().get(0));
