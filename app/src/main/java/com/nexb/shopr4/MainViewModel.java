@@ -1,13 +1,17 @@
 package com.nexb.shopr4;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nexb.shopr4.View.ShopListViewCategory;
 import com.nexb.shopr4.View.ShopListViewContent;
+import com.nexb.shopr4.View.ShopListViewItem;
+import com.nexb.shopr4.dataModel.Category;
 import com.nexb.shopr4.dataModel.DictionaryItem;
 import com.nexb.shopr4.dataModel.ForeignUserlist;
 import com.nexb.shopr4.dataModel.ListItem;
@@ -16,6 +20,7 @@ import com.nexb.shopr4.dataModel.SuperMarket;
 import com.nexb.shopr4.dataModel.User;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @authour Christian on 04-12-2015.
@@ -24,7 +29,15 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     MainActivity mainActivity;
     IDataBaseController dataBaseController;
-    SuperMarket activeSuperMarket;
+
+    private SuperMarket activeSuperMarket;
+        public SuperMarket getActiveSuperMarket() { return activeSuperMarket; }
+    private ShopList activeShopList; //public ShopList getActiveShopList() { return activeShopList; }
+    //Observable elements
+    private ArrayList<ShopListViewContent> shopListViewContents = new ArrayList<>();
+        public ArrayList<ShopListViewContent> getShopListViewContents() { return shopListViewContents; }
+
+
 
     //Adaptors to be notified on dataChange
     private ArrayAdapter<ShopListViewContent> shoplistAdaptor;
@@ -33,6 +46,7 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     //Views to be updatesd on dataChange
     private NavigationView navigationDrawerView;
+
 
     public MainViewModel(MainActivity mainActivity,
             IDataBaseController dataBaseController, ArrayAdapter<ShopListViewContent> shoplistAdaptor,
@@ -60,8 +74,10 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     @Override
     public void autoBoxItemSelected(DictionaryItem dictionaryItem) {
-        dataBaseController.addItemToActiveList(dictionaryItem.getCategory(),new ListItem(dictionaryItem.getAmount(),dictionaryItem.getUnit(),dictionaryItem.getName()));
+        dataBaseController.addItemToActiveList(dictionaryItem.getCategory(), new ListItem(dictionaryItem.getAmount(), dictionaryItem.getUnit(), dictionaryItem.getName()));
     }
+
+
 
 //----------------------------------- Output
     //CallBacks from database
@@ -100,12 +116,77 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
 
     @Override
     public void shopListDataChanged(ShopList shopList) {
+        activeShopList = shopList;
+        //sortShopList();  //Sort shopList by superMarket
+        parseShopListToViewList();
+        shoplistAdaptor.notifyDataSetChanged();
 
+    }
+
+    private void parseShopListToViewList() {
+        ArrayList<ShopListViewContent> newShopListViewContents = new ArrayList<ShopListViewContent>();
+        if (activeShopList==null) return;
+        //TODO clean up:
+        int i = 0;
+        for (Category c: activeShopList.getCategories() ) {
+            //add category element
+            newShopListViewContents.add(new ShopListViewCategory(c.getName(), i));
+            int j =0;
+            for (ListItem l:c.getItems()) {
+                newShopListViewContents.add(new ShopListViewItem(l.getAmount(),l.getUnit(),l.getName(),l.getState(),i,j));
+                j++;
+            }
+            i++;
+        }
+        if (MainActivity.DEBUG){
+            for (ShopListViewContent s: newShopListViewContents ) {
+                System.out.println("ShoplistViewItem: " + s);
+
+            }
+        }
+        shopListViewContents.clear();
+        shopListViewContents.addAll(newShopListViewContents);
     }
 
     @Override
     public void superMarketChanged(SuperMarket superMarket) {
+            activeSuperMarket = superMarket;
+            sortShopList();
+    }
 
+    private void sortShopList() {
+        //TODO make data structure and nice sort algorithm for shopList (should be a map of ItemName, category instead
+        AsyncTask task = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+                if (activeSuperMarket==null) return null;
+                ShopList newShopList = new ShopList();
+                newShopList.setName(activeShopList.getName());
+                newShopList.setId(activeShopList.getId());
+                for (Category category : activeShopList.getCategories()) {
+                    for (ListItem listItem: category.getItems()) {
+                        boolean listItemUsed = false;
+                        for (Map.Entry<String, ArrayList<String>> entry : activeSuperMarket.getCategories().entrySet()) {
+                            for (String s : entry.getValue()) {
+                                if (s.equals(listItem.getName())){
+                                    newShopList.addItem(s, listItem);
+                                }
+                            }
+                        }
+
+                    }
+                }
+                activeShopList = newShopList;
+                parseShopListToViewList();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                shoplistAdaptor.notifyDataSetChanged();;
+            }
+        };
+        task.execute();
     }
 
     //
@@ -124,4 +205,5 @@ public class MainViewModel implements IMainViewModel, IUserDataListener, IShopLi
         if (dictionaryAdapter!=null) dictionaryAdapter.notifyDataSetChanged();
         return user.getUserDictionary();
     }
+
 }
