@@ -42,7 +42,7 @@
         android:padding="1dp"
         />
 
-    <EditText
+    <com.nexb.shopr4.dataModel.InstantAutoCompleteTextView
         android:id="@+id/itemType"
         android:text="@string/itemType"
         android:layout_width="wrap_content"

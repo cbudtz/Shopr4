@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ public class ShareListFragment  extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private String mail = null;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -68,13 +68,14 @@ public class ShareListFragment  extends Fragment {
         FireBaseController.getI().addTitleListener(((TextView) v.findViewById(R.id.shareInfo)));
         ((TextView)v.findViewById(R.id.shareInfo)).setText(FireBaseController.getI().getActiveShopListName());
 
-
-        ((EditText) v.findViewById(R.id.mailString)).setOnClickListener(new View.OnClickListener() {
+        ((EditText) v.findViewById(R.id.mailString)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-                FireBaseController.getI().shareShopListWithUserID(mail, FireBaseController.getI().getActiveShopListID());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                FireBaseController.getI().shareShopListWithUserID(((EditText) v.findViewById(R.id.mailString)).getText().toString(), FireBaseController.getI().getActiveShopListID());
+                return true;
             }
         });
+
 
         return v;
     }

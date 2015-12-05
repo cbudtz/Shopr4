@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -139,14 +140,14 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                     popUpTypeMenu.show();
                 }
             });
-            ((EditText) view.findViewById(R.id.itemType)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            ((AutoCompleteTextView) view.findViewById(R.id.itemType)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     newItem.setName(((ShopListViewItem) content).getName());
-                    newItem.setUnit(((TextView) v.findViewById(R.id.itemType)).getText().toString());
+                    newItem.setUnit(((AutoCompleteTextView) v.findViewById(R.id.itemType)).getText().toString());
                     newItem.setAmount(((ShopListViewItem) content).getAmount());
                     FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
-                    return false;
+                    return true;
                 }
             });
 
@@ -154,12 +155,12 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
             ((TextView) view.findViewById(R.id.itemAmount)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    final EditText editAmountText = (EditText) v.findViewById(R.id.itemAmount);
+                    EditText editAmountText = (EditText) v.findViewById(R.id.itemAmount);
                     newItem.setName(((ShopListViewItem) content).getName());
                     newItem.setUnit(((ShopListViewItem) content).getUnit());
                     newItem.setAmount(Double.parseDouble(editAmountText.getText().toString()));
                     FireBaseController.getI().updateItem(((ShopListViewItem) content).getCategoryID(), ((ShopListViewItem) content).getItemId(), newItem);
-                    return false;
+                    return true;
                 }
             });
 
@@ -172,7 +173,7 @@ public class ShopListEditViewAdapter extends ArrayAdapter {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     FireBaseController.getI().updateCategoryname(((ShopListViewCategory) content).getCatId(),((EditText)v.findViewById(R.id.catEditName)).getText().toString());
-                    return false;
+                    return true;
                 }
             });
 

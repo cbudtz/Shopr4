@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_cat) {
             if(fragmentType == fragmentState.EDIT){
-                FireBaseController.getI().addCategory("Enter category name");
+                FireBaseController.getI().addCategory("Indtast navn");
             }
             return true;
         }
@@ -221,15 +221,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    //Getters and setters
-    public NavigationView getNavigationView() {
-        return navigationView;
-    }
     private void setupFloatingActionButton() {
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_lock_idle_lock));
@@ -268,4 +259,15 @@ public class MainActivity extends AppCompatActivity
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    //Getters and setters
+    public NavigationView getNavigationView() {
+        return navigationView;
+    }
+
 }
