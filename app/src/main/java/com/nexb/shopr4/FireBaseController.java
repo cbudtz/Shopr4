@@ -217,7 +217,7 @@ public class FireBaseController {
         }
         if (MainActivity.DEBUG){
             for (ShopListViewContent s: newShopListViewContents ) {
-                System.out.println("ShoplistViewItem: " + s);
+                //System.out.println("ShoplistViewItem: " + s);
 
             }
         }
@@ -469,7 +469,19 @@ public class FireBaseController {
 
             for (ForeignUserlist s : user.getForeignLists()){
                 if (s!=null && s.getShopListIDs()!=null && s.getShopListIDs().size()>0) {
-                    activity.getNavigationView().getMenu().add(2, i, i, s.getShopListIDs().get(0));
+                    final int finalI = i;
+                    firebaseShopListDir.child(s.getShopListIDs().get(0)).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            activity.getNavigationView().getMenu().add(2, finalI,finalI, dataSnapshot.getValue(ShopList.class).getName());
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
                     i++;
                 }
             }
